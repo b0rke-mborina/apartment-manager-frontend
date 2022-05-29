@@ -1,8 +1,4 @@
-.main-content {
-	width: 80%;
-}
-@media (max-width:900px) {
-	.main-content {
-		width: 95%;
-	}
+html, body {
+	height: 1500px;
+	margin-bottom: 100px;
 }

@@ -1,7 +1,8 @@
 <template>
-	<div>
-		<span>GUEST ITEM: OK</span>
-	</div>
+	<v-card>
+		<v-icon>mdi-account</v-icon>
+		<span>Michael Bishop</span>
+	</v-card>
 </template>
 
 <script>
