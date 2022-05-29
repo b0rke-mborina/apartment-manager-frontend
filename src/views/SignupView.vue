@@ -1,12 +1,12 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<span>TO DO LISTS: OK</span>
+		<span>SIGNUP: OK</span>
 	</v-container>
 </template>
 
 <script>
 export default {
-	name: 'ToDoListsView',
+	name: 'SignupView',
 }
 </script>
 

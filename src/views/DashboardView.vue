@@ -1,7 +1,5 @@
 <template>
-	<div> <!-- class="home">
-		<img alt="Vue logo" src="../assets/logo.png">
-		<HelloWorld msg="Welcome to Your Vue.js App"/> -->
+	<v-container absolute fluid class="main-content">
 		<AccomodationItem/>
 		<ReservationItem/>
 		<GuestItem/>
@@ -10,7 +8,7 @@
 		<CalendarItem/>
 		<br>
 		<span>HOME: OK</span>
-	</div>
+	</v-container>
 </template>
 
 <script>
@@ -34,3 +32,7 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+	@import '@/assets/css/views-style.css';
+</style>

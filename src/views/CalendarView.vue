@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<v-container absolute fluid class="main-content">
 		<span>CALENDAR: OK</span>
-	</div>
+	</v-container>
 </template>
 
 <script>
@@ -9,3 +9,7 @@ export default {
 	name: 'Calendar',
 }
 </script>
+
+<style scoped>
+	@import '@/assets/css/views-style.css';
+</style>
