@@ -1,7 +1,11 @@
 <template>
 	<v-card>
 		<v-icon>mdi-account</v-icon>
-		<span>Michael Bishop</span>
+		<span>{{ guest.firstName }} {{ guest.lastName }}</span>
+		<br>
+		<span>{{ guest.city }}, {{ guest.country }}</span>
+		<br>
+		<span>{{ guest.period.startDate }} - {{ guest.period.endDate }}</span>
 	</v-card>
 </template>
 
@@ -9,12 +13,11 @@
 export default {
 	name: 'GuestItem',
 	props: {
-		
+		guest: Object
 	}
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;

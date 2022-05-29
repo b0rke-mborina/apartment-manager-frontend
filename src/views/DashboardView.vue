@@ -2,7 +2,7 @@
 	<v-container absolute fluid class="main-content">
 		<AccomodationItem/>
 		<ReservationItem/>
-		<GuestItem/>
+		<!-- <GuestItem/> -->
 		<ToDoListItem/>
 		<NoteItem/>
 		<CalendarItem/>
@@ -12,7 +12,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import AccomodationItem from '@/components/AccomodationItem.vue'
 import ReservationItem from '@/components/ReservationItem.vue'
 import GuestItem from '@/components/GuestItem.vue'
