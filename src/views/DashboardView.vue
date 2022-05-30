@@ -6,8 +6,6 @@
 		<ToDoListItem/>
 		<NoteItem/>
 		<CalendarItem/> -->
-		<!-- <br>
-		<span>HOME: OK</span> -->
 		<h1 class="mt-5 mb-4 text-center">Dashboard</h1>
 	</v-container>
 </template>

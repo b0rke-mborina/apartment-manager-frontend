@@ -1,6 +1,5 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<!-- <span>TO DO LISTS: OK</span> -->
 		<h1 class="mt-5 mb-4 text-center">To-do lists</h1>
 		<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
 		<AddNewButton/>
@@ -9,7 +8,7 @@
 
 <script>
 import ToDoListItem from '@/components/ToDoListItem.vue';
-import AddNewButton from '@/components/AddNewButton.vue';
+import AddNewButton from '@/components/ButtonAddNew.vue';
 
 export default {
 	name: 'ToDoListsView',

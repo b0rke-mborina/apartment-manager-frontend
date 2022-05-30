@@ -1,6 +1,5 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<!-- <span>GUESTS: OK</span> -->
 		<h1 class="mt-5 mb-4 text-center">Guests</h1>
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
 		<AddNewButton/>
@@ -9,7 +8,7 @@
 
 <script>
 import GuestItem from '@/components/GuestItem.vue';
-import AddNewButton from '@/components/AddNewButton.vue';
+import AddNewButton from '@/components/ButtonAddNew.vue';
 
 export default {
 	name: 'GuestsView',

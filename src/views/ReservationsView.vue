@@ -1,6 +1,5 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<!-- <span>RESERVATIONS: OK</span> -->
 		<h1 class="mt-5 mb-4 text-center">Reservations</h1>
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation" />
 		<AddNewButton/>
@@ -9,7 +8,7 @@
 
 <script>
 import ReservationItem from '@/components/ReservationItem.vue';
-import AddNewButton from '@/components/AddNewButton.vue';
+import AddNewButton from '@/components/ButtonAddNew.vue';
 
 export default {
 	name: 'ReservationsView',

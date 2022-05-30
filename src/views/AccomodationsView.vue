@@ -1,6 +1,5 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<!-- <span>ACCOMODATIONS: OK</span> -->
 		<h1 class="mt-5 mb-4 text-center">Accomodations</h1>
 		<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		<AddNewButton/>
@@ -9,7 +8,7 @@
 
 <script>
 import AccomodationItem from '@/components/AccomodationItem.vue';
-import AddNewButton from '@/components/AddNewButton.vue';
+import AddNewButton from '@/components/ButtonAddNew.vue';
 
 export default {
 	name: 'AccomodationsView',

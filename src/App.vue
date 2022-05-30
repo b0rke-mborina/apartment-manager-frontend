@@ -1,15 +1,12 @@
 <template>
 	<v-app>
 		<!-- App bar -->
-		<v-app-bar color="#A5D4FF" elevate-on-scroll absolute short rounded class="fill-height">
+		<v-app-bar color="#A5D4FF" elevate-on-scroll fixed short rounded class="fill-height">
 			<!-- App bar right side (menu button and app name) -->
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer" color="#000000"></v-app-bar-nav-icon>
 			<v-toolbar-title class="toolbar-title">Apartment manager</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<!-- App bar left side (account icon, login button, signup button) -->
-			<!-- <v-btn icon>
-				<v-icon>mdi-cog</v-icon>
-			</v-btn> -->
 			<v-btn icon color="#000000">
 				<v-icon>mdi-account-circle</v-icon>
 			</v-btn>
