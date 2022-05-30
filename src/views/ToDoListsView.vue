@@ -1,7 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<span>TO DO LISTS: OK</span>
-		<ToDoListItem/>
+		<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
 	</v-container>
 </template>
 
@@ -18,29 +18,34 @@ export default {
 	mounted() {
 		let toDoListsFromBackend = [
 			{
-				ObjecId: 100,
+				ObjectId: 100,
 				title: "Buying backup items",
 				type: "repeating",
 				date: "2022-04-10",
 				repeatPeriod: [2, "m"],
 				items: [
 					{
+						ObjectId: 111,
 						name: "Buy glasses",
 						completed: false
 					},
 					{
+						ObjectId: 112,
 						name: "Buy linens",
 						completed: true
 					},
 					{
+						ObjectId: 113,
 						name: "Buy towels",
 						completed: true
 					},
 					{
+						ObjectId: 114,
 						name: "Buy detergents",
 						completed: true
 					},
 					{
+						ObjectId: 115,
 						name: "Buy plates",
 						completed: false
 					}
@@ -72,6 +77,7 @@ export default {
 				title: "Repair damages",
 				type: "one-time",
 				date: "2022-06-01",
+				repeatPeriod: [],
 				items: [
 					{
 						ObjectId: 111,

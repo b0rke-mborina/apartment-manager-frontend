@@ -1,7 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<span>ACCOMODATIONS: OK</span>
-		<AccomodationItem/>
+		<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 	</v-container>
 </template>
 
@@ -28,7 +28,8 @@ export default {
 					houseNumber: "2",
 					entranceNumber: "1a",
 					postalNumber: 52100,
-					city: "Pula"
+					city: "Pula",
+					country: "Croatia"
 				},
 				hasYard: true,
 				lowestFloor: 0,
@@ -45,7 +46,8 @@ export default {
 					houseNumber: "11",
 					entranceNumber: "1a",
 					postalNumber: 52210,
-					city: "Rovinj"
+					city: "Rovinj",
+					country: "Croatia"
 				},
 				hasYard: false,
 				lowestFloor: 1,

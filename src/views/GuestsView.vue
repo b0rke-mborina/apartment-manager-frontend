@@ -1,7 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<span>GUESTS: OK</span>
-		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjecId" :guest="guest" />
+		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
 	</v-container>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<span>RESERVATIONS: OK</span>
-		<ReservationItem/>
+		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation" />
 	</v-container>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<span>NOTES: OK</span>
-		<NoteItem/>
+		<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
 	</v-container>
 </template>
 
