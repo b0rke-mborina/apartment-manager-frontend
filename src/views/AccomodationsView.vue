@@ -10,6 +10,51 @@ import AccomodationItem from '@/components/AccomodationItem.vue'
 
 export default {
 	name: 'AccomodationsView',
+	data() {
+		return {
+			accomodations: []
+		}
+	},
+	mounted() {
+		let accomodationsFromBackend = [
+			{
+				ObjectId: 111,
+				name: "Apartment Nature",
+				categoryStarNumber: 3,
+				maxGuestNumber: 6,
+				currentState: "AVAILABLE",
+				location: {
+					street: "Labinska",
+					houseNumber: "2",
+					entranceNumber: "1a",
+					postalNumber: 52100,
+					city: "Pula"
+				},
+				hasYard: true,
+				lowestFloor: 0,
+				numberofFloors: 1
+			},
+			{
+				ObjectId: 211,
+				name: "Apartment Marie",
+				categoryStarNumber: 4,
+				maxGuestNumber: 4,
+				currentState: "OCCUPIED",
+				location: {
+					street: "Valturska",
+					houseNumber: "11",
+					entranceNumber: "1a",
+					postalNumber: 52210,
+					city: "Rovinj"
+				},
+				hasYard: false,
+				lowestFloor: 1,
+				numberofFloors: 2
+			}
+		];
+		this.accomodations = accomodationsFromBackend;
+		console.log(this.accomodations);
+	},
 	components: {
 		AccomodationItem
 	}

@@ -9,7 +9,7 @@
 import GuestItem from '@/components/GuestItem.vue'
 
 export default {
-	name: 'Guests',
+	name: 'GuestsView',
 	data() {
 		return {
 			guests: []
@@ -71,6 +71,7 @@ export default {
 			}
 		];
 		this.guests = guestsFromBackend;
+		console.log(this.guests);
 	},
 	components: {
 		GuestItem
