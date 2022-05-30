@@ -1,12 +1,15 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<span>GUESTS: OK</span>
+		<!-- <span>GUESTS: OK</span> -->
+		<h1 class="mt-5 mb-4 text-center">Guests</h1>
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
+		<AddNewButton/>
 	</v-container>
 </template>
 
 <script>
-import GuestItem from '@/components/GuestItem.vue'
+import GuestItem from '@/components/GuestItem.vue';
+import AddNewButton from '@/components/AddNewButton.vue';
 
 export default {
 	name: 'GuestsView',
@@ -74,7 +77,8 @@ export default {
 		console.log(this.guests);
 	},
 	components: {
-		GuestItem
+		GuestItem,
+		AddNewButton
 	}
 }
 </script>

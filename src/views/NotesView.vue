@@ -1,12 +1,15 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<span>NOTES: OK</span>
+		<!-- <span>NOTES: OK</span> -->
+		<h1 class="mt-5 mb-4 text-center">Notes</h1>
 		<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
+		<AddNewButton/>
 	</v-container>
 </template>
 
 <script>
-import NoteItem from '@/components/NoteItem.vue'
+import NoteItem from '@/components/NoteItem.vue';
+import AddNewButton from '@/components/AddNewButton.vue';
 
 export default {
 	name: 'NotesView',
@@ -46,7 +49,8 @@ export default {
 		console.log(this.notes);
 	},
 	components: {
-		NoteItem
+		NoteItem,
+		AddNewButton
 	}
 }
 </script>

@@ -1,12 +1,15 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<span>TO DO LISTS: OK</span>
+		<!-- <span>TO DO LISTS: OK</span> -->
+		<h1 class="mt-5 mb-4 text-center">To-do lists</h1>
 		<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
+		<AddNewButton/>
 	</v-container>
 </template>
 
 <script>
-import ToDoListItem from '@/components/ToDoListItem.vue'
+import ToDoListItem from '@/components/ToDoListItem.vue';
+import AddNewButton from '@/components/AddNewButton.vue';
 
 export default {
 	name: 'ToDoListsView',
@@ -97,7 +100,8 @@ export default {
 		console.log(this.toDoLists);
 	},
 	components: {
-		ToDoListItem
+		ToDoListItem,
+		AddNewButton
 	}
 }
 </script>

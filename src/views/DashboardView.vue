@@ -1,13 +1,14 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<AccomodationItem/>
+		<!-- <AccomodationItem/>
 		<ReservationItem/>
-		<!-- <GuestItem/> -->
+		<GuestItem/>
 		<ToDoListItem/>
 		<NoteItem/>
-		<CalendarItem/>
-		<br>
-		<span>HOME: OK</span>
+		<CalendarItem/> -->
+		<!-- <br>
+		<span>HOME: OK</span> -->
+		<h1 class="mt-5 mb-4 text-center">Dashboard</h1>
 	</v-container>
 </template>
 

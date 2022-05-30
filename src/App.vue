@@ -76,7 +76,7 @@ export default {
 				{ route: '/reservations', title: 'Reservations', icon: 'mdi-calendar-check' },
 				{ route: '/calendar', title: 'Calendar', icon: 'mdi-calendar' },
 				{ route: '/guests', title: 'Guests', icon: 'mdi-account-group' },
-				{ route: '/todolists', title: 'To - do', icon: 'mdi-format-list-checks' },
+				{ route: '/todolists', title: 'To do...', icon: 'mdi-format-list-checks' },
 				{ route: '/notes', title: 'Notes', icon: 'mdi-note-edit' },
 			]
       }

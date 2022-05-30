@@ -1,12 +1,15 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<span>RESERVATIONS: OK</span>
+		<!-- <span>RESERVATIONS: OK</span> -->
+		<h1 class="mt-5 mb-4 text-center">Reservations</h1>
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation" />
+		<AddNewButton/>
 	</v-container>
 </template>
 
 <script>
-import ReservationItem from '@/components/ReservationItem.vue'
+import ReservationItem from '@/components/ReservationItem.vue';
+import AddNewButton from '@/components/AddNewButton.vue';
 
 export default {
 	name: 'ReservationsView',
@@ -158,7 +161,8 @@ export default {
 		console.log(this.reservations);
 	},
 	components: {
-		ReservationItem
+		ReservationItem,
+		AddNewButton
 	}
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<span>CALENDAR: OK</span>
+		<!-- <span>CALENDAR: OK</span> -->
+		<h1 class="mt-5 mb-4 text-center">Calendar</h1>
 		<CalendarItem/>
 	</v-container>
 </template>

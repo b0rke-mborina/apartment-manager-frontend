@@ -1,12 +1,15 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<span>ACCOMODATIONS: OK</span>
+		<!-- <span>ACCOMODATIONS: OK</span> -->
+		<h1 class="mt-5 mb-4 text-center">Accomodations</h1>
 		<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
+		<AddNewButton/>
 	</v-container>
 </template>
 
 <script>
-import AccomodationItem from '@/components/AccomodationItem.vue'
+import AccomodationItem from '@/components/AccomodationItem.vue';
+import AddNewButton from '@/components/AddNewButton.vue';
 
 export default {
 	name: 'AccomodationsView',
@@ -58,7 +61,8 @@ export default {
 		console.log(this.accomodations);
 	},
 	components: {
-		AccomodationItem
+		AccomodationItem,
+		AddNewButton
 	}
 }
 </script>
