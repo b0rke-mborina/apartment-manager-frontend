@@ -1,7 +1,9 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<h1 class="mt-5 mb-4 text-center">Notes</h1>
-		<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
+		<div class="flex-div">
+			<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
+		</div>
 		<AddNewButton/>
 	</v-container>
 </template>

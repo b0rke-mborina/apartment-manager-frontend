@@ -1,7 +1,9 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<h1 class="mt-5 mb-4 text-center">Accomodations</h1>
-		<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
+		<div class="flex-div">
+			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
+		</div>
 		<AddNewButton/>
 	</v-container>
 </template>
@@ -54,6 +56,24 @@ export default {
 				hasYard: false,
 				lowestFloor: 1,
 				numberofFloors: 2
+			},
+			{
+				ObjectId: 311,
+				name: "Apartment x",
+				categoryStarNumber: 5,
+				maxGuestNumber: 5,
+				currentState: "NOT READY",
+				location: {
+					street: "Valturska",
+					houseNumber: "1d",
+					entranceNumber: "l",
+					postalNumber: 52210,
+					city: "Rovinj",
+					country: "Croatia"
+				},
+				hasYard: false,
+				lowestFloor: 2,
+				numberofFloors: 1
 			}
 		];
 		this.accomodations = accomodationsFromBackend;

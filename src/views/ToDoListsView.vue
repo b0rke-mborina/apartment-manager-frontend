@@ -1,7 +1,9 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<h1 class="mt-5 mb-4 text-center">To-do lists</h1>
-		<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
+		<div class="flex-div">
+			<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
+		</div>
 		<AddNewButton/>
 	</v-container>
 </template>
@@ -49,6 +51,11 @@ export default {
 					{
 						ObjectId: 115,
 						name: "Buy plates",
+						completed: false
+					},
+					{
+						ObjectId: 116,
+						name: "Buy cups",
 						completed: false
 					}
 				],
