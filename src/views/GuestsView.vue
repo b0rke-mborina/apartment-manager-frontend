@@ -2,7 +2,9 @@
 	<v-container absolute fluid class="main-content">
 		<h1 class="mt-5 mb-4 text-center">Guests</h1>
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
-		<AddNewButton/>
+		<div class="text-center">
+			<AddNewButton/>
+		</div>
 	</v-container>
 </template>
 

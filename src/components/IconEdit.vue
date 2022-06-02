@@ -1,5 +1,7 @@
 <template>
-	<v-icon icon color="#6666ff" class="mx-2">mdi-pencil</v-icon>
+	<v-btn icon>
+		<v-icon icon color="#6666ff" class="mx-2">mdi-pencil</v-icon>
+	</v-btn>
 </template>
 
 <script>

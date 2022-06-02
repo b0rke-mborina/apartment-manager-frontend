@@ -4,7 +4,9 @@
 		<div class="flex-div">
 			<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
 		</div>
-		<AddNewButton/>
+		<div class="text-center">
+			<AddNewButton/>
+		</div>
 	</v-container>
 </template>
 

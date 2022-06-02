@@ -4,7 +4,9 @@
 		<div class="flex-div">
 			<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
 		</div>
-		<AddNewButton/>
+		<div class="text-center">
+			<AddNewButton/>
+		</div>
 	</v-container>
 </template>
 

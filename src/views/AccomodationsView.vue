@@ -4,7 +4,9 @@
 		<div class="flex-div">
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>
-		<AddNewButton/>
+		<div class="text-center">
+			<AddNewButton/>
+		</div>
 	</v-container>
 </template>
 

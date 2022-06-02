@@ -17,21 +17,27 @@
 		<div class="flex-div">
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>
-		<router-link to="/accomodations" class="router-link">
-			<ButtonSeeMore/>
-		</router-link>
+		<div class="text-center">
+			<router-link to="/accomodations" class="router-link">
+				<ButtonSeeMore/>
+			</router-link>
+		</div>
 		<!-- Reservations -->
 		<h2 class="mt-5 mb-2">Your upcoming reservations</h2>
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation"/>
-		<router-link to="/reservations" class="router-link">
-			<ButtonSeeMore/>
-		</router-link>
+		<div class="text-center">
+			<router-link to="/reservations" class="router-link">
+				<ButtonSeeMore/>
+			</router-link>
+		</div>
 		<!-- Guests -->
 		<h2 class="mt-5 mb-2">Your guests</h2>
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
-		<router-link to="/guests" class="router-link">
-			<ButtonSeeMore/>
-		</router-link>
+		<div class="text-center">
+			<router-link to="/guests" class="router-link">
+				<ButtonSeeMore/>
+			</router-link>
+		</div>
 	</v-container>
 </template>
 

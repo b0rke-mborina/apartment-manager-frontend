@@ -2,7 +2,9 @@
 	<v-container absolute fluid class="main-content">
 		<h1 class="mt-5 mb-4 text-center">Reservations</h1>
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation" />
-		<AddNewButton/>
+		<div class="text-center">
+			<AddNewButton/>
+		</div>
 	</v-container>
 </template>
 
