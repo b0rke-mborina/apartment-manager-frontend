@@ -7,8 +7,25 @@
 				<span class="mx-2 location">{{ guest.city }}, {{ guest.country }}</span>
 			</div>
 			<div class="period-dates">
-				<span class="mx-2">{{ guest.period.startDate }} - {{ guest.period.endDate }}</span>
-				<v-chip color="green" class="mx-2">CURRENT GUEST</v-chip><!-- {{ guest }} -->
+				<span class="mx-2 my-1">{{ guest.period.startDate }} - {{ guest.period.endDate }}</span>
+				<v-chip v-if="guest.guestState === 'CANCELLED GUEST'" color="#FF0000" class="mx-2 my-1">
+					CANCELLED GUEST
+				</v-chip>
+				<v-chip v-else-if="guest.guestState === 'POSSIBLE GUEST'" color="#0000FF" class="mx-2 my-1">
+					POSSIBLE GUEST
+				</v-chip>
+				<v-chip v-else-if="guest.guestState === 'POTENTIAL GUEST'" color="#FFCC00" class="mx-2 my-1">
+					POTENTIAL GUEST
+				</v-chip>
+				<v-chip v-else-if="guest.period.endDate < currentDate() && guest.guestState === 'CONFIRMED GUEST'" color="#595959" class="mx-2 my-1">
+					FORMER GUEST
+				</v-chip>
+				<v-chip v-else-if="guest.period.startDate >= currentDate() && guest.period.endDate <= currentDate() && guest.guestState === 'CONFIRMED GUEST'" icon color="#00FF00" class="pr-2">
+					CURRENT GUEST
+				</v-chip>
+				<v-chip v-else-if="guest.period.startDate > currentDate() && guest.guestState === 'CONFIRMED GUEST'" icon color="#00FF00" class="pr-2">
+					FUTURE GUEST
+				</v-chip>
 			</div>
 		</div>
 		<div class="edit-delete-icons">
@@ -21,15 +38,11 @@
 <script>
 export default {
 	name: 'GuestItem',
-	data() {
-		return {
-			items: [
-				'CURRENT GUEST',
-				'FORMER GUEST',
-				'FUTURE GUEST',
-				'POSSIBLE GUEST',
-				'POTENTIAL GUEST'
-			],
+	methods: {
+		currentDate() {
+			const current = new Date();
+			const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
+			return date;
 		}
 	},
 	props: {

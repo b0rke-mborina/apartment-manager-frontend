@@ -30,7 +30,8 @@ export default {
 				period: {
 					startDate: "2022-07-01",
 					endDate: "2022-07-10"
-				}
+				},
+				guestState: "CONFIRMED GUEST"
 			},
 			{
 				ObjecId: 101,
@@ -43,7 +44,8 @@ export default {
 				period: {
 					startDate: "2022-08-01",
 					endDate: "2022-08-10"
-				}
+				},
+				guestState: "POSSIBLE GUEST"
 			},
 			{
 				ObjecId: 102,
@@ -56,7 +58,8 @@ export default {
 				period: {
 					startDate: "2022-07-10",
 					endDate: "2022-07-31"
-				}
+				},
+				guestState: "POTENTIAL GUEST"
 			},
 			{
 				ObjecId: 103,
@@ -69,7 +72,8 @@ export default {
 				period: {
 					startDate: "2022-07-10",
 					endDate: "2022-07-31"
-				}
+				},
+				guestState: "CANCELLED GUEST"
 			}
 		];
 		this.guests = guestsFromBackend;

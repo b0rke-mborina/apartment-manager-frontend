@@ -75,7 +75,7 @@ export default {
 					},
 					{
 						ObjectId: 112,
-						name: "Clean the bethroom",
+						name: "Clean the bathroom",
 						completed: false
 					}
 				],

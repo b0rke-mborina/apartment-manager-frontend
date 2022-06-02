@@ -42,7 +42,7 @@ export default {
 			{
 				ObjecId: 103,
 				header: "Music festivals",
-				body: "Don't have guests that may be going to music festivals",
+				body: "Don't have\nguests that\nmay be going to\nmusic festivals\naaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaa",
 				important: true
 			}
 		];

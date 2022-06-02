@@ -3,19 +3,22 @@
 		<div class="grid-div">
 			<div class="reservation-info">
 				<v-icon class="mx-2">mdi-calendar-check</v-icon>
-				<span v-if="reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber" class="mx-2 text-center">
-					{{ reservation.madeByGuest.email }}
-				</span>
-				<span v-if="reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber" class="mx-2 text-center">
-					{{ reservation.madeByGuest.phoneNumber }}
-				</span>
-				<span v-else class="mx-2 text-center">
-					{{ reservation.madeByGuest.firstName }} {{ reservation.madeByGuest.lastName }}
-				</span>
+				<span class="mx-2 pa-0 d-inline-block">{{ reservation.period.startDate }} - {{ reservation.period.endDate }}</span>
 			</div>
 			<div class="money">
-				<span class="mx-2">{{ reservation.price.value }} {{ reservation.price.currency }}</span>
-				<v-chip color="green" class="mx-2">{{ reservation.currentState }}</v-chip>
+				<span class="mx-2 pa-0 d-inline">{{ reservation.price.value }} {{ reservation.price.currency }}</span>
+				<v-chip color="green" class="mx-2 d-inline">{{ reservation.currentState }}</v-chip>
+			</div>
+			<div class="guest-info">
+				<span v-if="reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber" class="mx-2 pa-0 d-inline text-center">
+					{{ reservation.madeByGuest.email }}
+				</span>
+				<span v-if="reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber" class="mx-2 pa-0 d-inline text-center">
+					{{ reservation.madeByGuest.phoneNumber }}
+				</span>
+				<span v-else class="mx-2 pa-0 d-inline text-center">
+					{{ reservation.madeByGuest.firstName }} {{ reservation.madeByGuest.lastName }}
+				</span>
 			</div>
 		</div>
 
@@ -39,29 +42,46 @@ export default {
 .main-grid {
 	display: grid;
 	grid-template-columns: 6fr 1fr;
-	font-size: 16px;
 }
 .grid-div {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
 }
-.reservation-info, .money {
+.reservation-info, .money, .guest-info {
 	display: flex;
+	flex-direction: row;
 	justify-content: center;
 	flex-wrap: wrap;
 	align-items: center;
-	padding: 10px 0px;
 }
 .edit-delete-icons {
 	display: flex;
-	justify-content: center;
+	justify-content: right;
 	flex-wrap: wrap;
 	align-items: right;
-	padding: 10px 0px;
 }
-@media (max-width:450px) {
+@media (max-width:1100px) {
+	.grid-div {
+		grid-template-columns: 1fr 1fr;
+		align-items: center;
+	}
+	.guest-info {
+		grid-column-start: 1;
+  		grid-column-end: 3;
+		margin-top: 5px;
+	}
+}
+@media (max-width:600px) {
 	.grid-div {
 		grid-template-columns: auto;
+	}
+	.guest-info {
+		grid-column-start: 1;
+  		grid-column-end: 2;
+		margin-top: 5px;
+	}
+	.money {
+		margin-top: 5px;
 	}
 }
 </style>

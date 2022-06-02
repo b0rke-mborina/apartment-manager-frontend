@@ -1,16 +1,22 @@
 <template>
 	<v-card color="#E3EAEF" width="250" class="ma-4 rounded-xl accomodation-card">
-		<v-img height="126px" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" alt="Photo"></v-img>
+		<v-img height="126px" src="https://apartmentsborina.hr/resources/gallery/terrace-tables-chairs-light-sunny.jpg" alt="Photo"></v-img>
 		<div class="flex-div">
 			<div class="text-div">
-				<v-card-title class="py-0 availability">AVAILABLE</v-card-title>
-				<v-card-title class="pt-1">{{ accomodation.name }}</v-card-title>
-				<v-card-subtitle>
+				<v-card-title class="py-0 availability">
+					<v-icon v-if="accomodation.currentState === 'AVAILABLE'" icon color="#FFCC00" class="pr-2">mdi-circle</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'OCCUPIED'" icon color="#00FF00" class="pr-2">mdi-circle</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'PENDING'" icon color="#0000FF" class="pr-2">mdi-circle</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'NOT READY'" icon color="#FF0000" class="pr-2">mdi-circle</v-icon>
+					{{ accomodation.currentState }}
+				</v-card-title>
+				<v-card-title class="pt-1 text-break">{{ accomodation.name }}</v-card-title>
+				<v-card-subtitle class="text-break">
 					{{ accomodation.location.street }} {{ accomodation.location.houseNumber }}
 				</v-card-subtitle>
 			</div>
 			<div class="edit-delete-icons">
-				<v-icon icon color="#0000FF" class="mr-2 mb-2">mdi-pencil</v-icon>
+				<v-icon icon color="#0000FF" class="mr-2 mb-4">mdi-pencil</v-icon>
 				<v-icon icon color="#FF0000" class="mr-2 mb-2">mdi-trash-can-outline</v-icon>
 			</div>
 		</div>
