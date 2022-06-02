@@ -1,19 +1,20 @@
 <template>
 	<div class="text-center">
-		<v-btn elevation="2" fab icon large class="my-4 add-new-btn">
-			<v-icon color="#000000">mdi-plus</v-icon>
+		<v-btn elevation="2" rounded large class="my-4 btn-add-new">
+			<v-icon color="#000000" class="mr-2">mdi-plus</v-icon>
+			ADD NEW
 		</v-btn>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'AddNewButton'
+	name: 'ButtonAddNew'
 }
 </script>
 
 <style scoped>
-.add-new-btn {
-	background-color: #A5D4FF;
+.btn-add-new {
+	background-color: #A5D4FF !important;
 }
 </style>

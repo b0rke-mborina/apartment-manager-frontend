@@ -9,18 +9,29 @@
 		<h1 class="mt-5 mb-4 text-center">Dashboard</h1>
 		<!-- To do lists, notes and calendars -->
 		<h2 class="mt-5 mb-2">Your upcoming work and calendars</h2>
-
+		<ButtonDelete/>
+		<ButtonSave/>
+		<ButtonSeeMore/>
 		<!-- Accomodations -->
 		<h2 class="mt-5 mb-2">Your accomodations</h2>
 		<div class="flex-div">
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>
+		<router-link to="/accomodations" class="router-link">
+			<ButtonSeeMore/>
+		</router-link>
 		<!-- Reservations -->
 		<h2 class="mt-5 mb-2">Your upcoming reservations</h2>
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation"/>
+		<router-link to="/reservations" class="router-link">
+			<ButtonSeeMore/>
+		</router-link>
 		<!-- Guests -->
 		<h2 class="mt-5 mb-2">Your guests</h2>
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
+		<router-link to="/guests" class="router-link">
+			<ButtonSeeMore/>
+		</router-link>
 	</v-container>
 </template>
 
@@ -31,6 +42,10 @@ import GuestItem from '@/components/GuestItem.vue'
 import ToDoListItem from '@/components/ToDoListItem.vue'
 import NoteItem from '@/components/NoteItem.vue'
 import CalendarItem from '@/components/CalendarItem.vue'
+
+import ButtonDelete from '@/components/ButtonDelete.vue'
+import ButtonSave from '@/components/ButtonSave.vue'
+import ButtonSeeMore from '@/components/ButtonSeeMore.vue'
 
 export default {
 	name: 'DashboardView',data() {
@@ -294,7 +309,10 @@ export default {
 		GuestItem,
 		ToDoListItem,
 		NoteItem,
-		CalendarItem
+		CalendarItem,
+		ButtonDelete,
+		ButtonSave,
+		ButtonSeeMore
 	}
 }
 </script>
