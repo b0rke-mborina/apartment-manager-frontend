@@ -7,7 +7,24 @@
 			</div>
 			<div class="money">
 				<span class="mx-2 pa-0 d-inline">{{ reservation.price.value }} {{ reservation.price.currency }}</span>
-				<v-chip color="green" class="mx-2 d-inline">{{ reservation.currentState }}</v-chip>
+				<!-- <v-chip color="green" class="mx-2 d-inline">{{ reservation.currentState }}</v-chip> -->
+
+				<v-chip v-if="reservation.currentState === 'CONFIRMED'" color="#00FF00" class="mx-2 d-inline">
+					CONFIRMED
+				</v-chip>
+				<v-chip v-else-if="reservation.currentState === 'PENDING'" color="#0000FF" class="mx-2 d-inline">
+					PENDING
+				</v-chip>
+				<v-chip v-else-if="reservation.currentState === 'CANCELLED'" color="#FF0000" class="mx-2 d-inline">
+					CANCELLED
+				</v-chip>
+				<v-chip v-else-if="reservation.currentState === 'INQUIRY'" color="#FFCC00" class="mx-2 d-inline">
+					INQUIRY
+				</v-chip>
+				<v-chip v-else-if="reservation.currentState === 'COMPLETED'" color="#595959" class="mx-2 d-inline">
+					COMPLETED
+				</v-chip>
+				
 			</div>
 			<div class="guest-info">
 				<span v-if="reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber" class="mx-2 pa-0 d-inline text-center">

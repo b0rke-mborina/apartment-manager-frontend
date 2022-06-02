@@ -73,7 +73,7 @@ export default {
 }
 .edit-delete-icons {
 	display: flex;
-	justify-content: center;
+	justify-content: right;
 	flex-wrap: wrap;
 	align-items: right;
 	padding: 10px 0px;
