@@ -5,29 +5,36 @@
 			<div class="text-div">
 				<v-card-title class="py-0 availability">
 					<v-icon v-if="accomodation.currentState === 'AVAILABLE'" icon color="#FFCC00" class="pr-2">mdi-circle</v-icon>
-					<v-icon v-else-if="accomodation.currentState === 'OCCUPIED'" icon color="#00FF00" class="pr-2">mdi-circle</v-icon>
-					<v-icon v-else-if="accomodation.currentState === 'PENDING'" icon color="#0000FF" class="pr-2">mdi-circle</v-icon>
-					<v-icon v-else-if="accomodation.currentState === 'NOT READY'" icon color="#FF0000" class="pr-2">mdi-circle</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'OCCUPIED'" icon color="#55FF66" class="pr-2">mdi-circle</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'PENDING'" icon color="#6666ff" class="pr-2">mdi-circle</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'NOT READY'" icon color="#FF6F6F" class="pr-2">mdi-circle</v-icon>
 					{{ accomodation.currentState }}
 				</v-card-title>
 				<v-card-title class="pt-1 text-break">{{ accomodation.name }}</v-card-title>
-				<v-card-subtitle class="text-break">
+				<v-card-subtitle class="text-break address">
 					{{ accomodation.location.street }} {{ accomodation.location.houseNumber }}
 				</v-card-subtitle>
 			</div>
 			<div class="edit-delete-icons">
-				<v-icon icon color="#0000FF" class="mr-2 mb-4">mdi-pencil</v-icon>
-				<v-icon icon color="#FF0000" class="mr-2 mb-2">mdi-trash-can-outline</v-icon>
+				<IconEdit class="mt-1 mb-3"/>
+				<IconDelete class="mb-2"/>
 			</div>
 		</div>
 	</v-card>
 </template>
 
 <script>
+import IconDelete from '@/components/IconDelete.vue'
+import IconEdit from '@/components/IconEdit.vue'
+
 export default {
 	name: 'Item',
 	props: {
 		accomodation: Object
+	},
+	components: {
+		IconDelete,
+		IconEdit
 	}
 }
 </script>
@@ -57,6 +64,27 @@ export default {
 @media (max-width:500px) {
 	.grid-div {
 		grid-template-columns: auto;
+	}
+}
+@media (max-width:300px) {
+	.flex-div {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+	.edit-delete-icons {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		padding: 10px 0px;
+	}
+	.availability {
+		justify-content: center;
+	}
+	.address {
+		text-align: center;
+		padding-bottom: 4px;
 	}
 }
 </style>

@@ -7,15 +7,13 @@
 			</div>
 			<div class="money">
 				<span class="mx-2 pa-0 d-inline">{{ reservation.price.value }} {{ reservation.price.currency }}</span>
-				<!-- <v-chip color="green" class="mx-2 d-inline">{{ reservation.currentState }}</v-chip> -->
-
-				<v-chip v-if="reservation.currentState === 'CONFIRMED'" color="#00FF00" class="mx-2 d-inline">
+				<v-chip v-if="reservation.currentState === 'CONFIRMED'" color="#55FF66" class="mx-2 d-inline">
 					CONFIRMED
 				</v-chip>
-				<v-chip v-else-if="reservation.currentState === 'PENDING'" color="#0000FF" class="mx-2 d-inline">
+				<v-chip v-else-if="reservation.currentState === 'PENDING'" color="#6666ff" class="mx-2 d-inline">
 					PENDING
 				</v-chip>
-				<v-chip v-else-if="reservation.currentState === 'CANCELLED'" color="#FF0000" class="mx-2 d-inline">
+				<v-chip v-else-if="reservation.currentState === 'CANCELLED'" color="#FF6F6F" class="mx-2 d-inline">
 					CANCELLED
 				</v-chip>
 				<v-chip v-else-if="reservation.currentState === 'INQUIRY'" color="#FFCC00" class="mx-2 d-inline">
@@ -24,7 +22,6 @@
 				<v-chip v-else-if="reservation.currentState === 'COMPLETED'" color="#595959" class="mx-2 d-inline">
 					COMPLETED
 				</v-chip>
-				
 			</div>
 			<div class="guest-info">
 				<span v-if="reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber" class="mx-2 pa-0 d-inline text-center">
@@ -38,19 +35,25 @@
 				</span>
 			</div>
 		</div>
-
 		<div class="edit-delete-icons">
-			<v-icon icon color="#0000FF" class="mx-2">mdi-pencil</v-icon>
-			<v-icon icon color="#FF0000" class="mx-2">mdi-trash-can-outline</v-icon>
+			<IconEdit/>
+			<IconDelete/>
 		</div>
 	</v-card>
 </template>
 
 <script>
+import IconDelete from '@/components/IconDelete.vue'
+import IconEdit from '@/components/IconEdit.vue'
+
 export default {
 	name: 'ReservationItem',
 	props: {
 		reservation: Object
+	},
+	components: {
+		IconDelete,
+		IconEdit
 	}
 }
 </script>

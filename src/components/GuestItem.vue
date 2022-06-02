@@ -8,10 +8,10 @@
 			</div>
 			<div class="period-dates">
 				<span class="mx-2 my-1">{{ guest.period.startDate }} - {{ guest.period.endDate }}</span>
-				<v-chip v-if="guest.guestState === 'CANCELLED GUEST'" color="#FF0000" class="mx-2 my-1">
+				<v-chip v-if="guest.guestState === 'CANCELLED GUEST'" color="#FF6F6F" class="mx-2 my-1">
 					CANCELLED GUEST
 				</v-chip>
-				<v-chip v-else-if="guest.guestState === 'POSSIBLE GUEST'" color="#0000FF" class="mx-2 my-1">
+				<v-chip v-else-if="guest.guestState === 'POSSIBLE GUEST'" color="#6666ff" class="mx-2 my-1">
 					POSSIBLE GUEST
 				</v-chip>
 				<v-chip v-else-if="guest.guestState === 'POTENTIAL GUEST'" color="#FFCC00" class="mx-2 my-1">
@@ -20,22 +20,25 @@
 				<v-chip v-else-if="guest.period.endDate < currentDate() && guest.guestState === 'CONFIRMED GUEST'" color="#595959" class="mx-2 my-1">
 					FORMER GUEST
 				</v-chip>
-				<v-chip v-else-if="guest.period.startDate >= currentDate() && guest.period.endDate <= currentDate() && guest.guestState === 'CONFIRMED GUEST'" icon color="#00FF00" class="pr-2">
+				<v-chip v-else-if="guest.period.startDate >= currentDate() && guest.period.endDate <= currentDate() && guest.guestState === 'CONFIRMED GUEST'" icon color="#55FF66" class="pr-2">
 					CURRENT GUEST
 				</v-chip>
-				<v-chip v-else-if="guest.period.startDate > currentDate() && guest.guestState === 'CONFIRMED GUEST'" icon color="#00FF00" class="pr-2">
+				<v-chip v-else-if="guest.period.startDate > currentDate() && guest.guestState === 'CONFIRMED GUEST'" icon color="#55FF66" class="pr-2">
 					FUTURE GUEST
 				</v-chip>
 			</div>
 		</div>
 		<div class="edit-delete-icons">
-			<v-icon icon color="#0000FF" class="mx-2">mdi-pencil</v-icon>
-			<v-icon icon color="#FF0000" class="mx-2">mdi-trash-can-outline</v-icon>
+			<IconEdit/>
+			<IconDelete/>
 		</div>
 	</v-card>
 </template>
 
 <script>
+import IconDelete from '@/components/IconDelete.vue'
+import IconEdit from '@/components/IconEdit.vue'
+
 export default {
 	name: 'GuestItem',
 	methods: {
@@ -47,6 +50,10 @@ export default {
 	},
 	props: {
 		guest: Object
+	},
+	components: {
+		IconDelete,
+		IconEdit
 	}
 }
 </script>

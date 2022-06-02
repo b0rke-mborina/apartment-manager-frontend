@@ -11,13 +11,16 @@
 		</div>
 		<v-spacer v-if="note.body.length <= 100"></v-spacer>
 		<v-card-actions class="flex-bottom pa-3">
-			<v-icon icon color="#0000FF">mdi-pencil</v-icon>
-			<v-icon icon color="#FF0000">mdi-trash-can-outline</v-icon>
+			<IconEdit/>
+			<IconDelete/>
 		</v-card-actions>
 	</v-card>
 </template>
 
 <script>
+import IconDelete from '@/components/IconDelete.vue'
+import IconEdit from '@/components/IconEdit.vue'
+
 export default {
 	name: 'NoteItem',
 	methods: {
@@ -30,6 +33,10 @@ export default {
 	},
 	props: {
 		note: Object
+	},
+	components: {
+		IconDelete,
+		IconEdit
 	}
 }
 </script>
