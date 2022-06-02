@@ -1,17 +1,17 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<!-- <AccomodationItem/>
-		<ReservationItem/>
-		<GuestItem/>
-		<ToDoListItem/>
-		<NoteItem/>
-		<CalendarItem/> -->
+		<!-- <CalendarItem/> -->
 		<h1 class="mt-5 mb-4 text-center">Dashboard</h1>
 		<!-- To do lists, notes and calendars -->
 		<h2 class="mt-5 mb-2">Your upcoming work and calendars</h2>
-		<ButtonDelete/>
+		<div class="flex-div">
+			<DashboardItem :item="noteItem" />
+			<DashboardItem :item="toDoListItem" />
+			<DashboardItem :item="null" />
+		</div>
+		<!-- <ButtonDelete/>
 		<ButtonSave/>
-		<ButtonSeeMore/>
+		<ButtonSeeMore/> -->
 		<!-- Accomodations -->
 		<h2 class="mt-5 mb-2">Your accomodations</h2>
 		<div class="flex-div">
@@ -48,6 +48,7 @@ import GuestItem from '@/components/GuestItem.vue'
 import ToDoListItem from '@/components/ToDoListItem.vue'
 import NoteItem from '@/components/NoteItem.vue'
 import CalendarItem from '@/components/CalendarItem.vue'
+import DashboardItem from '@/components/DashboardItem.vue'
 
 import ButtonDelete from '@/components/ButtonDelete.vue'
 import ButtonSave from '@/components/ButtonSave.vue'
@@ -58,7 +59,9 @@ export default {
 		return {
 			accomodations: [],
 			reservations: [],
-			guests: []
+			guests: [],
+			noteItem: null,
+			toDoListItem: null
 		}
 	},
 	mounted() {
@@ -300,7 +303,19 @@ export default {
 					},
 					guestState: "POTENTIAL GUEST"
 				}
-			]
+			],
+			noteItem: {
+				title: "Notes",
+				aspect: "important",
+				number: 3,
+				link: "/notes"
+			},
+			toDoListItem: {
+				title: "To-do lists",
+				aspect: "not completed",
+				number: 2,
+				link: "/todolists"
+			}
 		};
 		this.accomodations = dataFromBackend.accomodations;
 		console.log(this.accomodations);
@@ -308,6 +323,10 @@ export default {
 		console.log(this.reservations);
 		this.guests = dataFromBackend.guests;
 		console.log(this.guests);
+		this.noteItem = dataFromBackend.noteItem;
+		console.log(this.noteItem);
+		this.toDoListItem = dataFromBackend.toDoListItem;
+		console.log(this.toDoListItem);
 	},
 	components: {
 		AccomodationItem,
@@ -316,6 +335,7 @@ export default {
 		ToDoListItem,
 		NoteItem,
 		CalendarItem,
+		DashboardItem,
 		ButtonDelete,
 		ButtonSave,
 		ButtonSeeMore

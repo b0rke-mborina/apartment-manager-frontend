@@ -2,6 +2,10 @@
 	<v-card color="#E3EAEF" width="250" class="ma-4 rounded-xl notes-card d-flex flex-column">
 		<div class="notes-header pt-3">
 			<v-card-title class="pt-1 justify-center text-break">{{ note.header }}</v-card-title>
+			<v-card-subtitle class="text-center pb-1">
+				<v-icon v-if="note.important === true" icon color="#FF6F6F">mdi-alert-circle-outline</v-icon>
+				<v-icon v-else-if="note.important === false"></v-icon>
+			</v-card-subtitle>
 		</div>
 		<div class="flex-div text-center">
 			<v-card-text v-if="note.body.length <= 100">{{ note.body }}</v-card-text>
