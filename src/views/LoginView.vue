@@ -1,12 +1,19 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<span>LOGIN: OK</span>
+		<!-- Empty space at the bottom of page -->
+		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
+import EmptyDiv from '@/components/EmptyDiv.vue';
+
 export default {
 	name: 'LoginView',
+	components: {
+		EmptyDiv
+	}
 }
 </script>
 

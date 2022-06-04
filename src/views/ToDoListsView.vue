@@ -1,18 +1,24 @@
 <template>
 	<v-container absolute fluid class="main-content">
+		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">To-do lists</h1>
+		<!-- List of to do lists -->
 		<div class="flex-div">
 			<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
+		<!-- Add new to do list button -->
 		</div>
 		<div class="text-center">
 			<AddNewButton/>
 		</div>
+		<!-- Empty space at the bottom of page -->
+		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
+import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
 	name: 'ToDoListsView',
@@ -109,7 +115,8 @@ export default {
 	},
 	components: {
 		ToDoListItem,
-		AddNewButton
+		AddNewButton,
+		EmptyDiv
 	}
 }
 </script>

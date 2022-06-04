@@ -8,12 +8,12 @@
 			<v-spacer></v-spacer>
 			<!-- App bar left side (account icon, login button, signup button) -->
 			<v-btn icon color="#000000">
-				<v-icon>mdi-account-circle</v-icon>
+				<v-icon class="mx-2">mdi-account-circle</v-icon>
 			</v-btn>
-			<v-btn text :to="login">
+			<v-btn text rounded :to="login" class="login-signup mx-2">
 				<span>Log in</span>
 			</v-btn>
-			<v-btn text :to="signup">
+			<v-btn text rounded :to="signup" class="login-signup mx-2">
 				<span>Sign up</span>
 			</v-btn>
     	</v-app-bar>
@@ -43,7 +43,7 @@
 			<!-- Logout button -->
 			<template v-slot:append>
 				<div class="pa-4 text-center">
-					<v-btn color="#A5D4FF">
+					<v-btn rounded color="#A5D4FF" elevation="0">
 						<v-icon color="#000000">mdi-logout</v-icon>
 						<span style="color: #000000">Logout</span>
 					</v-btn>
@@ -92,6 +92,9 @@ export default {
 .logo {
 	text-align: center;
 	margin: 8px 8px 8px 0px;
+}
+.login-signup:before {
+	background: none;
 }
 .list-item-name {
 	padding: 0px;

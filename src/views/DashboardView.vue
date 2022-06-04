@@ -10,8 +10,7 @@
 			<DashboardItem :item="null" />
 		</div>
 		<!-- <ButtonDelete/>
-		<ButtonSave/>
-		<ButtonSeeMore/> -->
+		<ButtonSave/> -->
 		<!-- Accomodations -->
 		<h2 class="mt-5 mb-2">Your accomodations</h2>
 		<div class="flex-div">
@@ -38,21 +37,23 @@
 				<ButtonSeeMore/>
 			</router-link>
 		</div>
+		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
-import AccomodationItem from '@/components/AccomodationItem.vue'
-import ReservationItem from '@/components/ReservationItem.vue'
-import GuestItem from '@/components/GuestItem.vue'
-import ToDoListItem from '@/components/ToDoListItem.vue'
-import NoteItem from '@/components/NoteItem.vue'
-import CalendarItem from '@/components/CalendarItem.vue'
-import DashboardItem from '@/components/DashboardItem.vue'
+import AccomodationItem from '@/components/AccomodationItem.vue';
+import ReservationItem from '@/components/ReservationItem.vue';
+import GuestItem from '@/components/GuestItem.vue';
+import ToDoListItem from '@/components/ToDoListItem.vue';
+import NoteItem from '@/components/NoteItem.vue';
+import CalendarItem from '@/components/CalendarItem.vue';
+import DashboardItem from '@/components/DashboardItem.vue';
 
-import ButtonDelete from '@/components/ButtonDelete.vue'
-import ButtonSave from '@/components/ButtonSave.vue'
-import ButtonSeeMore from '@/components/ButtonSeeMore.vue'
+import ButtonDelete from '@/components/ButtonDelete.vue';
+import ButtonSave from '@/components/ButtonSave.vue';
+import ButtonSeeMore from '@/components/ButtonSeeMore.vue';
+import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
 	name: 'DashboardView',data() {
@@ -338,7 +339,8 @@ export default {
 		DashboardItem,
 		ButtonDelete,
 		ButtonSave,
-		ButtonSeeMore
+		ButtonSeeMore,
+		EmptyDiv
 	}
 }
 </script>

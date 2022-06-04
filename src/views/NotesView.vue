@@ -1,18 +1,24 @@
 <template>
 	<v-container absolute fluid class="main-content">
+		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Notes</h1>
+		<!-- List of notes -->
 		<div class="flex-div">
 			<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
 		</div>
+		<!-- Add new note button -->
 		<div class="text-center">
 			<AddNewButton/>
 		</div>
+		<!-- Empty space at the bottom of page -->
+		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
 import NoteItem from '@/components/NoteItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
+import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
 	name: 'NotesView',
@@ -53,7 +59,8 @@ export default {
 	},
 	components: {
 		NoteItem,
-		AddNewButton
+		AddNewButton,
+		EmptyDiv
 	}
 }
 </script>

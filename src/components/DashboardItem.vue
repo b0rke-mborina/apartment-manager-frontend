@@ -16,10 +16,10 @@
 		<v-spacer></v-spacer>
 		<div class="text-center">
 			<router-link v-if="!item" to="/calendar" class="router-link">
-				<ButtonSeeMore/>
+				<ButtonSeeMore notElevated />
 			</router-link>
 			<router-link v-else :to="item.link" class="router-link">
-				<ButtonSeeMore/>
+				<ButtonSeeMore notElevated />
 			</router-link>
 		</div>
 	</v-card>

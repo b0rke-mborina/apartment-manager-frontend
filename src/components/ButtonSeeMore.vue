@@ -1,5 +1,9 @@
 <template>
-	<v-btn elevation="2" rounded large class="mt-2 mb-4 btn-see-more">
+	<v-btn v-if="notElevated === false" elevation="2" rounded large class="mt-2 mb-4 btn-see-more">
+		<v-icon color="#000000" class="mr-2">mdi-dots-horizontal</v-icon>
+		SEE MORE
+	</v-btn>
+	<v-btn v-else-if="notElevated === true" elevation="0" rounded large class="mt-2 mb-4 btn-see-more">
 		<v-icon color="#000000" class="mr-2">mdi-dots-horizontal</v-icon>
 		SEE MORE
 	</v-btn>
@@ -7,7 +11,10 @@
 
 <script>
 export default {
-	name: 'ButtonSeeMore'
+	name: 'ButtonSeeMore',
+	props: {
+		notElevated: Boolean
+	}
 }
 </script>
 

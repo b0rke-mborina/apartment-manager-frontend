@@ -1,18 +1,24 @@
 <template>
 	<v-container absolute fluid class="main-content">
+		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Accomodations</h1>
+		<!-- List of accomodations -->
 		<div class="flex-div">
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>
+		<!-- Add new accomodation button -->
 		<div class="text-center">
 			<AddNewButton/>
 		</div>
+		<!-- Empty space at the bottom of page -->
+		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
 import AccomodationItem from '@/components/AccomodationItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
+import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
 	name: 'AccomodationsView',
@@ -83,7 +89,8 @@ export default {
 	},
 	components: {
 		AccomodationItem,
-		AddNewButton
+		AddNewButton,
+		EmptyDiv
 	}
 }
 </script>

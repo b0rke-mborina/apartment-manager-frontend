@@ -2,11 +2,14 @@
 	<v-container absolute fluid class="main-content">
 		<h1 class="mt-5 mb-4 text-center">Calendar</h1>
 		<CalendarItem/>
+		<!-- Empty space at the bottom of page -->
+		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
-import CalendarItem from '@/components/CalendarItem.vue'
+import CalendarItem from '@/components/CalendarItem.vue';
+import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
 	name: 'CalendarView',
@@ -42,7 +45,8 @@ export default {
 		console.log(this.closedPeriods);
 	},
 	components: {
-		CalendarItem
+		CalendarItem,
+		EmptyDiv
 	}
 }
 </script>
