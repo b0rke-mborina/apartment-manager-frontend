@@ -6,4 +6,8 @@
 }
 .router-link {
 	text-decoration: none;
+	color: #000000 !important;
+}
+.router-link:hover {
+	text-shadow: 2px 2px 4px #696969;
 }

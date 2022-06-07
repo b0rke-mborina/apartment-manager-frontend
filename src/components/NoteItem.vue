@@ -7,11 +7,11 @@
 				<v-icon v-else-if="note.important === false"></v-icon>
 			</v-card-subtitle>
 		</div>
-		<div class="flex-div text-center">
+		<div class="flex-div">
 			<v-card-text v-if="note.body.length <= 100">{{ note.body }}</v-card-text>
-			<v-card-text v-else-if="note.body.length > 100 || (note.body.split(/\r\n|\r|\n/).length) > 3" class="note-body">
-				{{ getStringForRender() }}...
-			</v-card-text>
+			<v-card-text v-else-if="note.body.length > 100
+							 || (note.body.split(/\r\n|\r|\n/).length) > 3"
+							 class="note-body">{{ getStringForRender() }}...</v-card-text>
 		</div>
 		<v-spacer v-if="note.body.length <= 100"></v-spacer>
 		<v-card-actions class="flex-bottom pa-3">

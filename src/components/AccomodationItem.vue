@@ -1,32 +1,36 @@
 <template>
 	<v-card color="#E3EAEF" width="250" class="ma-4 rounded-xl accomodation-card">
 		<v-img height="126px"
-				 src="https://apartmentsborina.hr/resources/gallery/terrace-tables-chairs-light-sunny.jpg"
-				 alt="Photo">
+				src="https://apartmentsborina.hr/resources/gallery/terrace-tables-chairs-light-sunny.jpg"
+				alt="Photo">
 		</v-img>
 		<div class="flex-div">
 			<div class="text-div">
 				<v-card-title class="py-0 availability">
 					<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
-							  icon color="#FFCC00" class="pr-2">
+							icon color="#FFCC00" class="pr-2">
 						mdi-circle
 					</v-icon>
 					<v-icon v-else-if="accomodation.currentState === 'OCCUPIED'"
-							  icon color="#55FF66" class="pr-2">
+							icon color="#55FF66" class="pr-2">
 						mdi-circle
 					</v-icon>
 					<v-icon v-else-if="accomodation.currentState === 'PENDING'"
-							  icon color="#6666ff" class="pr-2">
+							icon color="#6666ff" class="pr-2">
 						mdi-circle
 					</v-icon>
 					<v-icon v-else-if="accomodation.currentState === 'NOT READY'"
-							  icon color="#FF6F6F" class="pr-2">
+							icon color="#FF6F6F" class="pr-2">
 						mdi-circle
 					</v-icon>
 					{{ accomodation.currentState }}
 				</v-card-title>
-				<v-card-title class="pt-1 text-break text-center">{{ accomodation.name }}</v-card-title>
-				<v-card-subtitle class="text-break address">
+				<v-card-title class="text-break text-center pt-3">
+					<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation.ObjectId }}" class="router-link">
+						{{ accomodation.name }}
+					</router-link>
+				</v-card-title>
+				<v-card-subtitle class="text-break address pt-0">
 					{{ accomodation.location.street }} {{ accomodation.location.houseNumber }}
 				</v-card-subtitle>
 			</div>
@@ -56,6 +60,7 @@ export default {
 </script>
 
 <style scoped>
+	@import '@/assets/css/views-style.css';
 .accomodation-card {
 	justify-content: center;
 }
