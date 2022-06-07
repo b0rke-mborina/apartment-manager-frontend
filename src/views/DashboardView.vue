@@ -2,6 +2,10 @@
 	<v-container absolute fluid class="main-content">
 		<!-- <CalendarItem/> -->
 		<h1 class="mt-5 mb-4 text-center">Dashboard</h1>
+		<!-- <ButtonBack/>
+		<ButtonSave/>
+		<FormLabel text="Name" />
+		<FormTextField text="Apartment Nature" /> -->
 		<!-- To do lists, notes and calendars -->
 		<h2 class="mt-5 mb-2">Your upcoming work and calendars</h2>
 		<div class="flex-div">
@@ -9,8 +13,6 @@
 			<DashboardItem :item="toDoListItem" />
 			<DashboardItem :item="null" />
 		</div>
-		<!-- <ButtonDelete/>
-		<ButtonSave/> -->
 		<!-- Accomodations -->
 		<h2 class="mt-5 mb-2">Your accomodations</h2>
 		<div class="flex-div">
@@ -52,7 +54,10 @@ import DashboardItem from '@/components/DashboardItem.vue';
 
 import ButtonDelete from '@/components/ButtonDelete.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
+import ButtonBack from '@/components/ButtonBack.vue';
 import ButtonSeeMore from '@/components/ButtonSeeMore.vue';
+import FormLabel from '@/components/FormLabel.vue';
+import FormTextField from '@/components/FormTextField.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
@@ -339,7 +344,10 @@ export default {
 		DashboardItem,
 		ButtonDelete,
 		ButtonSave,
+		ButtonBack,
 		ButtonSeeMore,
+		FormLabel,
+		FormTextField,
 		EmptyDiv
 	}
 }
