@@ -19,7 +19,7 @@
 				<v-chip v-else-if="reservation.currentState === 'INQUIRY'" color="#FFCC00" class="mx-2 d-inline">
 					INQUIRY
 				</v-chip>
-				<v-chip v-else-if="reservation.currentState === 'COMPLETED'" color="#595959" class="mx-2 d-inline">
+				<v-chip v-else-if="reservation.currentState === 'COMPLETED'" color="#B5B5B5" class="mx-2 d-inline">
 					COMPLETED
 				</v-chip>
 			</div>

@@ -13,9 +13,11 @@
 					 solo rounded
 					 @input="updateClosedPeriodsForPrivateAcomodation()"
 					 background-color="#A5D4FF"
-					 prepend-inner-icon="mdi-bed"
 					 class="mx-4">
-		</v-select>
+				<template v-slot:prepend-inner>
+					<v-icon color="#000000">mdi-bed</v-icon>
+				</template>
+			</v-select>
 		</div>
 		<!-- Calendar actions (left, right, title, today) -->
 		<v-sheet class="d-flex grid-div">
@@ -121,7 +123,7 @@ export default {
 		console.log(this.privateAccomodations);
 		this.privateAccomodationId = this.privateAccomodations[0].ObjectId;
 		console.log(this.privateAccomodationId);
-		this.allClosedPeriods = periodsFromBackend; // .filter(period => period.privateAccomodationObjectId === this.privateAccomodationId);
+		this.allClosedPeriods = periodsFromBackend;
 		console.log(this.allClosedPeriods);
 		this.closedPeriodsForPrivateAccomodation = periodsFromBackend.filter(period => period.privateAccomodationObjectId === this.privateAccomodationId);
 		console.log(this.closedPeriodsForPrivateAccomodation);
