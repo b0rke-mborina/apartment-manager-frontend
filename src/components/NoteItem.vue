@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import IconDelete from '@/components/IconDelete.vue'
-import IconEdit from '@/components/IconEdit.vue'
+import IconDelete from '@/components/IconDelete.vue';
+import IconEdit from '@/components/IconEdit.vue';
 
 export default {
 	name: 'NoteItem',

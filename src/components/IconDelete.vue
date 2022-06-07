@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import ButtonDelete from '@/components/ButtonDelete.vue'
-import ButtonCancel from '@/components/ButtonCancel.vue'
+import ButtonDelete from '@/components/ButtonDelete.vue';
+import ButtonCancel from '@/components/ButtonCancel.vue';
 
 export default {
 	name: 'IconDelete',

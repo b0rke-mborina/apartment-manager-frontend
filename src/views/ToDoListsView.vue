@@ -37,31 +37,37 @@ export default {
 					{
 						ObjectId: 111,
 						name: "Buy glasses",
+						position: 0,
 						completed: false
 					},
 					{
 						ObjectId: 112,
 						name: "Buy linens",
+						position: 1,
 						completed: true
 					},
 					{
 						ObjectId: 113,
 						name: "Buy towels",
+						position: 2,
 						completed: true
 					},
 					{
 						ObjectId: 114,
 						name: "Buy detergents",
+						position: 3,
 						completed: true
 					},
 					{
 						ObjectId: 115,
 						name: "Buy plates",
+						position: 4,
 						completed: false
 					},
 					{
 						ObjectId: 116,
 						name: "Buy cups",
+						position: 5,
 						completed: false
 					}
 				],
@@ -75,11 +81,13 @@ export default {
 					{
 						ObjectId: 111,
 						name: "Clean the kitchen",
+						position: 0,
 						completed: true
 					},
 					{
 						ObjectId: 112,
 						name: "Clean the bathroom",
+						position: 1,
 						completed: false
 					}
 				],
@@ -93,11 +101,13 @@ export default {
 					{
 						ObjectId: 111,
 						name: "Repaint the walls",
+						position: 0,
 						completed: true
 					},
 					{
 						ObjectId: 112,
 						name: "Replace broken glasses",
+						position: 1,
 						completed: true
 					}
 				],
