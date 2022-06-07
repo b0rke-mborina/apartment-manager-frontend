@@ -5,7 +5,7 @@
 				alt="Photo">
 		</v-img>
 		<div class="flex-div">
-			<div class="text-div">
+			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation.ObjectId }}" class="router-link text-div">
 				<v-card-title class="py-0 availability">
 					<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
 							icon color="#FFCC00" class="pr-2">
@@ -26,14 +26,12 @@
 					{{ accomodation.currentState }}
 				</v-card-title>
 				<v-card-title class="text-break text-center pt-3">
-					<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation.ObjectId }}" class="router-link">
 						{{ accomodation.name }}
-					</router-link>
 				</v-card-title>
 				<v-card-subtitle class="text-break address pt-0">
 					{{ accomodation.location.street }} {{ accomodation.location.houseNumber }}
 				</v-card-subtitle>
-			</div>
+			</router-link>
 			<div class="edit-delete-icons">
 				<IconEdit class="mb-2"/>
 				<IconDelete itemType="accomodation" itemCaptionType="name"

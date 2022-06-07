@@ -1,18 +1,18 @@
 <template>
 	<v-card color="#E3EAEF" width="250" class="ma-4 rounded-xl notes-card d-flex flex-column">
-		<div class="notes-header pt-3">
+		<router-link :to="{ name: 'note-detail', params: { id: note.ObjectId }}" class="router-link notes-header pt-3">
 			<v-card-title class="pt-1 justify-center text-break">{{ note.heading }}</v-card-title>
 			<v-card-subtitle class="text-center pb-1">
 				<v-icon v-if="note.important === true" icon color="#FF6F6F">mdi-alert-circle-outline</v-icon>
 				<v-icon v-else-if="note.important === false"></v-icon>
 			</v-card-subtitle>
-		</div>
-		<div class="flex-div">
+		</router-link>
+		<router-link :to="{ name: 'note-detail', params: { id: note.ObjectId }}" class="router-link flex-div">
 			<v-card-text v-if="note.body.length <= 100">{{ note.body }}</v-card-text>
 			<v-card-text v-else-if="note.body.length > 100
 							 || (note.body.split(/\r\n|\r|\n/).length) > 3"
 							 class="note-body">{{ getStringForRender() }}...</v-card-text>
-		</div>
+		</router-link>
 		<v-spacer v-if="note.body.length <= 100"></v-spacer>
 		<v-card-actions class="flex-bottom pa-3">
 			<IconEdit/>

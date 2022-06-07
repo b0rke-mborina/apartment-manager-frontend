@@ -22,25 +22,25 @@ export default {
 	mounted() {
 		let notesFromBackend = [
 			{
-				ObjecId: 100,
+				ObjectId: 100,
 				heading: "Available periods",
 				body: "1.6. - 28.6., 10.7. - 14.7.",
 				important: true
 			},
 			{
-				ObjecId: 101,
+				ObjectId: 101,
 				heading: "Last guests",
 				body: "clean, quiet, very pleased with them",
 				important: false
 			},
 			{
-				ObjecId: 102,
+				ObjectId: 102,
 				heading: "Bedroom wall",
 				body: "Small damages on it",
 				important: true
 			},
 			{
-				ObjecId: 103,
+				ObjectId: 103,
 				heading: "Music festivals",
 				body: "Don't have\nguests that\nmay be going to\nmusic festivals\naaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaa",
 				important: true

@@ -23,7 +23,7 @@ export default {
 	mounted() {
 		let guestsFromBackend = [
 			{
-				ObjecId: 100,
+				ObjectId: 100,
 				firstName: "Mark",
 				lastName: "Williams",
 				email: "mwilliams@gmail.com",
@@ -41,7 +41,7 @@ export default {
 				guestState: "CONFIRMED GUEST"
 			},
 			{
-				ObjecId: 101,
+				ObjectId: 101,
 				firstName: "Hans",
 				lastName: "Muller",
 				email: "hmuller@gmail.com",
@@ -59,7 +59,7 @@ export default {
 				guestState: "POSSIBLE GUEST"
 			},
 			{
-				ObjecId: 102,
+				ObjectId: 102,
 				firstName: "Marie",
 				lastName: "Smith",
 				email: "msmith@gmail.com",
@@ -77,7 +77,7 @@ export default {
 				guestState: "POTENTIAL GUEST"
 			},
 			{
-				ObjecId: 103,
+				ObjectId: 103,
 				firstName: "Mario",
 				lastName: "Vercetti",
 				email: "mvercetti@gmail.com",

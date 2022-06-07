@@ -1,6 +1,6 @@
 <template>
 	<v-card color="#E3EAEF" class="my-3 pa-4 rounded-xl main-grid">
-		<div class="grid-div">
+		<router-link :to="{ name: 'reservation-detail', params: { id: reservation.ObjectId }}" class="router-link grid-div">
 			<div class="reservation-info">
 				<v-icon class="mx-2">mdi-calendar-check</v-icon>
 				<span class="mx-2 pa-0 d-inline-block">{{ reservation.period.start }} - {{ reservation.period.end }}</span>
@@ -34,7 +34,7 @@
 					{{ reservation.madeByGuest.firstName }} {{ reservation.madeByGuest.lastName }}
 				</span>
 			</div>
-		</div>
+		</router-link>
 		<div class="edit-delete-icons">
 			<IconEdit/>
 			<IconDelete itemType="reservation" itemCaptionType="period"

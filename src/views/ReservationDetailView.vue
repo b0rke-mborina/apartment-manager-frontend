@@ -24,12 +24,12 @@ export default {
 			{
 				ObjectId: 100,
 				period: {
-					ObjecId: 100,
+					ObjectId: 100,
 					start: "2022-05-26",
 					end: "2022-05-30"
 				},
 				madeByGuest: {
-					ObjecId: 100,
+					ObjectId: 100,
 					firstName: "Mark",
 					lastName: "Williams",
 					email: "mwilliams@gmail.com",
@@ -39,7 +39,7 @@ export default {
 				},
 				guests: [
 					{
-						ObjecId: 100,
+						ObjectId: 100,
 						firstName: "Mark",
 						lastName: "Williams",
 						email: "mwilliams@gmail.com",
@@ -48,7 +48,7 @@ export default {
 						city: "London"
 					},
 					{
-						ObjecId: 102,
+						ObjectId: 102,
 						firstName: "Marie",
 						lastName: "Smith",
 						email: "msmith@gmail.com",
@@ -57,7 +57,7 @@ export default {
 						city: "Los Angeles"
 					},
 					{
-						ObjecId: 103,
+						ObjectId: 103,
 						firstName: "Mario",
 						lastName: "Vercetti",
 						email: "mvercetti@gmail.com",
@@ -76,12 +76,12 @@ export default {
 			{
 				ObjectId: 101,
 				period: {
-					ObjecId: 101,
+					ObjectId: 101,
 					start: "2022-06-28",
 					end: "2022-07-08"
 				},
 				madeByGuest: {
-					ObjecId: 103,
+					ObjectId: 103,
 					firstName: "Mario",
 					lastName: "Vercetti",
 					email: "mvercetti@gmail.com",
@@ -91,7 +91,7 @@ export default {
 				},
 				guests: [
 					{
-						ObjecId: 103,
+						ObjectId: 103,
 						firstName: "Mario",
 						lastName: "Vercetti",
 						email: "mvercetti@gmail.com",
@@ -100,7 +100,7 @@ export default {
 						city: "Milano"
 					},
 					{
-						ObjecId: 100,
+						ObjectId: 100,
 						firstName: "Mark",
 						lastName: "Williams",
 						email: "mwilliams@gmail.com",
@@ -109,7 +109,7 @@ export default {
 						city: "London"
 					},
 					{
-						ObjecId: 101,
+						ObjectId: 101,
 						firstName: "Hans",
 						lastName: "Muller",
 						email: "hmuller@gmail.com",
