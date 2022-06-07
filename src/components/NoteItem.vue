@@ -16,7 +16,7 @@
 		<v-spacer v-if="note.body.length <= 100"></v-spacer>
 		<v-card-actions class="flex-bottom pa-3">
 			<IconEdit/>
-			<IconDelete/>
+			<IconDelete itemType="note" itemCaptionType="heading" :itemName="note.header" />
 		</v-card-actions>
 	</v-card>
 </template>

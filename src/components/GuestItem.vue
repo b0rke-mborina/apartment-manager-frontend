@@ -40,7 +40,7 @@
 		</div>
 		<div class="edit-delete-icons">
 			<IconEdit/>
-			<IconDelete itemType="guest" :itemName="guest.firstName + ' ' + guest.lastName" />
+			<IconDelete itemType="guest" itemCaptionType="name" :itemName="guest.firstName + ' ' + guest.lastName" />
 		</div>
 	</v-card>
 </template>
@@ -92,7 +92,7 @@ export default {
 	display: flex;
 	justify-content: right;
 	flex-wrap: wrap;
-	align-items: right;
+	align-items: center;
 	padding: 10px 0px;
 }
 @media (max-width:500px) {

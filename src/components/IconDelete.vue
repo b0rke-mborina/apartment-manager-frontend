@@ -8,7 +8,7 @@
 		<v-card class="rounded-xl">
 			<v-card-title class="text-h5">Deletion warning</v-card-title>
 			<v-card-text>
-				Are you sure you want to delete a {{ itemType }} with the name {{ itemName }}?
+				Are you sure you want to delete a {{ itemType }} with the {{ itemCaptionType }} {{ itemName }}?
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer></v-spacer>
@@ -32,6 +32,7 @@ export default {
 	},
 	props: {
 		itemType: String,
+		itemCaptionType: String,
 		itemName: String
 	},
 	components: {

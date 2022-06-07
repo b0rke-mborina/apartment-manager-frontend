@@ -1,23 +1,39 @@
 <template>
 	<v-card color="#E3EAEF" width="250" class="ma-4 rounded-xl accomodation-card">
-		<v-img height="126px" src="https://apartmentsborina.hr/resources/gallery/terrace-tables-chairs-light-sunny.jpg" alt="Photo"></v-img>
+		<v-img height="126px"
+				 src="https://apartmentsborina.hr/resources/gallery/terrace-tables-chairs-light-sunny.jpg"
+				 alt="Photo">
+		</v-img>
 		<div class="flex-div">
 			<div class="text-div">
 				<v-card-title class="py-0 availability">
-					<v-icon v-if="accomodation.currentState === 'AVAILABLE'" icon color="#FFCC00" class="pr-2">mdi-circle</v-icon>
-					<v-icon v-else-if="accomodation.currentState === 'OCCUPIED'" icon color="#55FF66" class="pr-2">mdi-circle</v-icon>
-					<v-icon v-else-if="accomodation.currentState === 'PENDING'" icon color="#6666ff" class="pr-2">mdi-circle</v-icon>
-					<v-icon v-else-if="accomodation.currentState === 'NOT READY'" icon color="#FF6F6F" class="pr-2">mdi-circle</v-icon>
+					<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
+							  icon color="#FFCC00" class="pr-2">
+						mdi-circle
+					</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'OCCUPIED'"
+							  icon color="#55FF66" class="pr-2">
+						mdi-circle
+					</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'PENDING'"
+							  icon color="#6666ff" class="pr-2">
+						mdi-circle
+					</v-icon>
+					<v-icon v-else-if="accomodation.currentState === 'NOT READY'"
+							  icon color="#FF6F6F" class="pr-2">
+						mdi-circle
+					</v-icon>
 					{{ accomodation.currentState }}
 				</v-card-title>
-				<v-card-title class="pt-1 text-break">{{ accomodation.name }}</v-card-title>
+				<v-card-title class="pt-1 text-break text-center">{{ accomodation.name }}</v-card-title>
 				<v-card-subtitle class="text-break address">
 					{{ accomodation.location.street }} {{ accomodation.location.houseNumber }}
 				</v-card-subtitle>
 			</div>
 			<div class="edit-delete-icons">
-				<IconEdit class="mt-1 mb-3"/>
-				<IconDelete class="mb-2"/>
+				<IconEdit class="mb-2"/>
+				<IconDelete itemType="accomodation" itemCaptionType="name"
+								:itemName="accomodation.name" class="mb-2" />
 			</div>
 		</div>
 	</v-card>
@@ -75,9 +91,8 @@ export default {
 	.edit-delete-icons {
 		display: flex;
 		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		padding: 10px 0px;
+		justify-content: space-between;
+		width: 70%;
 	}
 	.availability {
 		justify-content: center;

@@ -37,7 +37,8 @@
 		</div>
 		<div class="edit-delete-icons">
 			<IconEdit/>
-			<IconDelete/>
+			<IconDelete itemType="reservation" itemCaptionType="period"
+							:itemName="'from ' + reservation.period.startDate + ' to ' + reservation.period.endDate" />
 		</div>
 	</v-card>
 </template>
@@ -78,7 +79,7 @@ export default {
 	display: flex;
 	justify-content: right;
 	flex-wrap: wrap;
-	align-items: right;
+	align-items: center;
 }
 @media (max-width:1100px) {
 	.grid-div {

@@ -22,7 +22,7 @@
 		<v-card-text v-if="toDoList.completed === true" class="pa-2 text-center completed">COMPLETED</v-card-text>
 		<v-card-actions class="flex-bottom pa-3">
 			<IconEdit/>
-			<IconDelete/>
+			<IconDelete itemType="to-do list" itemCaptionType="title" :itemName="toDoList.title" />
 		</v-card-actions>
 	</v-card>
 </template>
