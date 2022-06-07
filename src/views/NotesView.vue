@@ -31,25 +31,25 @@ export default {
 		let notesFromBackend = [
 			{
 				ObjecId: 100,
-				header: "Available periods",
+				heading: "Available periods",
 				body: "1.6. - 28.6., 10.7. - 14.7.",
 				important: true
 			},
 			{
 				ObjecId: 101,
-				header: "Last guests",
+				heading: "Last guests",
 				body: "clean, quiet, very pleased with them",
 				important: false
 			},
 			{
 				ObjecId: 102,
-				header: "Bedroom wall",
+				heading: "Bedroom wall",
 				body: "Small damages on it",
 				important: true
 			},
 			{
 				ObjecId: 103,
-				header: "Music festivals",
+				heading: "Music festivals",
 				body: "Don't have\nguests that\nmay be going to\nmusic festivals\naaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaa",
 				important: true
 			}

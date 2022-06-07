@@ -2,10 +2,10 @@
 	<v-card color="#E3EAEF" width="250" min-height="350" class="ma-4 rounded-xl notes-card d-flex flex-column">
 		<div class="todolists-header pa-3">
 			<v-card-title class="py-2 justify-center text-center text-break">{{ toDoList.title }}</v-card-title>
-			<div class="flex-head">
+			<div class="text-center"><!-- flex-head -->
 				<v-card-subtitle class="px-2 py-0">{{ toDoList.date }}</v-card-subtitle>
-				<v-icon v-if="toDoList.type === 'repeating'" icon class="px-2 py-0">mdi-repeat</v-icon>
-				<v-icon v-else-if="toDoList.type === 'one-time'" icon class="px-2 py-0">mdi-repeat-once</v-icon>
+				<!-- <v-icon v-if="toDoList.type === 'repeating'" icon class="px-2 py-0">mdi-repeat</v-icon> -->
+				<!-- <v-icon v-else-if="toDoList.type === 'one-time'" icon class="px-2 py-0">mdi-repeat-once</v-icon> -->
 			</div>
 		</div>
 		<div class="flex-main pa-3">
@@ -33,9 +33,6 @@ import IconEdit from '@/components/IconEdit.vue'
 
 export default {
 	name: 'ToDoListItem',
-	mounted() {
-		if (this.toDoList.completed) console.log(this.toDoList);
-	},
 	props: {
 		toDoList: Object
 	},
@@ -50,11 +47,11 @@ export default {
 .todolists-header {
 	background-color: #A5D4FF;
 }
-.flex-head {
+/*.flex-head {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-}
+}*/
 .flex-main {
 	display: flex;
 	flex-direction: column;

@@ -32,9 +32,7 @@ export default {
 			{
 				ObjectId: 100,
 				title: "Buying backup items",
-				type: "repeating",
 				date: "2022-04-10",
-				repeatPeriod: [2, "m"],
 				items: [
 					{
 						ObjectId: 111,
@@ -72,9 +70,7 @@ export default {
 			{
 				ObjectId: 111,
 				title: "Cleaning",
-				type: "repeating",
 				date: "2022-08-05",
-				repeatPeriod: [1, "w"],
 				items: [
 					{
 						ObjectId: 111,
@@ -92,9 +88,7 @@ export default {
 			{
 				ObjectId: 211,
 				title: "Repair damages",
-				type: "one-time",
 				date: "2022-06-01",
-				repeatPeriod: [],
 				items: [
 					{
 						ObjectId: 111,

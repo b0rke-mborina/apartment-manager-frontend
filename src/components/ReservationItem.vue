@@ -3,7 +3,7 @@
 		<div class="grid-div">
 			<div class="reservation-info">
 				<v-icon class="mx-2">mdi-calendar-check</v-icon>
-				<span class="mx-2 pa-0 d-inline-block">{{ reservation.period.startDate }} - {{ reservation.period.endDate }}</span>
+				<span class="mx-2 pa-0 d-inline-block">{{ reservation.period.start }} - {{ reservation.period.end }}</span>
 			</div>
 			<div class="money">
 				<span class="mx-2 pa-0 d-inline">{{ reservation.price.value }} {{ reservation.price.currency }}</span>
@@ -38,7 +38,7 @@
 		<div class="edit-delete-icons">
 			<IconEdit/>
 			<IconDelete itemType="reservation" itemCaptionType="period"
-							:itemName="'from ' + reservation.period.startDate + ' to ' + reservation.period.endDate" />
+							:itemName="'from ' + reservation.period.start + ' to ' + reservation.period.end" />
 		</div>
 	</v-card>
 </template>
@@ -68,7 +68,21 @@ export default {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 }
-.reservation-info, .money, .guest-info {
+.reservation-info {
+	display: flex;
+	flex-direction: row;
+	justify-content: left;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.money {
+	display: flex;
+	flex-direction: row;
+	justify-content: right;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.guest-info {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -101,8 +115,12 @@ export default {
   		grid-column-end: 2;
 		margin-top: 5px;
 	}
+	.reservation-info {
+		justify-content: center;
+	}
 	.money {
 		margin-top: 5px;
+		justify-content: center;
 	}
 }
 </style>

@@ -37,8 +37,12 @@ export default {
 				country: "United Kingdom",
 				city: "London",
 				period: {
-					startDate: "2022-07-01",
-					endDate: "2022-07-10"
+					start: "2022-07-01",
+					end: "2022-07-10",
+					privateAccomodation: {
+						ObjectId: 111,
+						name: "Apartment Nature"
+					}
 				},
 				guestState: "CONFIRMED GUEST"
 			},
@@ -51,8 +55,12 @@ export default {
 				country: "Germany",
 				city: "Munchen",
 				period: {
-					startDate: "2022-08-01",
-					endDate: "2022-08-10"
+					start: "2022-08-01",
+					end: "2022-08-10",
+					privateAccomodation: {
+						ObjectId: 111,
+						name: "Apartment Nature"
+					}
 				},
 				guestState: "POSSIBLE GUEST"
 			},
@@ -65,8 +73,12 @@ export default {
 				country: "United States",
 				city: "Los Angeles",
 				period: {
-					startDate: "2022-07-10",
-					endDate: "2022-07-31"
+					start: "2022-07-10",
+					end: "2022-07-31",
+					privateAccomodation: {
+						ObjectId: 111,
+						name: "Apartment Nature"
+					}
 				},
 				guestState: "POTENTIAL GUEST"
 			},
@@ -79,8 +91,12 @@ export default {
 				country: "Italy",
 				city: "Milano",
 				period: {
-					startDate: "2022-07-10",
-					endDate: "2022-07-31"
+					start: "2022-07-10",
+					end: "2022-07-31",
+					privateAccomodation: {
+						ObjectId: 111,
+						name: "Apartment Nature"
+					}
 				},
 				guestState: "CANCELLED GUEST"
 			}

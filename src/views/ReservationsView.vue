@@ -31,8 +31,8 @@ export default {
 				ObjectId: 100,
 				period: {
 					ObjecId: 100,
-					startDate: "2022-05-26",
-					endDate: "2022-05-30"
+					start: "2022-05-26",
+					end: "2022-05-30"
 				},
 				madeByGuest: {
 					ObjecId: 100,
@@ -41,11 +41,7 @@ export default {
 					email: "mwilliams@gmail.com",
 					phoneNumber: "+000 000 0000",
 					country: "United Kingdom",
-					city: "London",
-					period: {
-						startDate: "2022-07-01",
-						endDate: "2022-07-10"
-					}
+					city: "London"
 				},
 				guests: [
 					{
@@ -55,11 +51,7 @@ export default {
 						email: "mwilliams@gmail.com",
 						phoneNumber: "+000 000 0000",
 						country: "United Kingdom",
-						city: "London",
-						period: {
-							startDate: "2022-07-01",
-							endDate: "2022-07-10"
-						}
+						city: "London"
 					},
 					{
 						ObjecId: 102,
@@ -68,11 +60,7 @@ export default {
 						email: "msmith@gmail.com",
 						phoneNumber: "+222 222 2222",
 						country: "United States",
-						city: "Los Angeles",
-						period: {
-							startDate: "2022-07-10",
-							endDate: "2022-07-31"
-						}
+						city: "Los Angeles"
 					},
 					{
 						ObjecId: 103,
@@ -81,11 +69,7 @@ export default {
 						email: "mvercetti@gmail.com",
 						phoneNumber: "+333 333 3333",
 						country: "Italy",
-						city: "Milano",
-						period: {
-							startDate: "2022-07-10",
-							endDate: "2022-07-31"
-						}
+						city: "Milano"
 					}
 				],
 				currentState: "CONFIRMED",
@@ -99,8 +83,8 @@ export default {
 				ObjectId: 101,
 				period: {
 					ObjecId: 101,
-					startDate: "2022-06-28",
-					endDate: "2022-07-08"
+					start: "2022-06-28",
+					end: "2022-07-08"
 				},
 				madeByGuest: {
 					ObjecId: 103,
@@ -109,11 +93,7 @@ export default {
 					email: "mvercetti@gmail.com",
 					phoneNumber: "+333 333 3333",
 					country: "Italy",
-					city: "Milano",
-					period: {
-						startDate: "2022-07-10",
-						endDate: "2022-07-31"
-					}
+					city: "Milano"
 				},
 				guests: [
 					{
@@ -123,11 +103,7 @@ export default {
 						email: "mvercetti@gmail.com",
 						phoneNumber: "+333 333 3333",
 						country: "Italy",
-						city: "Milano",
-						period: {
-							startDate: "2022-07-10",
-							endDate: "2022-07-31"
-						}
+						city: "Milano"
 					},
 					{
 						ObjecId: 100,
@@ -136,11 +112,7 @@ export default {
 						email: "mwilliams@gmail.com",
 						phoneNumber: "+000 000 0000",
 						country: "United Kingdom",
-						city: "London",
-						period: {
-							startDate: "2022-07-01",
-							endDate: "2022-07-10"
-						}
+						city: "London"
 					},
 					{
 						ObjecId: 101,
@@ -149,11 +121,7 @@ export default {
 						email: "hmuller@gmail.com",
 						phoneNumber: "+111 111 1111",
 						country: "Germany",
-						city: "Munchen",
-						period: {
-							startDate: "2022-08-01",
-							endDate: "2022-08-10"
-						}
+						city: "Munchen"
 					}
 				],
 				currentState: "INQUIRY",
