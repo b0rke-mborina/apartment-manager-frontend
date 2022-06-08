@@ -1,106 +1,107 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 mb-4 text-center">Guest detail: OK</h1>
+		<h1 class="mt-5 text-center">{{ guest.firstName }} {{ guest.lastName }}</h1>
+		<!-- Guest's email -->
+		<div class="text-center mb-2">{{ guest.email }}</div>
+		<!-- Guest's phone number -->
+		<div class="text-center mb-2">{{ guest.phoneNumber }}</div>
+		<!-- Current state of the guest -->
+		<div v-if="guest.newestPeriod" class="text-center mb-5">
+			<v-chip v-if="guest.guestState === 'CANCELLED GUEST'"
+					  color="#FF6F6F" class="mx-2 my-1">
+				CANCELLED GUEST
+			</v-chip>
+			<v-chip v-else-if="guest.guestState === 'POSSIBLE GUEST'"
+					  color="#6666ff" class="mx-2 my-1">
+				POSSIBLE GUEST
+			</v-chip>
+			<v-chip v-else-if="guest.guestState === 'POTENTIAL GUEST'"
+					  color="#FFCC00" class="mx-2 my-1">
+				POTENTIAL GUEST
+			</v-chip>
+			<v-chip v-else-if="guest.newestPeriod.end < currentDate()
+									&& guest.guestState === 'CONFIRMED GUEST'"
+					  color="#B5B5B5" class="mx-2 my-1">
+				FORMER GUEST
+			</v-chip>
+			<v-chip v-else-if="guest.newestPeriod.start >= currentDate()
+									&& guest.newestPeriod.end <= currentDate()
+									&& guest.guestState === 'CONFIRMED GUEST'"
+					  icon color="#55FF66" class="pr-2">
+				CURRENT GUEST
+			</v-chip>
+			<v-chip v-else-if="guest.newestPeriod.start > currentDate()
+									&& guest.guestState === 'CONFIRMED GUEST'"
+					  icon color="#55FF66" class="pr-2">
+				FUTURE GUEST
+			</v-chip>
+		</div>
+		<!-- Main information grid -->
+		<div class="details-grid">
+			<!-- Maximum number of guests -->
+			<div class="details-grid-item">
+				<FormLabel text="From..." class="details-label" />
+				<FormTextField :text="guest.city + ', ' + guest.country" />
+			</div>
+			<!-- Guest's newest reservation -->
+			<div v-if="guest.newestPeriod && guest.newestPeriod.privateAccomodation" class="details-grid-item">
+				<FormLabel text="Newest reservation" class="details-label" />
+				<FormTextField :text="guest.newestPeriod.start
+											+ ' - ' + guest.newestPeriod.end
+											+ ' (' + guest.newestPeriod.privateAccomodation.name + ')'" />
+			</div>
+		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
-import GuestItem from '@/components/GuestItem.vue';
-import AddNewButton from '@/components/ButtonAddNew.vue';
+import FormLabel from '@/components/FormLabel.vue';
+import FormTextField from '@/components/FormTextField.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 
 export default {
-	name: 'GuestsView',
+	name: 'GuestDetailView',
 	data() {
 		return {
-			guests: []
+			guest: {}
 		}
 	},
 	mounted() {
-		let guestsFromBackend = [
-			{
-				ObjectId: 100,
-				firstName: "Mark",
-				lastName: "Williams",
-				email: "mwilliams@gmail.com",
-				phoneNumber: "+000 000 0000",
-				country: "United Kingdom",
-				city: "London",
-				period: {
-					start: "2022-07-01",
-					end: "2022-07-10",
-					privateAccomodation: {
-						ObjectId: 111,
-						name: "Apartment Nature"
-					}
-				},
-				guestState: "CONFIRMED GUEST"
+		let guestFromBackend = {
+			ObjectId: 100,
+			firstName: "Mark",
+			lastName: "Williams",
+			email: "mwilliams@gmail.com",
+			phoneNumber: "+000 000 0000",
+			country: "United Kingdom",
+			city: "London",
+			newestPeriod: {
+				start: "2022-07-01",
+				end: "2022-07-10",
+				privateAccomodation: {
+					ObjectId: 111,
+					name: "Apartment Nature"
+				}
 			},
-			{
-				ObjectId: 101,
-				firstName: "Hans",
-				lastName: "Muller",
-				email: "hmuller@gmail.com",
-				phoneNumber: "+111 111 1111",
-				country: "Germany",
-				city: "Munchen",
-				period: {
-					start: "2022-08-01",
-					end: "2022-08-10",
-					privateAccomodation: {
-						ObjectId: 111,
-						name: "Apartment Nature"
-					}
-				},
-				guestState: "POSSIBLE GUEST"
-			},
-			{
-				ObjectId: 102,
-				firstName: "Marie",
-				lastName: "Smith",
-				email: "msmith@gmail.com",
-				phoneNumber: "+222 222 2222",
-				country: "United States",
-				city: "Los Angeles",
-				period: {
-					start: "2022-07-10",
-					end: "2022-07-31",
-					privateAccomodation: {
-						ObjectId: 111,
-						name: "Apartment Nature"
-					}
-				},
-				guestState: "POTENTIAL GUEST"
-			},
-			{
-				ObjectId: 103,
-				firstName: "Mario",
-				lastName: "Vercetti",
-				email: "mvercetti@gmail.com",
-				phoneNumber: "+333 333 3333",
-				country: "Italy",
-				city: "Milano",
-				period: {
-					start: "2022-07-10",
-					end: "2022-07-31",
-					privateAccomodation: {
-						ObjectId: 111,
-						name: "Apartment Nature"
-					}
-				},
-				guestState: "CANCELLED GUEST"
-			}
-		];
-		this.guests = guestsFromBackend;
-		console.log(this.guests);
+			guestState: "CONFIRMED GUEST"
+		};
+		this.guest = guestFromBackend;
+		console.log(this.guest);
+	},
+	methods: {
+		currentDate() {
+			const current = new Date();
+			const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
+			return date;
+		}
 	},
 	components: {
-		GuestItem,
-		AddNewButton,
+		FormLabel,
+		FormTextField,
 		EmptyDiv
 	}
 }
@@ -108,4 +109,21 @@ export default {
 
 <style scoped>
 	@import '@/assets/css/views-style.css';
+	.details-grid {
+		display: grid;
+		grid-template-columns: auto;
+	}
+	.details-grid-item {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+	@media (max-width:750px) {
+		.details-grid-item {
+			grid-template-columns: auto;
+		}
+		.details-label {
+			text-align: center;
+			margin-bottom: 8px;
+		}
+	}
 </style>

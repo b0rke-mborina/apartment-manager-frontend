@@ -36,7 +36,7 @@ export default {
 				phoneNumber: "+000 000 0000",
 				country: "United Kingdom",
 				city: "London",
-				period: {
+				newestPeriod: {
 					start: "2022-07-01",
 					end: "2022-07-10",
 					privateAccomodation: {
@@ -54,7 +54,7 @@ export default {
 				phoneNumber: "+111 111 1111",
 				country: "Germany",
 				city: "Munchen",
-				period: {
+				newestPeriod: {
 					start: "2022-08-01",
 					end: "2022-08-10",
 					privateAccomodation: {
@@ -72,7 +72,7 @@ export default {
 				phoneNumber: "+222 222 2222",
 				country: "United States",
 				city: "Los Angeles",
-				period: {
+				newestPeriod: {
 					start: "2022-07-10",
 					end: "2022-07-31",
 					privateAccomodation: {
@@ -90,7 +90,7 @@ export default {
 				phoneNumber: "+333 333 3333",
 				country: "Italy",
 				city: "Milano",
-				period: {
+				newestPeriod: {
 					start: "2022-07-10",
 					end: "2022-07-31",
 					privateAccomodation: {

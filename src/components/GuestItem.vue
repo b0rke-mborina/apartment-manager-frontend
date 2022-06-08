@@ -7,7 +7,7 @@
 				<span class="mx-2 location">{{ guest.city }}, {{ guest.country }}</span>
 			</div>
 			<div class="period-dates">
-				<span class="mx-2 my-1">{{ guest.period.start }} - {{ guest.period.end }}</span>
+				<span class="mx-2 my-1">{{ guest.newestPeriod.start }} - {{ guest.newestPeriod.end }}</span>
 				<v-chip v-if="guest.guestState === 'CANCELLED GUEST'"
 						  color="#FF6F6F" class="mx-2 my-1">
 					CANCELLED GUEST
@@ -20,18 +20,18 @@
 						  color="#FFCC00" class="mx-2 my-1">
 					POTENTIAL GUEST
 				</v-chip>
-				<v-chip v-else-if="guest.period.end < currentDate()
+				<v-chip v-else-if="guest.newestPeriod.end < currentDate()
 						  && guest.guestState === 'CONFIRMED GUEST'"
 						  color="#B5B5B5" class="mx-2 my-1">
 					FORMER GUEST
 				</v-chip>
-				<v-chip v-else-if="guest.period.start >= currentDate()
-						  && guest.period.end <= currentDate()
+				<v-chip v-else-if="guest.newestPeriod.start >= currentDate()
+						  && guest.newestPeriod.end <= currentDate()
 						  && guest.guestState === 'CONFIRMED GUEST'"
 						  icon color="#55FF66" class="pr-2">
 					CURRENT GUEST
 				</v-chip>
-				<v-chip v-else-if="guest.period.start > currentDate()
+				<v-chip v-else-if="guest.newestPeriod.start > currentDate()
 						  && guest.guestState === 'CONFIRMED GUEST'"
 						  icon color="#55FF66" class="pr-2">
 					FUTURE GUEST
