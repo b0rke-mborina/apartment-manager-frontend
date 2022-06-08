@@ -4,10 +4,10 @@
 		<h1 class="mt-5 mb-4 text-center">Guests</h1>
 		<!-- List of guests -->
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
-		<!-- Add new guest button -->
+		<!-- Add new guest button
 		<div class="text-center">
 			<AddNewButton/>
-		</div>
+		</div> -->
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
