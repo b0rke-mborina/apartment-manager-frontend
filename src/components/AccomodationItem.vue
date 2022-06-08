@@ -19,10 +19,6 @@
 							icon color="#6666ff" class="pr-2">
 						mdi-circle
 					</v-icon>
-					<v-icon v-else-if="accomodation.currentState === 'NOT READY'"
-							icon color="#FF6F6F" class="pr-2">
-						mdi-circle
-					</v-icon>
 					{{ accomodation.currentState }}
 				</v-card-title>
 				<v-card-title class="text-break text-center pt-3">

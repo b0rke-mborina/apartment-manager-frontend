@@ -70,7 +70,7 @@ export default {
 				name: "Apartment x",
 				categoryStarNumber: 5,
 				maxGuestNumber: 5,
-				currentState: "NOT READY",
+				currentState: "PENDING",
 				location: {
 					street: "Valturska",
 					houseNumber: "1d",
