@@ -29,12 +29,12 @@
 			<!-- Maximum number of guests -->
 			<div class="details-grid-item">
 				<FormLabel text="Maximum number of guests" class="details-label" />
-				<FormTextField :text="String(accomodation.maxGuestNumber)" />
+				<FormTextField :text="String(accomodation.maxGuestNumber)" readonly />
 			</div>
 			<!-- Location info -->
 			<div class="details-grid-item">
 				<FormLabel text="Location" class="details-label" />
-				<FormTextField v-if="accomodation.location"
+				<FormTextField v-if="accomodation.location" readonly
 									:text="accomodation.location.street
 											+ ' ' + accomodation.location.houseNumber
 											+ ',\n ' + accomodation.location.postalNumber
@@ -44,22 +44,24 @@
 			<!-- Entrance number info -->
 			<div class="details-grid-item">
 				<FormLabel text="Entrance number" class="details-label" />
-				<FormTextField v-if="accomodation.location" :text="accomodation.location.entranceNumber" />
+				<FormTextField v-if="accomodation.location" readonly
+									:text="accomodation.location.entranceNumber" />
 			</div>
 			<!-- Floors info -->
 			<div class="details-grid-item">
 				<FormLabel text="Floors" class="details-label" />
 				<FormTextField v-if="accomodation.lowestFloor === 0 && accomodation.numberofFloors === 1"
-									text="Ground floor" />
+									text="Ground floor" readonly />
 				<FormTextField v-else-if="accomodation.lowestFloor !== 0 && accomodation.numberofFloors === 1"
-									:text="accomodation.lowestFloor + '. floor'" />
-				<FormTextField v-else :text="'Floors ' + accomodation.lowestFloor + ' to ' + (accomodation.numberofFloors - 1)" />
+									:text="accomodation.lowestFloor + '. floor'" readonly />
+				<FormTextField v-else readonly
+									:text="'Floors ' + accomodation.lowestFloor + ' to ' + (accomodation.numberofFloors - 1)" />
 			</div>
 			<!-- Yard info -->
 			<div class="details-grid-item">
 				<FormLabel text="Has a yard?" class="details-label" />
-				<FormTextField v-if="accomodation.hasYard" text="YES" />
-				<FormTextField v-else-if="!accomodation.hasYard" text="NO" />
+				<FormTextField v-if="accomodation.hasYard" text="YES" readonly />
+				<FormTextField v-else-if="!accomodation.hasYard" text="NO" readonly />
 			</div>
 		</div>
 		<!-- Main action buttons -->
@@ -69,25 +71,7 @@
 				<ButtonBack/>
 			</router-link>
 			<!-- Delete button and dialog -->
-			<v-dialog v-model="dialog" width="500">
-				<template v-slot:activator="{ on, attrs }">
-					<v-btn v-bind="attrs" v-on="on" elevation="2" rounded large class="ma-4 btn-delete">
-						<v-icon color="#000000" class="mr-2">mdi-trash-can-outline</v-icon>
-						DELETE
-					</v-btn>
-				</template>
-				<v-card class="rounded-xl">
-					<v-card-title class="text-h5">Deletion warning</v-card-title>
-					<v-card-text>
-						Are you sure you want to delete this accomodation?
-					</v-card-text>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<ButtonCancel @click.native="dialog = false" />
-						<ButtonDelete @click.native="dialog = false" />
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
+			<ButtonDialogDelete/>
 			<!-- Edit button -->
 			<ButtonEdit/>
 		</div>
@@ -101,7 +85,7 @@ import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
 
 import ButtonBack from '@/components/ButtonBack.vue';
-import ButtonDelete from '@/components/ButtonDelete.vue';
+import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonEdit from '@/components/ButtonEdit.vue';
 
@@ -111,8 +95,7 @@ export default {
 	name: 'AccomodationsView',
 	data() {
 		return {
-			accomodation: {},
-			dialog: false
+			accomodation: {}
 		}
 	},
 	mounted() {
@@ -141,7 +124,7 @@ export default {
 		FormLabel,
 		FormTextField,
 		ButtonBack,
-		ButtonDelete,
+		ButtonDialogDelete,
 		ButtonCancel,
 		ButtonEdit,
 		EmptyDiv

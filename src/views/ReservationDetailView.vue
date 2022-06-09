@@ -33,12 +33,13 @@
 			<!-- Value of reservation in EUR -->
 			<div class="details-grid-item">
 				<FormLabel text="Value in EUR" class="details-label" />
-				<FormTextField v-if="reservation.price" :text="reservation.price.valueInEur + ' EUR'" />
+				<FormTextField v-if="reservation.price" readonly
+									:text="reservation.price.valueInEur + ' EUR'" />
 			</div>
 			<!-- Guest who made the reservation -->
 			<div class="details-grid-item">
 				<FormLabel text="Guest who made the reservation" class="details-label" />
-				<FormTextField v-if="reservation.madeByGuest"
+				<FormTextField v-if="reservation.madeByGuest" readonly
 									:text="reservation.madeByGuest.firstName + ' ' + reservation.madeByGuest.lastName" />
 			</div>
 			<!-- Other guests -->
@@ -47,6 +48,7 @@
 				<div v-if="reservation.guests">
 					<div v-for="guest in reservation.guests" v-bind:key="guest.ObjectId">
 						<FormTextField v-if="guest.ObjectId !== reservation.madeByGuest.ObjectId"
+											readonly
 											:text="guest.firstName + ' ' + guest.lastName" />
 					</div>
 				</div>
@@ -59,25 +61,7 @@
 				<ButtonBack/>
 			</router-link>
 			<!-- Delete button and dialog -->
-			<v-dialog v-model="dialog" width="500">
-				<template v-slot:activator="{ on, attrs }">
-					<v-btn v-bind="attrs" v-on="on" elevation="2" rounded large class="ma-4 btn-delete">
-						<v-icon color="#000000" class="mr-2">mdi-trash-can-outline</v-icon>
-						DELETE
-					</v-btn>
-				</template>
-				<v-card class="rounded-xl">
-					<v-card-title class="text-h5">Deletion warning</v-card-title>
-					<v-card-text>
-						Are you sure you want to delete this reservation?
-					</v-card-text>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<ButtonCancel @click.native="dialog = false" />
-						<ButtonDelete @click.native="dialog = false" />
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
+			<ButtonDialogDelete/>
 			<!-- Edit button -->
 			<ButtonEdit/>
 		</div>
@@ -91,7 +75,7 @@ import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
 
 import ButtonBack from '@/components/ButtonBack.vue';
-import ButtonDelete from '@/components/ButtonDelete.vue';
+import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonEdit from '@/components/ButtonEdit.vue';
 
@@ -101,8 +85,7 @@ export default {
 	name: 'ReservationDetailView',
 	data() {
 		return {
-			reservation: {},
-			dialog: false
+			reservation: {}
 		}
 	},
 	mounted() {
@@ -165,7 +148,7 @@ export default {
 		FormLabel,
 		FormTextField,
 		ButtonBack,
-		ButtonDelete,
+		ButtonDialogDelete,
 		ButtonCancel,
 		ButtonEdit,
 		EmptyDiv
@@ -182,12 +165,6 @@ export default {
 	.details-grid-item {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-	}
-	.btn-delete {
-		background-color: #FF6F6F !important;
-	}
-	.btn-delete:before {
-		background: none;
 	}
 	@media (max-width:750px) {
 		.details-grid-item {
