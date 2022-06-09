@@ -1,7 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 mb-4 text-center">To-do list detail: OK</h1>
+		<h1 class="mt-5 mb-4 text-center">To-do list edit: OK</h1>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>

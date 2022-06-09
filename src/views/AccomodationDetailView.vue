@@ -73,7 +73,9 @@
 			<!-- Delete button and dialog -->
 			<ButtonDialogDelete/>
 			<!-- Edit button -->
-			<ButtonEdit/>
+			<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation.ObjectId }}" class="router-link">
+				<ButtonEdit/>
+			</router-link>
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>

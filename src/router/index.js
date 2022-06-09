@@ -12,6 +12,7 @@ import LoginView from '../views/LoginView.vue';
 import SignupView from '../views/SignupView.vue';
 
 import AccomodationDetailView from '../views/AccomodationDetailView.vue';
+import AccomodationEditView from '../views/AccomodationEditView.vue';
 import ReservationDetailView from '../views/ReservationDetailView.vue';
 import GuestDetailView from '../views/GuestDetailView.vue';
 import ToDoListDetailEditView from '../views/ToDoListDetailEditView.vue';
@@ -35,6 +36,12 @@ const routes = [
 		props: true,
 		name: 'accomodation-detail',
 		component: AccomodationDetailView
+	},
+	{
+		path: '/accomodation/:id/modification',
+		props: true,
+		name: 'accomodation-modification',
+		component: AccomodationEditView
 	},
 	{
 		path: '/reservations',

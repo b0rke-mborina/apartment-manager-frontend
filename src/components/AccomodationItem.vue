@@ -29,7 +29,9 @@
 				</v-card-subtitle>
 			</router-link>
 			<div class="edit-delete-icons">
-				<IconEdit class="mb-2"/>
+				<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation.ObjectId }}" class="router-link">
+					<IconEdit class="mb-2"/>
+				</router-link>
 				<IconDelete itemType="accomodation" itemCaptionType="name"
 								:itemName="accomodation.name" class="mb-2" />
 			</div>
