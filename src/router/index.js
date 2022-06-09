@@ -14,8 +14,8 @@ import SignupView from '../views/SignupView.vue';
 import AccomodationDetailView from '../views/AccomodationDetailView.vue';
 import ReservationDetailView from '../views/ReservationDetailView.vue';
 import GuestDetailView from '../views/GuestDetailView.vue';
-import ToDoListDetailView from '../views/ToDoListDetailView.vue';
-import NoteDetailView from '../views/NoteDetailView.vue';
+import ToDoListDetailEditView from '../views/ToDoListDetailEditView.vue';
+import NoteDetailEditView from '../views/NoteDetailEditView.vue';
 
 Vue.use(VueRouter)
 
@@ -71,8 +71,8 @@ const routes = [
 	{
 		path: '/todolist/:id',
 		props: true,
-		name: 'todolist-detail',
-		component: ToDoListDetailView
+		name: 'todolist-detail-edit',
+		component: ToDoListDetailEditView
 	},
 	{
 		path: '/notes',
@@ -82,8 +82,8 @@ const routes = [
 	{
 		path: '/note/:id',
 		props: true,
-		name: 'note-detail',
-		component: NoteDetailView
+		name: 'note-detail-edit',
+		component: NoteDetailEditView
 	},
 	{
 		path: '/login',
