@@ -1,13 +1,9 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 text-center">{{ guest.firstName }} {{ guest.lastName }}</h1>
-		<!-- Guest's email -->
-		<div class="text-center mb-2">{{ guest.email }}</div>
-		<!-- Guest's phone number -->
-		<div class="text-center mb-2">{{ guest.phoneNumber }}</div>
+		<h1 class="mt-5 text-center">Edit guest accomodation</h1>
 		<!-- Current state of the guest -->
-		<div v-if="guest.newestPeriod" class="text-center mb-5">
+		<div v-if="guest.newestPeriod" class="text-center mb-9">
 			<v-chip v-if="guest.guestState === 'CANCELLED GUEST'"
 					  color="#FF6F6F" class="mx-2 my-1">
 				CANCELLED GUEST
@@ -39,29 +35,32 @@
 		</div>
 		<!-- Main information grid -->
 		<div class="details-grid">
-			<!-- Maximum number of guests -->
+			<!-- First name info -->
 			<div class="details-grid-item">
-				<FormLabel text="From..." class="details-label" />
-				<FormTextField :text="guest.city + ', ' + guest.country" readonly />
+				<FormLabel text="First name" class="details-label" />
+				<v-text-field v-model="guest.firstName" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="First name of guest"
+								  background-color="#A5D4FF">
+				</v-text-field>
 			</div>
-			<!-- Guest's newest reservation -->
-			<div v-if="guest.newestPeriod && guest.newestPeriod.privateAccomodation" class="details-grid-item">
-				<FormLabel text="Newest reservation" class="details-label" />
-				<FormTextField :text="guest.newestPeriod.start
-											+ ' - ' + guest.newestPeriod.end
-											+ ' (' + guest.newestPeriod.privateAccomodation.name + ')'"
-									readonly />
+			<!-- Last name info -->
+			<div class="details-grid-item">
+				<FormLabel text="Last name" class="details-label" />
+				<v-text-field v-model="guest.lastName" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Last name of guest"
+								  background-color="#A5D4FF">
+				</v-text-field>
 			</div>
 		</div>
 		<!-- Main action buttons -->
-		<div class="text-center">
+		<div class="text-center mt-5">
 			<router-link :to="{ name: 'guests'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
 			<ButtonDialogDelete/>
-			<router-link :to="{ name: 'guest-modification', params: { id: guest.ObjectId }}" class="router-link">
-				<ButtonEdit/>
-			</router-link>
+			<ButtonSave/>
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
@@ -75,7 +74,7 @@ import FormTextField from '@/components/FormTextField.vue';
 import ButtonBack from '@/components/ButtonBack.vue';
 import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
-import ButtonEdit from '@/components/ButtonEdit.vue';
+import ButtonSave from '@/components/ButtonSave.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
@@ -122,7 +121,7 @@ export default {
 		ButtonBack,
 		ButtonDialogDelete,
 		ButtonCancel,
-		ButtonEdit,
+		ButtonSave,
 		EmptyDiv
 	}
 }
@@ -137,12 +136,6 @@ export default {
 	.details-grid-item {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-	}
-	.btn-delete {
-		background-color: #FF6F6F !important;
-	}
-	.btn-delete:before {
-		background: none;
 	}
 	@media (max-width:750px) {
 		.details-grid-item {

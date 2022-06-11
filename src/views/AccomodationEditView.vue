@@ -1,8 +1,8 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title (name of private accomodation) -->
-		<h1 class="mt-5 mb-9 text-center">Edit a private accomodation</h1>
-		<!-- Current state of private accomodation
+		<h1 class="mt-5 text-center">Edit a private accomodation</h1>
+		<!-- Current state of private accomodation -->
 		<div class="text-center mb-9">
 			CURRENTLY {{ accomodation.currentState }}
 			<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
@@ -17,7 +17,7 @@
 					icon color="#6666ff" class="pr-2">
 				mdi-circle
 			</v-icon>
-		</div> -->
+		</div>
 		<!-- Main information grid -->
 		<div class="details-grid">
 			<h3 class="mt-4 mb-2">Basic information</h3>
@@ -36,23 +36,22 @@
 				<div class="details-grid-subitem">
 					<FormLabel text="Number of stars (category)" class="details-label mr-4" />
 					<v-text-field v-model.number="accomodation.categoryStarNumber" solo rounded
-									clearable clear-icon="mdi-close-circle"
 									single-line type="number"
-									label="Number 3, 4 or 5"
-									background-color="#A5D4FF">
+									min="3" max="5" step="1"
+									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
 				</div>
+				<!-- Maximum number of guests -->
 				<div class="details-grid-subitem">
 					<FormLabel text="Maximum number of guests" class="details-label mr-4" />
 					<v-text-field v-model.number="accomodation.maxGuestNumber" solo rounded
-									clearable clear-icon="mdi-close-circle"
 									single-line type="number"
-									label="Maximum guests allowed"
-									background-color="#A5D4FF">
+									min="1" max="99" step="1"
+									background-color="#A5D4FF" class="input-number ml-auto">
 					</v-text-field>
 				</div>
 			</div>
-			<h3 class="mt-4 mb-2">Address information</h3>
+			<h3 class="mt-9 mb-2">Address information</h3>
 			<!-- Street name - address info -->
 			<div v-if="accomodation.location" class="details-grid-item">
 				<FormLabel text="Street (address)" class="details-label mr-4" />
@@ -68,18 +67,16 @@
 				<div class="details-grid-subitem">
 					<FormLabel text="House number (address)" class="details-label mr-4" />
 					<v-text-field v-model="accomodation.location.houseNumber" solo rounded
-									clearable clear-icon="mdi-close-circle"
 									label="Number of the house"
-									background-color="#A5D4FF">
+									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
 				</div>
 				<!-- Entrance number - address info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="Entrance number (address)" class="details-label mr-4" />
 					<v-text-field v-model="accomodation.location.entranceNumber" solo rounded
-									clearable clear-icon="mdi-close-circle"
 									label="Entrance label"
-									background-color="#A5D4FF">
+									background-color="#A5D4FF" class="input-number ml-auto">
 					</v-text-field>
 				</div>
 			</div>
@@ -87,75 +84,54 @@
 				<!-- Postal number - address info -->
 				<div v-if="accomodation.location" class="details-grid-subitem">
 					<FormLabel text="Postal number (address)" class="details-label mr-4" />
-					<v-text-field v-model="accomodation.location.postalNumber" solo rounded
-									clearable clear-icon="mdi-close-circle"
+					<v-text-field v-model.number="accomodation.location.postalNumber" solo rounded
+									single-line type="number"
 									label="Post office number"
-									background-color="#A5D4FF">
+									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
 				</div>
 				<!-- City - address info -->
-				<div v-if="accomodation.location" class="details-grid-subitem">
+				<div v-if="accomodation.location" class="details-grid-subitem input-city">
 					<FormLabel text="City (address)" class="details-label mr-4" />
 					<v-text-field v-model="accomodation.location.city" solo rounded
 									clearable clear-icon="mdi-close-circle"
 									label="Name of city"
-									background-color="#A5D4FF">
+									background-color="#A5D4FF" class="ml-auto">
 					</v-text-field>
 				</div>
 			</div>
-			<h3 class="mt-4 mb-2">Other information</h3>
-			<!-- <FormLabel text="Accomodation spans through floors:" class="details-label" /> -->
+			<h3 class="mt-9 mb-2">Other information</h3>
 			<!-- Lowest and highest floors info -->
 			<div class="details-grid-item">
 				<div class="details-grid-subitem">
 					<FormLabel text="From floor (lowest level)" class="details-label mr-4" />
 					<v-text-field v-model.number="accomodation.lowestFloor" solo rounded
-									clearable clear-icon="mdi-close-circle"
 									single-line type="number"
 									label="Level number (0 is ground floor)"
-									background-color="#A5D4FF">
+									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
 				</div>
 				<!-- Highest floor info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="To floor (highest level)" class="details-label mr-4" />
 					<v-text-field v-model.number="accomodation.numberofFloors" solo rounded
-									clearable clear-icon="mdi-close-circle"
+									single-line type="number"
 									label="Level number (0 is ground floor)"
-									background-color="#A5D4FF">
+									background-color="#A5D4FF" class="input-number ml-auto">
 					</v-text-field>
 				</div>
 			</div>
 			<!-- Yard info - address info -->
-			<div class="details-grid-item">
-				<div class="details-grid-subitem">
-					<FormLabel text="Has a yard?" class="details-label" />
-					<v-checkbox v-model="accomodation.hasYard" label="YES"></v-checkbox>
-				</div>
-			</div>
-			<!-- <div class="details-grid-item">
-				<div class="details-grid-subitem">
-					<FormLabel text="Has yard?" class="details-label" />
-					<v-text-field v-model.number="accomodation.hasYard" solo rounded
-									clearable clear-icon="mdi-close-circle"
-									single-line type="number"
-									:label="accomodation.hasYard.toString()"
-									background-color="#A5D4FF">
-					</v-text-field>
-				</div>
-			</div> -->
+			<v-checkbox v-model="accomodation.hasYard" label="Has a yard" class="mt-0 pt-0"></v-checkbox>
 		</div>
 		<!-- Main action buttons -->
-		<div class="text-center">
-			<!-- Back button -->
+		<div class="text-center mt-5">
 			<router-link :to="{ name: 'accomodations'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<!-- Delete button and dialog -->
 			<ButtonDialogDelete/>
-			<!-- Edit button -->
 			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation.ObjectId }}" class="router-link">
-				<ButtonSave/>
+				<ButtonSave/> <!-- @click.native="printAccomodation()" -->
 			</router-link>
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -203,6 +179,11 @@ export default {
 		this.accomodation = accomodationFromBackend;
 		console.log(this.accomodation);
 	},
+	methods: {
+		printAccomodation() {
+			console.log(this.accomodation);
+		}
+	},
 	components: {
 		FormLabel,
 		FormTextField,
@@ -230,11 +211,11 @@ export default {
 		display: grid;
 		grid-template-columns: auto auto;
 	}
-	.btn-delete {
-		background-color: #FF6F6F !important;
+	.input-number {
+		width: 150px;
 	}
-	.btn-delete:before {
-		background: none;
+	.input-city div:nth-child(2) {
+		width: 100%;
 	}
 	@media (max-width:750px) {
 		.details-grid-item {
@@ -242,11 +223,37 @@ export default {
 			gap: 4px;
 		}
 		.details-grid-subitem {
+			grid-template-columns: auto auto;
+		}
+		.details-grid-subitem div:nth-child(1) {
+			text-align: left;
+		}
+		.details-grid-subitem div:nth-child(2) {
+			margin-left: auto;
+			margin-right: 0px;
+		}
+		.input-city {
 			grid-template-columns: 1fr 1fr;
+		}
+		.input-city div:nth-child(2) {
+			width: 100%;
 		}
 		.details-label {
 			text-align: center;
 			margin-bottom: 8px;
+		}
+	}
+	@media (max-width:425px) {
+		.input-city {
+			grid-template-columns: auto;
+			text-align: center;
+		}
+		.details-grid-subitem div:nth-child(1) {
+			text-align: center;
+		}
+		.details-grid-subitem div:nth-child(2) {
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 </style>

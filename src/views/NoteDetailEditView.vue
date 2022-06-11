@@ -1,29 +1,42 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 mb-4 text-center">Edit a note</h1>
-		<!-- Note heading -->
-		<v-text-field v-model="note.heading" solo rounded
-						  clearable clear-icon="mdi-close-circle"
-						  label="Note heading..."
-						  background-color="#A5D4FF"
-						  class="heading-text-field mt-5">
-		</v-text-field>
+		<h1 class="mt-5 mb-9 text-center">Edit a note</h1>
+		<div class="head-flex">
+			<!-- Note heading -->
+			<v-text-field v-model="note.heading" solo rounded
+							clearable clear-icon="mdi-close-circle"
+							label="Note heading..."
+							background-color="#A5D4FF"
+							class="heading-text-field mt-5 mr-3">
+			</v-text-field>
+			<!-- Is note important? - select -->
+			<v-select v-model="note.important"
+						 :items="selectItems"
+						 item-value="value"
+						 item-text="name"
+						 solo rounded
+						 background-color="#A5D4FF" class="mt-5 ml-3">
+				<template v-slot:append>
+					<v-icon color="#000000">mdi-menu-down</v-icon>
+				</template>
+			</v-select>
+		</div>
 		<!-- Note body -->
 		<v-textarea v-model="note.body" solo rounded auto-grow
 						clearable clear-icon="mdi-close-circle"
 						label="Write a note here..."
 						background-color="#A5D4FF"></v-textarea>
 		<!-- Main action buttons -->
-		<div class="text-center">
-			<!-- Delete button and dialog -->
+		<div class="text-center mt-5">
+			<router-link :to="{ name: 'notes'}" class="router-link">
+				<ButtonBack/>
+			</router-link>
 			<ButtonDialogDelete/>
-			<!-- Cancel button -->
 			<router-link :to="{ name: 'notes'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<!-- Save button -->
-			<ButtonSave/>
+			<ButtonSave @click.native="printNote()" />
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
@@ -31,6 +44,7 @@
 </template>
 
 <script>
+import ButtonBack from '@/components/ButtonBack.vue';
 import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
@@ -41,7 +55,17 @@ export default {
 	name: 'NotesView',
 	data() {
 		return {
-			note: {}
+			note: {},
+			selectItems: [
+				{
+					value: true,
+					name: "IMPORTANT"
+				},
+				{
+					value: false,
+					name: "NOT IMPORTANT"
+				}
+			]
 		}
 	},
 	mounted() {
@@ -54,7 +78,13 @@ export default {
 		this.note = noteFromBackend;
 		console.log(this.note);
 	},
+	methods: {
+		printNote() {
+			console.log(this.note);
+		}
+	},
 	components: {
+		ButtonBack,
 		ButtonDialogDelete,
 		ButtonCancel,
 		ButtonSave,
@@ -65,10 +95,15 @@ export default {
 
 <style scoped>
 	@import '@/assets/css/views-style.css';
+	.head-flex {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
 	.heading-text-field {
 		font-size: 1.75em;
 		width: 50%;
-		margin: 0px auto;
 	}
 	.v-input__slot, textarea {
 		padding-top: 10px !important;
