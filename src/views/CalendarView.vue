@@ -46,9 +46,34 @@
 							type="month"
 							:weekdays="weekday"
 							:events="closedPeriodsForPrivateAccomodation"
+							@click:event="showEvent"
 							event-color="#FF6F6F"
 							color="#A5D4FF">
 			</v-calendar>
+			<v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" rounded="xl"
+					  offset-y min-width="150px" max-width="450px">
+				<v-card color="#E3EAEF" min-width="150px" max-width="450px" class="period-menu">
+					<v-toolbar elevation="0" color="#A5D4FF">
+						<v-toolbar-title v-html="selectedPeriod.name" class="mr-5"></v-toolbar-title>
+						<v-spacer></v-spacer>
+						<router-link :to="{ name: 'period-detail-edit', params: { id: selectedPeriod.ObjectId }}" class="router-link">
+							<v-btn icon color="#000000">
+								<v-icon>mdi-pencil</v-icon>
+							</v-btn>
+						</router-link>
+					</v-toolbar>
+					<v-card-text>
+						<span>Start: {{ selectedPeriod.start }}</span>
+						<br>
+						<span>End: {{ selectedPeriod.end }}</span>
+					</v-card-text>
+					<v-card-actions>
+						<v-btn text rounded color="#000000" background-color="#A5D4FF" @click="selectedOpen = false">
+							Cancel
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-menu>
 		</v-sheet>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
@@ -56,7 +81,6 @@
 </template>
 
 <script>
-import CalendarItem from '@/components/CalendarItem.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
@@ -69,7 +93,10 @@ export default {
 			allClosedPeriods: [],
 			closedPeriodsForPrivateAccomodation: [],
 			privateAccomodations: [],
-			privateAccomodationId: null
+			privateAccomodationId: null,
+			selectedPeriod: {},
+			selectedElement: null,
+			selectedOpen: false,
 		}
 	},
 	mounted() {
@@ -90,32 +117,37 @@ export default {
 		let periodsFromBackend = [
 			{
 				ObjectId: 110,
-				start: "2021-05-16",
-				end: "2021-05-25",
+				start: "2021-05-16 15:00",
+				end: "2021-05-25 10:00",
+				name: "Reservation (Hans Muller)",
 				privateAccomodationObjectId: 111
 			},
 			{
 				ObjectId: 100,
-				start: "2022-05-26",
-				end: "2022-05-30",
+				start: "2022-05-26 15:00",
+				end: "2022-05-30 10:00",
+				name: "Reservation (Marie Smith)",
 				privateAccomodationObjectId: 111
 			},
 			{
 				ObjectId: 101,
-				start: "2022-06-28",
-				end: "2022-07-08",
+				start: "2022-06-28 15:00",
+				end: "2022-07-08 10:00",
+				name: "Closed (no reason)",
 				privateAccomodationObjectId: 111
 			},
 			{
 				ObjectId: 102,
-				start: "2022-07-10",
-				end: "2022-07-20",
+				start: "2022-07-10 15:00",
+				end: "2022-07-20 10:00",
+				name: "Closed (can't get it ready)",
 				privateAccomodationObjectId: 112
 			},
 			{
 				ObjectId: 103,
-				start: "2022-08-01",
-				end: "2022-08-15",
+				start: "2022-08-01 15:00",
+				end: "2022-08-15 10:00",
+				name: "Closed (vacation)",
 				privateAccomodationObjectId: 112
 			}
 		];
@@ -134,10 +166,26 @@ export default {
 		},
 		updateClosedPeriodsForPrivateAcomodation() {
 			this.closedPeriodsForPrivateAccomodation = this.allClosedPeriods.filter(period => period.privateAccomodationObjectId === this.privateAccomodationId);
-		}
+		},
+      showEvent ({ nativeEvent, event }) {
+			// function that opens menu after click on period
+			const open = () => {
+				this.selectedPeriod = event;
+				this.selectedElement = nativeEvent.target;
+				requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true));
+			}
+			// handles closing and opening menu
+			if (this.selectedOpen) {
+				this.selectedOpen = false;
+				requestAnimationFrame(() => requestAnimationFrame(() => open()));
+			} else {
+				open();
+			}
+			// prevents further propagation of the current event in the capturing and bubbling phases
+			nativeEvent.stopPropagation();
+      }
 	},
 	components: {
-		CalendarItem,
 		EmptyDiv
 	}
 }
@@ -171,6 +219,9 @@ export default {
 	}
 	.calendar-title {
 		font-size: 24px;
+	}
+	.period-menu {
+		border-radius: 24px !important;
 	}
 	@media (max-width:750px) {
 		.select-div {

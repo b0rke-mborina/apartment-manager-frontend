@@ -14,6 +14,7 @@ import SignupView from '../views/SignupView.vue';
 import AccomodationDetailView from '../views/AccomodationDetailView.vue';
 import AccomodationEditView from '../views/AccomodationEditView.vue';
 import ReservationDetailView from '../views/ReservationDetailView.vue';
+import PeriodDetailEditView from '@/views/PeriodDetailEditView.vue';
 import GuestDetailView from '../views/GuestDetailView.vue';
 import GuestEditView from '../views/GuestEditView.vue';
 import ToDoListDetailEditView from '../views/ToDoListDetailEditView.vue';
@@ -59,6 +60,12 @@ const routes = [
 		path: '/calendar',
 		name: 'calendar',
 		component: CalendarView
+	},
+	{
+		path: '/period/:id',
+		props: true,
+		name: 'period-detail-edit',
+		component: PeriodDetailEditView
 	},
 	{
 		path: '/guests',

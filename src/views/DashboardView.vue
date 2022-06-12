@@ -1,6 +1,6 @@
 <template>
 	<v-container absolute fluid class="main-content">
-		<!-- <CalendarItem/> -->
+		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Dashboard</h1>
 		<!-- <ButtonBack/>
 		<ButtonSave/>
@@ -49,7 +49,6 @@ import ReservationItem from '@/components/ReservationItem.vue';
 import GuestItem from '@/components/GuestItem.vue';
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import NoteItem from '@/components/NoteItem.vue';
-import CalendarItem from '@/components/CalendarItem.vue';
 import DashboardItem from '@/components/DashboardItem.vue';
 
 import ButtonDelete from '@/components/ButtonDelete.vue';
@@ -320,7 +319,6 @@ export default {
 		GuestItem,
 		ToDoListItem,
 		NoteItem,
-		CalendarItem,
 		DashboardItem,
 		ButtonDelete,
 		ButtonSave,

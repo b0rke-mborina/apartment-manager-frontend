@@ -40,7 +40,7 @@
 				<FormLabel text="First name" class="details-label" />
 				<v-text-field v-model="guest.firstName" solo rounded
 								  clearable clear-icon="mdi-close-circle"
-								  label="First name of guest"
+								  label="Guest's first name"
 								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
@@ -49,7 +49,43 @@
 				<FormLabel text="Last name" class="details-label" />
 				<v-text-field v-model="guest.lastName" solo rounded
 								  clearable clear-icon="mdi-close-circle"
-								  label="Last name of guest"
+								  label="Guest's last name"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- Email info -->
+			<div class="details-grid-item">
+				<FormLabel text="Email" class="details-label" />
+				<v-text-field v-model="guest.email" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Guest's email"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- Phone number info -->
+			<div class="details-grid-item">
+				<FormLabel text="Phone number" class="details-label" />
+				<v-text-field v-model="guest.phoneNumber" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Guest's phone number"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- Country info -->
+			<div class="details-grid-item">
+				<FormLabel text="Country" class="details-label" />
+				<v-text-field v-model="guest.country" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Country the guest is from"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- City info -->
+			<div class="details-grid-item">
+				<FormLabel text="City" class="details-label" />
+				<v-text-field v-model="guest.city" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="City the guest is from"
 								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
@@ -60,7 +96,7 @@
 				<ButtonBack/>
 			</router-link>
 			<ButtonDialogDelete/>
-			<ButtonSave/>
+			<ButtonSave @click.native="printGuest()" />
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
@@ -113,6 +149,9 @@ export default {
 			const current = new Date();
 			const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
 			return date;
+		},
+		printGuest() {
+			console.log(this.guest);
 		}
 	},
 	components: {
