@@ -57,10 +57,9 @@
 						<v-toolbar-title v-html="selectedPeriod.name" class="mr-5"></v-toolbar-title>
 						<v-spacer></v-spacer>
 						<router-link :to="{ name: 'period-detail-edit', params: { id: selectedPeriod.ObjectId }}" class="router-link">
-							<v-btn icon color="#000000">
-								<v-icon>mdi-pencil</v-icon>
-							</v-btn>
+							<IconEdit/>
 						</router-link>
+						<IconDelete/>
 					</v-toolbar>
 					<v-card-text>
 						<span>Start: {{ selectedPeriod.start }}</span>
@@ -68,19 +67,28 @@
 						<span>End: {{ selectedPeriod.end }}</span>
 					</v-card-text>
 					<v-card-actions>
-						<v-btn text rounded color="#000000" background-color="#A5D4FF" @click="selectedOpen = false">
-							Cancel
-						</v-btn>
+						<ButtonCancel @click.native="selectedOpen = false" />
 					</v-card-actions>
 				</v-card>
 			</v-menu>
 		</v-sheet>
+		<!-- Add new period button -->
+		<div class="text-center">
+			<v-btn elevation="2" rounded large class="mb-4 mt-8 btn-add-new">
+				<v-icon color="#000000" class="mr-2">mdi-plus</v-icon>
+				ADD NEW PERIOD
+			</v-btn>
+		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
+import IconDelete from '@/components/IconDelete.vue';
+import IconEdit from '@/components/IconEdit.vue';
+import ButtonCancel from '@/components/ButtonCancel.vue';
+
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
@@ -186,6 +194,9 @@ export default {
       }
 	},
 	components: {
+		IconEdit,
+		IconDelete,
+		ButtonCancel,
 		EmptyDiv
 	}
 }
@@ -222,6 +233,9 @@ export default {
 	}
 	.period-menu {
 		border-radius: 24px !important;
+	}
+	.btn-add-new {
+		background-color: #A5D4FF !important;
 	}
 	@media (max-width:750px) {
 		.select-div {
