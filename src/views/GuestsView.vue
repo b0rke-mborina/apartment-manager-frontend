@@ -2,6 +2,8 @@
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Guests</h1>
+		<!-- Empty list sign -->
+		<NoItemsDiv v-if="guests.length === 0" />
 		<!-- List of guests -->
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
 		<!-- Add new guest button
@@ -16,6 +18,8 @@
 <script>
 import GuestItem from '@/components/GuestItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
+
+import NoItemsDiv from '@/components/NoItemsDiv.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 
@@ -107,6 +111,7 @@ export default {
 	components: {
 		GuestItem,
 		AddNewButton,
+		NoItemsDiv,
 		EmptyDiv
 	}
 }

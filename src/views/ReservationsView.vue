@@ -2,6 +2,8 @@
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Reservations</h1>
+		<!-- Empty list sign -->
+		<NoItemsDiv v-if="reservations.length === 0" />
 		<!-- List of reservations -->
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation" />
 		<!-- Add new reservation button -->
@@ -16,6 +18,8 @@
 <script>
 import ReservationItem from '@/components/ReservationItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
+
+import NoItemsDiv from '@/components/NoItemsDiv.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
@@ -138,6 +142,7 @@ export default {
 	components: {
 		ReservationItem,
 		AddNewButton,
+		NoItemsDiv,
 		EmptyDiv
 	}
 }

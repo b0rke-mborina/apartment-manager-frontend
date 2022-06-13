@@ -4,6 +4,9 @@
 		<h1 class="mt-5 mb-4 text-center">Accomodations</h1>
 		<!-- List of accomodations -->
 		<div class="flex-div">
+			<!-- Empty list sign -->
+			<NoItemsDiv v-if="accomodations.length === 0" />
+			<!-- List of accomodations -->
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>
 		<!-- Add new accomodation button -->
@@ -18,6 +21,8 @@
 <script>
 import AccomodationItem from '@/components/AccomodationItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
+
+import NoItemsDiv from '@/components/NoItemsDiv.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
@@ -90,6 +95,7 @@ export default {
 	components: {
 		AccomodationItem,
 		AddNewButton,
+		NoItemsDiv,
 		EmptyDiv
 	}
 }

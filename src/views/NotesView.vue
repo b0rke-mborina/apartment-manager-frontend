@@ -4,6 +4,9 @@
 		<h1 class="mt-5 mb-4 text-center">Notes</h1>
 		<!-- List of notes -->
 		<div class="flex-div">
+			<!-- Empty list sign -->
+			<NoItemsDiv v-if="notes.length === 0" />
+			<!-- List of notes -->
 			<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
 		</div>
 		<!-- Add new note button -->
@@ -18,6 +21,8 @@
 <script>
 import NoteItem from '@/components/NoteItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
+
+import NoItemsDiv from '@/components/NoItemsDiv.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
@@ -60,6 +65,7 @@ export default {
 	components: {
 		NoteItem,
 		AddNewButton,
+		NoItemsDiv,
 		EmptyDiv
 	}
 }

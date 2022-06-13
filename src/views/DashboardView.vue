@@ -16,6 +16,9 @@
 		<!-- Accomodations -->
 		<h2 class="mt-5 mb-2">Your accomodations</h2>
 		<div class="flex-div">
+			<!-- Empty list sign -->
+			<NoItemsDiv v-if="accomodations.length === 0" />
+			<!-- List of accomodations -->
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>
 		<div class="text-center">
@@ -25,6 +28,9 @@
 		</div>
 		<!-- Reservations -->
 		<h2 class="mt-5 mb-2">Your upcoming reservations</h2>
+		<!-- Empty list sign -->
+		<NoItemsDiv v-if="reservations.length === 0" />
+		<!-- List of reservations -->
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation"/>
 		<div class="text-center">
 			<router-link to="/reservations" class="router-link">
@@ -33,6 +39,9 @@
 		</div>
 		<!-- Guests -->
 		<h2 class="mt-5 mb-2">Your guests</h2>
+		<!-- Empty list sign -->
+		<NoItemsDiv v-if="guests.length === 0" />
+		<!-- List of guests -->
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
 		<div class="text-center">
 			<router-link to="/guests" class="router-link">
@@ -55,8 +64,11 @@ import ButtonDelete from '@/components/ButtonDelete.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
 import ButtonBack from '@/components/ButtonBack.vue';
 import ButtonSeeMore from '@/components/ButtonSeeMore.vue';
+
 import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
+
+import NoItemsDiv from '@/components/NoItemsDiv.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
@@ -65,8 +77,18 @@ export default {
 			accomodations: [],
 			reservations: [],
 			guests: [],
-			noteItem: null,
-			toDoListItem: null
+			noteItem: {
+				title: "Notes",
+				aspect: "important",
+				number: 0,
+				link: "/notes"
+			},
+			toDoListItem: {
+				title: "To-do lists",
+				aspect: "not completed",
+				number: 0,
+				link: "/todolists"
+			}
 		}
 	},
 	mounted() {
@@ -289,18 +311,8 @@ export default {
 					guestState: "POTENTIAL GUEST"
 				}
 			],
-			noteItem: {
-				title: "Notes",
-				aspect: "important",
-				number: 3,
-				link: "/notes"
-			},
-			toDoListItem: {
-				title: "To-do lists",
-				aspect: "not completed",
-				number: 2,
-				link: "/todolists"
-			}
+			noteItemsNumber: 3,
+			toDoListItemsNumber: 2
 		};
 		this.accomodations = dataFromBackend.accomodations;
 		console.log(this.accomodations);
@@ -308,9 +320,9 @@ export default {
 		console.log(this.reservations);
 		this.guests = dataFromBackend.guests;
 		console.log(this.guests);
-		this.noteItem = dataFromBackend.noteItem;
+		this.noteItem.number = dataFromBackend.noteItemsNumber;
 		console.log(this.noteItem);
-		this.toDoListItem = dataFromBackend.toDoListItem;
+		this.toDoListItem.number = dataFromBackend.toDoListItemsNumber;
 		console.log(this.toDoListItem);
 	},
 	components: {
@@ -326,6 +338,7 @@ export default {
 		ButtonSeeMore,
 		FormLabel,
 		FormTextField,
+		NoItemsDiv,
 		EmptyDiv
 	}
 }

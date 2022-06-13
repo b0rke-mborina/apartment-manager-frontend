@@ -4,9 +4,12 @@
 		<h1 class="mt-5 mb-4 text-center">To-do lists</h1>
 		<!-- List of to do lists -->
 		<div class="flex-div">
+			<!-- Empty list sign -->
+			<NoItemsDiv v-if="toDoLists.length === 0" />
+			<!-- List of to-do lists -->
 			<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
-		<!-- Add new to do list button -->
 		</div>
+		<!-- Add new to do list button -->
 		<div class="text-center">
 			<AddNewButton/>
 		</div>
@@ -18,6 +21,8 @@
 <script>
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
+
+import NoItemsDiv from '@/components/NoItemsDiv.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
@@ -120,6 +125,7 @@ export default {
 	components: {
 		ToDoListItem,
 		AddNewButton,
+		NoItemsDiv,
 		EmptyDiv
 	}
 }
