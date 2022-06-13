@@ -66,13 +66,10 @@
 		</div>
 		<!-- Main action buttons -->
 		<div class="text-center">
-			<!-- Back button -->
 			<router-link :to="{ name: 'accomodations'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<!-- Delete button and dialog -->
 			<ButtonDialogDelete/>
-			<!-- Edit button -->
 			<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation.ObjectId }}" class="router-link">
 				<ButtonEdit/>
 			</router-link>

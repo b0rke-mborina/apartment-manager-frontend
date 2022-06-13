@@ -50,22 +50,27 @@
 							event-color="#FF6F6F"
 							color="#A5D4FF">
 			</v-calendar>
+			<!-- Period details popup menu -->
 			<v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" rounded="xl"
 					  offset-y min-width="150px" max-width="450px">
 				<v-card color="#E3EAEF" min-width="150px" max-width="450px" class="period-menu">
 					<v-toolbar elevation="0" color="#A5D4FF">
+						<!-- Period menu title / name -->
 						<v-toolbar-title v-html="selectedPeriod.name" class="mr-5"></v-toolbar-title>
 						<v-spacer></v-spacer>
+						<!-- Period menu edit and delete (with dialog) icons -->
 						<router-link :to="{ name: 'period-detail-edit', params: { id: selectedPeriod.ObjectId }}" class="router-link">
 							<IconEdit/>
 						</router-link>
 						<IconDelete/>
 					</v-toolbar>
+					<!-- Period menu info -->
 					<v-card-text>
 						<span>Start: {{ selectedPeriod.start }}</span>
 						<br>
 						<span>End: {{ selectedPeriod.end }}</span>
 					</v-card-text>
+					<!-- Period menu cancel button (close) -->
 					<v-card-actions>
 						<ButtonCancel @click.native="selectedOpen = false" />
 					</v-card-actions>

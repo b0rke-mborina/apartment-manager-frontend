@@ -2,10 +2,6 @@
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Dashboard</h1>
-		<!-- <ButtonBack/>
-		<ButtonSave/>
-		<FormLabel text="Name" />
-		<FormTextField text="Apartment Nature" /> -->
 		<!-- To do lists, notes and calendars -->
 		<h2 class="mt-5 mb-2">Your upcoming work and calendars</h2>
 		<div class="flex-div">
@@ -21,6 +17,7 @@
 			<!-- List of accomodations -->
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>
+		<!-- See more button -->
 		<div class="text-center">
 			<router-link to="/accomodations" class="router-link">
 				<ButtonSeeMore/>
@@ -32,6 +29,7 @@
 		<NoItemsDiv v-if="reservations.length === 0" />
 		<!-- List of reservations -->
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation"/>
+		<!-- See more button -->
 		<div class="text-center">
 			<router-link to="/reservations" class="router-link">
 				<ButtonSeeMore/>
@@ -43,11 +41,13 @@
 		<NoItemsDiv v-if="guests.length === 0" />
 		<!-- List of guests -->
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
+		<!-- See more button -->
 		<div class="text-center">
 			<router-link to="/guests" class="router-link">
 				<ButtonSeeMore/>
 			</router-link>
 		</div>
+		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
 </template>

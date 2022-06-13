@@ -56,13 +56,10 @@
 		</div>
 		<!-- Main action buttons -->
 		<div class="text-center">
-			<!-- Back button -->
 			<router-link :to="{ name: 'reservations'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<!-- Delete button and dialog -->
 			<ButtonDialogDelete/>
-			<!-- Edit button -->
 			<ButtonEdit/>
 		</div>
 		<!-- Empty space at the bottom of page -->
