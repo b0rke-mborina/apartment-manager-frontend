@@ -44,7 +44,7 @@ import IconDelete from '@/components/IconDelete.vue';
 import IconEdit from '@/components/IconEdit.vue';
 
 export default {
-	name: 'Item',
+	name: 'AccomodationItem',
 	props: {
 		accomodation: Object
 	},

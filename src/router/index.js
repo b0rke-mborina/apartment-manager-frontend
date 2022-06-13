@@ -13,13 +13,16 @@ import SignupView from '../views/SignupView.vue';
 
 import AccomodationDetailView from '../views/AccomodationDetailView.vue';
 import AccomodationEditView from '../views/AccomodationEditView.vue';
+import AccomodationAddNewView from '../views/AccomodationAddNewView.vue';
 import ReservationDetailView from '../views/ReservationDetailView.vue';
 import PeriodDetailEditView from '@/views/PeriodDetailEditView.vue';
 import PeriodAddNewView from '@/views/PeriodAddNewView.vue';
 import GuestDetailView from '../views/GuestDetailView.vue';
 import GuestEditView from '../views/GuestEditView.vue';
+import GuestAddNewView from '../views/GuestAddNewView.vue';
 import ToDoListDetailEditView from '../views/ToDoListDetailEditView.vue';
 import NoteDetailEditView from '../views/NoteDetailEditView.vue';
+import NoteAddNewView from '../views/NoteAddNewView.vue';
 
 Vue.use(VueRouter)
 
@@ -33,6 +36,11 @@ const routes = [
 		path: '/accomodations',
 		name: 'accomodations',
 		component: AccomodationsView
+	},
+	{
+		path: '/accomodation/creation',
+		name: 'accomodation-creation',
+		component: AccomodationAddNewView
 	},
 	{
 		path: '/accomodation/:id',
@@ -64,8 +72,7 @@ const routes = [
 	},
 	{
 		path: '/period/creation',
-		props: true,
-		name: 'period-add-new',
+		name: 'period-creation',
 		component: PeriodAddNewView
 	},
 	{
@@ -78,6 +85,11 @@ const routes = [
 		path: '/guests',
 		name: 'guests',
 		component: GuestsView
+	},
+	{
+		path: '/guest/creation',
+		name: 'guest-creation',
+		component: GuestAddNewView
 	},
 	{
 		path: '/guest/:id',
@@ -106,6 +118,11 @@ const routes = [
 		path: '/notes',
 		name: 'notes',
 		component: NotesView
+	},
+	{
+		path: '/note/creation',
+		name: 'note-creation',
+		component: NoteAddNewView
 	},
 	{
 		path: '/note/:id',
