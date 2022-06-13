@@ -15,6 +15,7 @@ import AccomodationDetailView from '../views/AccomodationDetailView.vue';
 import AccomodationEditView from '../views/AccomodationEditView.vue';
 import ReservationDetailView from '../views/ReservationDetailView.vue';
 import PeriodDetailEditView from '@/views/PeriodDetailEditView.vue';
+import PeriodAddNewView from '@/views/PeriodAddNewView.vue';
 import GuestDetailView from '../views/GuestDetailView.vue';
 import GuestEditView from '../views/GuestEditView.vue';
 import ToDoListDetailEditView from '../views/ToDoListDetailEditView.vue';
@@ -60,6 +61,12 @@ const routes = [
 		path: '/calendar',
 		name: 'calendar',
 		component: CalendarView
+	},
+	{
+		path: '/period/creation',
+		props: true,
+		name: 'period-add-new',
+		component: PeriodAddNewView
 	},
 	{
 		path: '/period/:id',

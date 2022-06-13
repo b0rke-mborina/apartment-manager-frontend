@@ -52,7 +52,7 @@ import ButtonSave from '@/components/ButtonSave.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'NotesView',
+	name: 'NoteDetailEditView',
 	data() {
 		return {
 			note: {},

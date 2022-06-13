@@ -116,7 +116,7 @@ import EmptyDiv from '@/components/EmptyDiv.vue';
 
 
 export default {
-	name: 'GuestDetailView',
+	name: 'GuestEditView',
 	data() {
 		return {
 			guest: {}

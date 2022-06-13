@@ -13,7 +13,7 @@ import AddNewButton from '@/components/ButtonAddNew.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'ToDoListsView',
+	name: 'ToDoListDetailEditView',
 	data() {
 		return {
 			toDoLists: []

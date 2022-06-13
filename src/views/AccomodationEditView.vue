@@ -151,7 +151,7 @@ import ButtonSave from '@/components/ButtonSave.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'AccomodationsView',
+	name: 'AccomodationEditView',
 	data() {
 		return {
 			accomodation: {}

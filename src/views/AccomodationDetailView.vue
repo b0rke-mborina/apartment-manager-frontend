@@ -91,7 +91,7 @@ import ButtonEdit from '@/components/ButtonEdit.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'AccomodationsView',
+	name: 'AccomodationDetailView',
 	data() {
 		return {
 			accomodation: {}

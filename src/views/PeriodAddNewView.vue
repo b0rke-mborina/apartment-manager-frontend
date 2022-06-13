@@ -21,6 +21,7 @@
 								:items="privateAccomodations"
 								item-value="ObjectId"
 								item-text="name"
+								label="Select an accomodation"
 								solo rounded
 								background-color="#A5D4FF" class="importance-select mx-auto">
 					<template v-slot:append>
@@ -58,10 +59,16 @@ import ButtonSave from '@/components/ButtonSave.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'PeriodDetailEditView',
+	name: 'PeriodAddNewView',
 	data() {
 		return {
-			period: {},
+			period: {
+				ObjectId: null,
+				start: null,
+				end: null,
+				name: null,
+				privateAccomodation: null
+			},
 			privateAccomodations: [],
 			dates: [],
 		}
@@ -81,28 +88,19 @@ export default {
 				name: "Apartment x"
 			}
 		];
-		let periodFromBackend = {
-			ObjectId: 103,
-			start: "2021-05-16 15:00",
-			end: "2021-05-25 10:00",
-			name: "Reservation (Hans Muller)",
-			privateAccomodation: {
-				ObjectId: 111,
-				name: "Apartment Nature"
-			}
-		};
 		this.privateAccomodations = privateAccomodationsFromBackend;
-		console.log(this.privateAccomodations);
-		this.period = periodFromBackend;
-		console.log(this.period);
-		this.dates = [this.period.start, this.period.end]
 	},
 	methods: {
 		updatePeriod() {
+			// update start and end dates
 			this.dates = this.dates.sort();
 			console.log(this.dates);
 			this.period.start = this.dates[0];
 			this.period.end = this.dates[1];
+			// update private accomodation
+			this.period.privateAccomodation = this.privateAccomodations.find(accomodation =>
+				accomodation.ObjectId === this.period.privateAccomodation);
+			// print for check
 			console.log(this.period);
 		}
 	},

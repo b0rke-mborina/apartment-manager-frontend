@@ -79,10 +79,12 @@
 		</v-sheet>
 		<!-- Add new period button -->
 		<div class="text-center">
-			<v-btn elevation="2" rounded large class="mb-4 mt-8 btn-add-new">
-				<v-icon color="#000000" class="mr-2">mdi-plus</v-icon>
-				ADD NEW PERIOD
-			</v-btn>
+			<router-link :to="{ name: 'period-add-new', params: { id: selectedPeriod.ObjectId }}" class="router-link">
+				<v-btn elevation="2" rounded large class="mb-4 mt-8 btn-add-new">
+					<v-icon color="#000000" class="mr-2">mdi-plus</v-icon>
+					ADD NEW PERIOD
+				</v-btn>
+			</router-link>
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>

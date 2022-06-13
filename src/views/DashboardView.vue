@@ -72,7 +72,8 @@ import NoItemsDiv from '@/components/NoItemsDiv.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'DashboardView',data() {
+	name: 'DashboardView',
+	data() {
 		return {
 			accomodations: [],
 			reservations: [],
