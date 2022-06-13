@@ -16,7 +16,7 @@
 						 item-value="value"
 						 item-text="name"
 						 solo rounded
-						 background-color="#A5D4FF" class="mt-5 ml-3">
+						 background-color="#A5D4FF" class="importance-select mt-5 ml-3">
 				<template v-slot:append>
 					<v-icon color="#000000">mdi-menu-down</v-icon>
 				</template>
@@ -112,9 +112,18 @@ export default {
 	.heading-text-field .v-icon {
 		color: #000000 !important;
 	}
-	@media (max-width:800px) {
+	@media (max-width:700px) {
+		.head-flex {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
 		.heading-text-field {
 			width: 100%;
+			margin: 0px !important;
+		}
+		.importance-select {
+			margin: 0px !important;
 		}
 	}
 </style>
