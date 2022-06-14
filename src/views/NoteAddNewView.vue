@@ -1,47 +1,41 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 text-center">Edit a period</h1>
-		<!-- Main information grid -->
-		<div class="details-grid">
-			<!-- Period name -->
-			<div class="mt-9 text-center">
-				<FormLabel text="Name" class="details-label mb-3" />
-				<v-text-field v-model="period.name" solo rounded
-									clearable clear-icon="mdi-close-circle"
-									label="Period name..."
-									background-color="#A5D4FF"
-									class="heading-text-field mx-auto">
-				</v-text-field>
-			</div>
-			<!-- Private accomodation to which the period belongs to -->
-			<div class="mt-5 text-center justify-center">
-				<FormLabel text="Belonging private accomodation:" class="details-label mb-3" />
-				<v-select v-model="period.privateAccomodation"
-								:items="privateAccomodations"
-								item-value="ObjectId"
-								item-text="name"
-								label="Select an accomodation"
-								solo rounded
-								background-color="#A5D4FF" class="importance-select mx-auto">
-					<template v-slot:append>
-						<v-icon color="#000000">mdi-menu-down</v-icon>
-					</template>
-				</v-select>
-			</div>
-			<div class="my-5 text-center">
-				<FormLabel text="Period dates (start and end):" class="details-label mb-3" />
-				<v-date-picker v-model="dates" range></v-date-picker>
-			</div>
+		<h1 class="mt-5 text-center">Create a new note</h1>
+		<div class="head-flex">
+			<!-- Note heading -->
+			<v-text-field v-model="note.heading" solo rounded
+							clearable clear-icon="mdi-close-circle"
+							label="Note heading..."
+							background-color="#A5D4FF"
+							class="heading-text-field mt-5 mr-3">
+			</v-text-field>
+			<!-- Is note important? - select -->
+			<v-select v-model="note.important"
+						 :items="selectItems"
+						 item-value="value"
+						 item-text="name"
+						 label="Select importance"
+						 solo rounded
+						 background-color="#A5D4FF" class="importance-select mt-5 ml-3">
+				<template v-slot:append>
+					<v-icon color="#000000">mdi-menu-down</v-icon>
+				</template>
+			</v-select>
 		</div>
+		<!-- Note body -->
+		<v-textarea v-model="note.body" solo rounded auto-grow
+						clearable clear-icon="mdi-close-circle"
+						label="Write a note here..."
+						background-color="#A5D4FF"></v-textarea>
 		<!-- Main action buttons -->
 		<div class="text-center mt-5">
-			<router-link :to="{ name: 'calendar' }" class="router-link">
+			<router-link :to="{ name: 'notes' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
 			<ButtonDialogDelete/>
-			<!-- <router-link :to="{ name: 'calendar' }" class="router-link"> -->
-				<ButtonSave @click.native="updatePeriod()" />
+			<!-- <router-link :to="{ name: 'notes' }" class="router-link"> -->
+				<ButtonSave @click.native="printNote()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -62,46 +56,30 @@ export default {
 	name: 'PeriodAddNewView',
 	data() {
 		return {
-			period: {
+			note: {
 				ObjectId: null,
-				start: null,
-				end: null,
-				name: null,
-				privateAccomodation: null
+				heading: null,
+				body: null,
+				important: null
 			},
-			privateAccomodations: [],
-			dates: [],
+			selectItems: [
+				{
+					value: true,
+					name: "IMPORTANT"
+				},
+				{
+					value: false,
+					name: "NOT IMPORTANT"
+				}
+			]
 		}
 	},
 	mounted() {
-		let privateAccomodationsFromBackend = [
-			{
-				ObjectId: 111,
-				name: "Apartment Nature"
-			},
-			{
-				ObjectId: 112,
-				name: "Apartment Marie"
-			},
-			{
-				ObjectId: 113,
-				name: "Apartment x"
-			}
-		];
-		this.privateAccomodations = privateAccomodationsFromBackend;
+		
 	},
 	methods: {
-		updatePeriod() {
-			// update start and end dates
-			this.dates = this.dates.sort();
-			console.log(this.dates);
-			this.period.start = this.dates[0];
-			this.period.end = this.dates[1];
-			// update private accomodation
-			this.period.privateAccomodation = this.privateAccomodations.find(accomodation =>
-				accomodation.ObjectId === this.period.privateAccomodation);
-			// print for check
-			console.log(this.period);
+		printNote() {
+			console.log(this.note);
 		}
 	},
 	components: {
@@ -116,19 +94,15 @@ export default {
 
 <style scoped>
 	@import '@/assets/css/views-style.css';
-	.details-grid {
-		display: grid;
-		grid-template-columns: auto;
-	}
-	.details-grid-item {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
+	.head-flex {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 	}
 	.heading-text-field {
+		font-size: 1.75em;
 		width: 50%;
-	}
-	.importance-select {
-		width: 40%;
 	}
 	.v-input__slot, textarea {
 		padding-top: 10px !important;
@@ -137,22 +111,18 @@ export default {
 	.heading-text-field .v-icon {
 		color: #000000 !important;
 	}
-	@media (max-width:1200px) {
-		.heading-text-field {
-			width: 70%;
+	@media (max-width:700px) {
+		.head-flex {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
 		}
-	}
-	@media (max-width:800px) {
 		.heading-text-field {
 			width: 100%;
+			margin: 0px !important;
 		}
 		.importance-select {
-			width: 75%;
-		}
-	}
-	@media (max-width:500px) {
-		.importance-select {
-			width: 100%;
+			margin: 0px !important;
 		}
 	}
 </style>

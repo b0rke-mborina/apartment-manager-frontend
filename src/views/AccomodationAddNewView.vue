@@ -1,47 +1,121 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 text-center">Edit a period</h1>
+		<h1 class="mt-5 text-center">Create a new private accomodation</h1>
 		<!-- Main information grid -->
-		<div class="details-grid">
-			<!-- Period name -->
-			<div class="mt-9 text-center">
-				<FormLabel text="Name" class="details-label mb-3" />
-				<v-text-field v-model="period.name" solo rounded
-									clearable clear-icon="mdi-close-circle"
-									label="Period name..."
-									background-color="#A5D4FF"
-									class="heading-text-field mx-auto">
+		<div class="details-grid mt-9">
+			<h3 class="mt-4 mb-2">Basic information</h3>
+			<!-- Accomodation name -->
+			<div class="details-grid-item">
+				<FormLabel text="Name of private accomodation" class="details-label mr-4" />
+				<v-text-field v-model="accomodation.name" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Accomodation name"
+								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
-			<!-- Private accomodation to which the period belongs to -->
-			<div class="mt-5 text-center justify-center">
-				<FormLabel text="Belonging private accomodation:" class="details-label mb-3" />
-				<v-select v-model="period.privateAccomodation"
-								:items="privateAccomodations"
-								item-value="ObjectId"
-								item-text="name"
-								label="Select an accomodation"
-								solo rounded
-								background-color="#A5D4FF" class="importance-select mx-auto">
-					<template v-slot:append>
-						<v-icon color="#000000">mdi-menu-down</v-icon>
-					</template>
-				</v-select>
+			<!-- Number of stars (category) and maximum number of guests -->
+			<div class="details-grid-item">
+				<!-- Number of stars (category) -->
+				<div class="details-grid-subitem">
+					<FormLabel text="Number of stars (category)" class="details-label mr-4" />
+					<v-text-field v-model.number="accomodation.categoryStarNumber" solo rounded
+									single-line type="number"
+									min="3" max="5" step="1"
+									background-color="#A5D4FF" class="input-number">
+					</v-text-field>
+				</div>
+				<!-- Maximum number of guests -->
+				<div class="details-grid-subitem">
+					<FormLabel text="Maximum number of guests" class="details-label mr-4" />
+					<v-text-field v-model.number="accomodation.maxGuestNumber" solo rounded
+									single-line type="number"
+									min="1" max="99" step="1"
+									background-color="#A5D4FF" class="input-number ml-auto">
+					</v-text-field>
+				</div>
 			</div>
-			<div class="my-5 text-center">
-				<FormLabel text="Period dates (start and end):" class="details-label mb-3" />
-				<v-date-picker v-model="dates" range></v-date-picker>
+			<h3 class="mt-9 mb-2">Address information</h3>
+			<!-- Street name - address info -->
+			<div class="details-grid-item">
+				<FormLabel text="Street (address)" class="details-label mr-4" />
+				<v-text-field v-model="location.street" solo rounded
+								clearable clear-icon="mdi-close-circle"
+								label="Name of street"
+								background-color="#A5D4FF">
+				</v-text-field>
 			</div>
+			<!-- House and entrance numbers - address info -->
+			<div class="details-grid-item">
+				<!-- House number - address info -->
+				<div class="details-grid-subitem">
+					<FormLabel text="House number (address)" class="details-label mr-4" />
+					<v-text-field v-model="location.houseNumber" solo rounded
+									label="Number of the house"
+									background-color="#A5D4FF" class="input-number">
+					</v-text-field>
+				</div>
+				<!-- Entrance number - address info -->
+				<div class="details-grid-subitem">
+					<FormLabel text="Entrance number (address)" class="details-label mr-4" />
+					<v-text-field v-model="location.entranceNumber" solo rounded
+									label="Entrance label"
+									background-color="#A5D4FF" class="input-number ml-auto">
+					</v-text-field>
+				</div>
+			</div>
+			<div class="details-grid-item">
+				<!-- Postal number - address info -->
+				<div class="details-grid-subitem">
+					<FormLabel text="Postal number (address)" class="details-label mr-4" />
+					<v-text-field v-model.number="location.postalNumber" solo rounded
+									single-line type="number"
+									label="Post office number"
+									background-color="#A5D4FF" class="input-number">
+					</v-text-field>
+				</div>
+				<!-- City - address info -->
+				<div class="details-grid-subitem input-city">
+					<FormLabel text="City (address)" class="details-label mr-4" />
+					<v-text-field v-model="location.city" solo rounded
+									clearable clear-icon="mdi-close-circle"
+									label="Name of city"
+									background-color="#A5D4FF" class="ml-auto">
+					</v-text-field>
+				</div>
+			</div>
+			<h3 class="mt-9 mb-2">Other information</h3>
+			<!-- Lowest and highest floors info -->
+			<div class="details-grid-item">
+				<div class="details-grid-subitem">
+					<FormLabel text="From floor (lowest level)" class="details-label mr-4" />
+					<v-text-field v-model.number="accomodation.lowestFloor" solo rounded
+									single-line type="number"
+									label="Level number (0 is ground floor)"
+									background-color="#A5D4FF" class="input-number">
+					</v-text-field>
+				</div>
+				<!-- Highest floor info -->
+				<div class="details-grid-subitem">
+					<FormLabel text="To floor (highest level)" class="details-label mr-4" />
+					<v-text-field v-model.number="accomodation.numberofFloors" solo rounded
+									single-line type="number"
+									label="Level number (0 is ground floor)"
+									background-color="#A5D4FF" class="input-number ml-auto">
+					</v-text-field>
+				</div>
+			</div>
+			<!-- Yard info - address info -->
+			<v-checkbox v-model="accomodation.hasYard" label="Has a yard" class="mt-0 pt-0"></v-checkbox>
 		</div>
 		<!-- Main action buttons -->
 		<div class="text-center mt-5">
-			<router-link :to="{ name: 'calendar' }" class="router-link">
+			<router-link :to="{ name: 'accomodations' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
 			<ButtonDialogDelete/>
-			<!-- <router-link :to="{ name: 'calendar' }" class="router-link"> -->
-				<ButtonSave @click.native="updatePeriod()" />
+			<!-- <router-link :to="{ name: 'accomodations' }" class="router-link"> -->
+				<ButtonSave @click.native="printAccomodationAndLocation()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -59,49 +133,38 @@ import ButtonSave from '@/components/ButtonSave.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'PeriodAddNewView',
+	name: 'AccomodationAddNewView',
 	data() {
 		return {
-			period: {
+			accomodation: {
 				ObjectId: null,
-				start: null,
-				end: null,
 				name: null,
-				privateAccomodation: null
+				categoryStarNumber: null,
+				maxGuestNumber: null,
+				currentState: "AVAILABLE",
+				location: null,
+				hasYard: null,
+				lowestFloor: null,
+				numberofFloors: null
 			},
-			privateAccomodations: [],
-			dates: [],
+			location: {
+				ObjectId: null,
+				street: null,
+				houseNumber: null,
+				entranceNumber: null,
+				postalNumber: null,
+				city: null,
+				country: null
+			}
 		}
 	},
 	mounted() {
-		let privateAccomodationsFromBackend = [
-			{
-				ObjectId: 111,
-				name: "Apartment Nature"
-			},
-			{
-				ObjectId: 112,
-				name: "Apartment Marie"
-			},
-			{
-				ObjectId: 113,
-				name: "Apartment x"
-			}
-		];
-		this.privateAccomodations = privateAccomodationsFromBackend;
+		
 	},
 	methods: {
-		updatePeriod() {
-			// update start and end dates
-			this.dates = this.dates.sort();
-			console.log(this.dates);
-			this.period.start = this.dates[0];
-			this.period.end = this.dates[1];
-			// update private accomodation
-			this.period.privateAccomodation = this.privateAccomodations.find(accomodation =>
-				accomodation.ObjectId === this.period.privateAccomodation);
-			// print for check
-			console.log(this.period);
+		printAccomodationAndLocation() {
+			console.log(this.accomodation);
+			console.log(this.location);
 		}
 	},
 	components: {
@@ -123,36 +186,55 @@ export default {
 	.details-grid-item {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		gap: 32px;
 	}
-	.heading-text-field {
-		width: 50%;
+	.details-grid-subitem {
+		display: grid;
+		grid-template-columns: auto auto;
 	}
-	.importance-select {
-		width: 40%;
+	.input-number {
+		width: 150px;
 	}
-	.v-input__slot, textarea {
-		padding-top: 10px !important;
-		padding-bottom: 10px !important;
+	.input-city div:nth-child(2) {
+		width: 100%;
 	}
-	.heading-text-field .v-icon {
-		color: #000000 !important;
-	}
-	@media (max-width:1200px) {
-		.heading-text-field {
-			width: 70%;
+	@media (max-width:750px) {
+		.details-grid-item {
+			grid-template-columns: auto;
+			gap: 4px;
 		}
-	}
-	@media (max-width:800px) {
-		.heading-text-field {
+		.details-grid-subitem {
+			grid-template-columns: auto auto;
+		}
+		.details-grid-subitem div:nth-child(1) {
+			text-align: left;
+		}
+		.details-grid-subitem div:nth-child(2) {
+			margin-left: auto;
+			margin-right: 0px;
+		}
+		.input-city {
+			grid-template-columns: 1fr 1fr;
+		}
+		.input-city div:nth-child(2) {
 			width: 100%;
 		}
-		.importance-select {
-			width: 75%;
+		.details-label {
+			text-align: center;
+			margin-bottom: 8px;
 		}
 	}
-	@media (max-width:500px) {
-		.importance-select {
-			width: 100%;
+	@media (max-width:425px) {
+		.input-city {
+			grid-template-columns: auto;
+			text-align: center;
+		}
+		.details-grid-subitem div:nth-child(1) {
+			text-align: center;
+		}
+		.details-grid-subitem div:nth-child(2) {
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 </style>

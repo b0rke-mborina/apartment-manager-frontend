@@ -1,47 +1,73 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 text-center">Edit a period</h1>
+		<h1 class="mt-5 text-center">Create a new guest</h1>
 		<!-- Main information grid -->
-		<div class="details-grid">
-			<!-- Period name -->
-			<div class="mt-9 text-center">
-				<FormLabel text="Name" class="details-label mb-3" />
-				<v-text-field v-model="period.name" solo rounded
-									clearable clear-icon="mdi-close-circle"
-									label="Period name..."
-									background-color="#A5D4FF"
-									class="heading-text-field mx-auto">
+		<div class="details-grid mt-9">
+			<!-- First name info -->
+			<div class="details-grid-item">
+				<FormLabel text="First name" class="details-label" />
+				<v-text-field v-model="guest.firstName" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Guest's first name"
+								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
-			<!-- Private accomodation to which the period belongs to -->
-			<div class="mt-5 text-center justify-center">
-				<FormLabel text="Belonging private accomodation:" class="details-label mb-3" />
-				<v-select v-model="period.privateAccomodation"
-								:items="privateAccomodations"
-								item-value="ObjectId"
-								item-text="name"
-								label="Select an accomodation"
-								solo rounded
-								background-color="#A5D4FF" class="importance-select mx-auto">
-					<template v-slot:append>
-						<v-icon color="#000000">mdi-menu-down</v-icon>
-					</template>
-				</v-select>
+			<!-- Last name info -->
+			<div class="details-grid-item">
+				<FormLabel text="Last name" class="details-label" />
+				<v-text-field v-model="guest.lastName" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Guest's last name"
+								  background-color="#A5D4FF">
+				</v-text-field>
 			</div>
-			<div class="my-5 text-center">
-				<FormLabel text="Period dates (start and end):" class="details-label mb-3" />
-				<v-date-picker v-model="dates" range></v-date-picker>
+			<!-- Email info -->
+			<div class="details-grid-item">
+				<FormLabel text="Email" class="details-label" />
+				<v-text-field v-model="guest.email" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  type="email"
+								  label="example@email.com"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- Phone number info -->
+			<div class="details-grid-item">
+				<FormLabel text="Phone number" class="details-label" />
+				<v-text-field v-model="guest.phoneNumber" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Guest's phone number"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- Country info -->
+			<div class="details-grid-item">
+				<FormLabel text="Country" class="details-label" />
+				<v-text-field v-model="guest.country" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Country the guest is from"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- City info -->
+			<div class="details-grid-item">
+				<FormLabel text="City" class="details-label" />
+				<v-text-field v-model="guest.city" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="City the guest is from"
+								  background-color="#A5D4FF">
+				</v-text-field>
 			</div>
 		</div>
 		<!-- Main action buttons -->
 		<div class="text-center mt-5">
-			<router-link :to="{ name: 'calendar' }" class="router-link">
+			<router-link :to="{ name: 'guests' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
 			<ButtonDialogDelete/>
-			<!-- <router-link :to="{ name: 'calendar' }" class="router-link"> -->
-				<ButtonSave @click.native="updatePeriod()" />
+			<!-- <router-link :to="{ name: 'guests' }" class="router-link"> -->
+				<ButtonSave @click.native="printGuest()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -59,49 +85,26 @@ import ButtonSave from '@/components/ButtonSave.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'PeriodAddNewView',
+	name: 'GuestAddNewView',
 	data() {
 		return {
-			period: {
+			guest: {
 				ObjectId: null,
-				start: null,
-				end: null,
-				name: null,
-				privateAccomodation: null
-			},
-			privateAccomodations: [],
-			dates: [],
+				firstName: null,
+				lastName: null,
+				email: null,
+				phoneNumber: null,
+				country: null,
+				city: null
+			}
 		}
 	},
 	mounted() {
-		let privateAccomodationsFromBackend = [
-			{
-				ObjectId: 111,
-				name: "Apartment Nature"
-			},
-			{
-				ObjectId: 112,
-				name: "Apartment Marie"
-			},
-			{
-				ObjectId: 113,
-				name: "Apartment x"
-			}
-		];
-		this.privateAccomodations = privateAccomodationsFromBackend;
+		
 	},
 	methods: {
-		updatePeriod() {
-			// update start and end dates
-			this.dates = this.dates.sort();
-			console.log(this.dates);
-			this.period.start = this.dates[0];
-			this.period.end = this.dates[1];
-			// update private accomodation
-			this.period.privateAccomodation = this.privateAccomodations.find(accomodation =>
-				accomodation.ObjectId === this.period.privateAccomodation);
-			// print for check
-			console.log(this.period);
+		printGuest() {
+			console.log(this.guest);
 		}
 	},
 	components: {

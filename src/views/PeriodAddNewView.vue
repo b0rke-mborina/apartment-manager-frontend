@@ -1,7 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 text-center">Edit a period</h1>
+		<h1 class="mt-5 text-center">Create a new period</h1>
 		<!-- Main information grid -->
 		<div class="details-grid">
 			<!-- Period name -->

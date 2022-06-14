@@ -11,7 +11,9 @@
 		</div>
 		<!-- Add new accomodation button -->
 		<div class="text-center">
-			<AddNewButton/>
+			<router-link :to="{ name: 'accomodation-creation' }" class="router-link">
+				<AddNewButton/>
+			</router-link>
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>

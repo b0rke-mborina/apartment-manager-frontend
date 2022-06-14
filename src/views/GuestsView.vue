@@ -6,10 +6,12 @@
 		<NoItemsDiv v-if="guests.length === 0" />
 		<!-- List of guests -->
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
-		<!-- Add new guest button
+		<!-- Add new guest button -->
 		<div class="text-center">
-			<AddNewButton/>
-		</div> -->
+			<router-link :to="{ name: 'guest-creation' }" class="router-link">
+				<AddNewButton/>
+			</router-link>
+		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
