@@ -10,6 +10,7 @@ import ToDoListsView from '../views/ToDoListsView.vue';
 import NotesView from '../views/NotesView.vue';
 import LoginView from '../views/LoginView.vue';
 import SignupView from '../views/SignupView.vue';
+import AnalyticsView from '../views/AnalyticsView.vue';
 
 import AccomodationDetailView from '../views/AccomodationDetailView.vue';
 import AccomodationEditView from '../views/AccomodationEditView.vue';
@@ -129,6 +130,11 @@ const routes = [
 		props: true,
 		name: 'note-detail-edit',
 		component: NoteDetailEditView
+	},
+	{
+		path: '/analytics',
+		name: 'analytics',
+		component: AnalyticsView
 	},
 	{
 		path: '/login',

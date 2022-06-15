@@ -33,7 +33,7 @@
         			</v-btn>
 				</v-list-item>
 				<!-- Navigation items -->
-				<v-list-item-group v-model="selectedItem" color="#000000" class="mt-10">
+				<v-list-item-group v-model="selectedItem" color="#000000" class="mt-5">
 					<v-list-item v-for="item in items" :key="item.title" :to="item.route">
 						<v-list-item-icon>
 							<v-icon color="#000000">{{ item.icon }}</v-icon>
@@ -79,6 +79,7 @@ export default {
 				{ route: '/guests', title: 'Guests', icon: 'mdi-account-group' },
 				{ route: '/todolists', title: 'To do...', icon: 'mdi-format-list-checks' },
 				{ route: '/notes', title: 'Notes', icon: 'mdi-note-edit' },
+				{ route: '/analytics', title: 'Analytics', icon: 'mdi-poll' },
 			]
       }
 	}
