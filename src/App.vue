@@ -10,12 +10,16 @@
 			<v-btn icon color="#000000">
 				<v-icon class="mx-2">mdi-account-circle</v-icon>
 			</v-btn>
-			<v-btn text rounded :to="login" class="login-signup">
-				<span>Log in</span>
-			</v-btn>
-			<v-btn text rounded :to="signup" class="login-signup">
-				<span>Sign up</span>
-			</v-btn>
+			<router-link :to="{ name: 'login' }" class="router-link">
+				<v-btn text rounded class="login-signup">
+					<span>Log in</span>
+				</v-btn>
+			</router-link>
+			<router-link :to="{ name: 'signup' }" class="router-link">
+				<v-btn text rounded class="login-signup">
+					<span>Sign up</span>
+				</v-btn>
+			</router-link>
     	</v-app-bar>
 		<!-- Sidebar / drawer -->
 		<v-navigation-drawer app color="#A5D4FF" temporary v-model="drawer" rounded>

@@ -49,6 +49,7 @@
 				<FormLabel text="Last name" class="details-label" />
 				<v-text-field v-model="guest.lastName" solo rounded
 								  clearable clear-icon="mdi-close-circle"
+								  type="email"
 								  label="Guest's last name"
 								  background-color="#A5D4FF">
 				</v-text-field>
