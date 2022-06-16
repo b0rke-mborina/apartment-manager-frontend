@@ -8,7 +8,9 @@
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation" />
 		<!-- Add new reservation button -->
 		<div class="text-center">
-			<AddNewButton/>
+			<router-link :to="{ name: 'reservation-creation' }" class="router-link">
+				<AddNewButton/>
+			</router-link>
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>

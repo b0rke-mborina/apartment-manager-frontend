@@ -15,13 +15,21 @@ import AnalyticsView from '../views/AnalyticsView.vue';
 import AccomodationDetailView from '../views/AccomodationDetailView.vue';
 import AccomodationEditView from '../views/AccomodationEditView.vue';
 import AccomodationAddNewView from '../views/AccomodationAddNewView.vue';
+
 import ReservationDetailView from '../views/ReservationDetailView.vue';
+import ReservationEditView from '../views/ReservationEditView.vue';
+import ReservationAddNewView from '../views/ReservationAddNewView.vue';
+
 import PeriodDetailEditView from '@/views/PeriodDetailEditView.vue';
 import PeriodAddNewView from '@/views/PeriodAddNewView.vue';
+
 import GuestDetailView from '../views/GuestDetailView.vue';
 import GuestEditView from '../views/GuestEditView.vue';
 import GuestAddNewView from '../views/GuestAddNewView.vue';
+
 import ToDoListDetailEditView from '../views/ToDoListDetailEditView.vue';
+import ToDoListAddNewView from '../views/ToDoListAddNewView.vue';
+
 import NoteDetailEditView from '../views/NoteDetailEditView.vue';
 import NoteAddNewView from '../views/NoteAddNewView.vue';
 
@@ -61,10 +69,21 @@ const routes = [
 		component: ReservationsView
 	},
 	{
+		path: '/reservation/creation',
+		name: 'reservation-creation',
+		component: ReservationAddNewView
+	},
+	{
 		path: '/reservation/:id',
 		props: true,
 		name: 'reservation-detail',
 		component: ReservationDetailView
+	},
+	{
+		path: '/reservation/:id/modification',
+		props: true,
+		name: 'reservation-modification',
+		component: ReservationEditView
 	},
 	{
 		path: '/calendar',
@@ -108,6 +127,11 @@ const routes = [
 		path: '/todolists',
 		name: 'todolists',
 		component: ToDoListsView
+	},
+	{
+		path: '/todolist/creation',
+		name: 'todolist-creation',
+		component: ToDoListAddNewView
 	},
 	{
 		path: '/todolist/:id',

@@ -1,7 +1,7 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 mb-4 text-center">Edit a to-do list</h1>
+		<h1 class="mt-5 mb-4 text-center">Create a new to-do list</h1>
 		<!-- To-do list title -->
 		<v-text-field v-model="toDoList.title" solo rounded
 						clearable clear-icon="mdi-close-circle"
@@ -95,48 +95,6 @@ export default {
 			},
       	drag: false
 		}
-	},
-	mounted() {
-		let toDoListFromBackend = {
-			ObjectId: 100,
-			title: "Buying backup items",
-			date: "2022-04-10",
-			items: [
-				{
-					name: "Buy glasses",
-					position: 1,
-					completed: false
-				},
-				{
-					name: "Buy linens",
-					position: 2,
-					completed: true
-				},
-				{
-					name: "Buy towels",
-					position: 3,
-					completed: true
-				},
-				{
-					name: "Buy detergents",
-					position: 4,
-					completed: true
-				},
-				{
-					name: "Buy plates",
-					position: 5,
-					completed: false
-				},
-				{
-					name: "Buy cups",
-					position: 6,
-					completed: false
-				}
-			],
-			completed: false
-		};
-		this.toDoList = toDoListFromBackend;
-		console.log(this.toDoList);
 	},
 	methods: {
 		updatePositions() {

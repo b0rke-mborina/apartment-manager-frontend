@@ -11,7 +11,9 @@
 		</div>
 		<!-- Add new to do list button -->
 		<div class="text-center">
-			<AddNewButton/>
+			<router-link :to="{ name: 'todolist-creation' }" class="router-link">
+				<AddNewButton/>
+			</router-link>
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
