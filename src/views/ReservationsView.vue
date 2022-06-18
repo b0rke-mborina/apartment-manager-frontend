@@ -3,7 +3,7 @@
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Reservations</h1>
 		<!-- Empty list sign -->
-		<NoItemsDiv v-if="reservations.length === 0" />
+		<NoItemsDiv items="reservations" v-if="reservations.length === 0" />
 		<!-- List of reservations -->
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation" />
 		<!-- Add new reservation button -->

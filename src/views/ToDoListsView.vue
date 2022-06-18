@@ -5,7 +5,7 @@
 		<!-- List of to do lists -->
 		<div class="flex-div">
 			<!-- Empty list sign -->
-			<NoItemsDiv v-if="toDoLists.length === 0" />
+			<NoItemsDiv items="to-do lists" v-if="toDoLists.length === 0" />
 			<!-- List of to-do lists -->
 			<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
 		</div>

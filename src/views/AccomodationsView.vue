@@ -5,7 +5,7 @@
 		<!-- List of accomodations -->
 		<div class="flex-div">
 			<!-- Empty list sign -->
-			<NoItemsDiv v-if="accomodations.length === 0" />
+			<NoItemsDiv items="accomodations" v-if="accomodations.length === 0" />
 			<!-- List of accomodations -->
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>

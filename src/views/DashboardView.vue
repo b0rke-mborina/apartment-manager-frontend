@@ -13,7 +13,7 @@
 		<h2 class="mt-5 mb-2">Your accomodations</h2>
 		<div class="flex-div">
 			<!-- Empty list sign -->
-			<NoItemsDiv v-if="accomodations.length === 0" />
+			<NoItemsDiv items="accomodations" v-if="accomodations.length === 0" />
 			<!-- List of accomodations -->
 			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
 		</div>
@@ -26,7 +26,7 @@
 		<!-- Reservations -->
 		<h2 class="mt-5 mb-2">Your upcoming reservations</h2>
 		<!-- Empty list sign -->
-		<NoItemsDiv v-if="reservations.length === 0" />
+		<NoItemsDiv items="reservations" v-if="reservations.length === 0" />
 		<!-- List of reservations -->
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation.ObjectId" :reservation="reservation"/>
 		<!-- See more button -->
@@ -38,7 +38,7 @@
 		<!-- Guests -->
 		<h2 class="mt-5 mb-2">Your guests</h2>
 		<!-- Empty list sign -->
-		<NoItemsDiv v-if="guests.length === 0" />
+		<NoItemsDiv items="guests" v-if="guests.length === 0" />
 		<!-- List of guests -->
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
 		<!-- See more button -->

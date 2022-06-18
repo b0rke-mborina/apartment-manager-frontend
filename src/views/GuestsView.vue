@@ -3,7 +3,7 @@
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Guests</h1>
 		<!-- Empty list sign -->
-		<NoItemsDiv v-if="guests.length === 0" />
+		<NoItemsDiv items="guests" v-if="guests.length === 0" />
 		<!-- List of guests -->
 		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
 		<!-- Add new guest button -->

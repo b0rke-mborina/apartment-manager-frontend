@@ -5,7 +5,7 @@
 		<!-- List of notes -->
 		<div class="flex-div">
 			<!-- Empty list sign -->
-			<NoItemsDiv v-if="notes.length === 0" />
+			<NoItemsDiv items="notes" v-if="notes.length === 0" />
 			<!-- List of notes -->
 			<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
 		</div>

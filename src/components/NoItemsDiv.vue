@@ -1,12 +1,15 @@
 <template>
 	<div class="no-items text-center ma-4">
-		<span>There are no items here currently...</span>
+		<span>There are no {{ items }} here currently...</span>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'NoItemsDiv'
+	name: 'NoItemsDiv',
+	props: {
+		items: String
+	}
 }
 </script>
 
