@@ -4,7 +4,7 @@
 		<h1 class="mt-5 mb-4 text-center">Reservation information</h1>
 		<!-- Reservation period -->
 		<div v-if="reservation.period" class="text-center mb-2">
-			{{ reservation.period.start }} - {{ reservation.period.end }}
+			{{ convertPeriod(reservation.period.start, reservation.period.end) }}
 		</div>
 		<!-- Reservation price -->
 		<div v-if="reservation.price" class="text-center mb-2">
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { convertPeriod } from '@/services';
+
 import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
 
@@ -141,6 +143,9 @@ export default {
 		};
 		this.reservation = reservationFromBackend;
 		console.log(this.reservation);
+	},
+	methods: {
+		convertPeriod
 	},
 	components: {
 		FormLabel,

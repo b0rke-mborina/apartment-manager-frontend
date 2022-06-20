@@ -7,7 +7,7 @@
 				<span class="mx-2 location">{{ guest.city }}, {{ guest.country }}</span>
 			</div>
 			<div class="period-dates">
-				<span class="mx-2 my-1">{{ guest.newestPeriod.start }} - {{ guest.newestPeriod.end }}</span>
+				<span class="mx-2 my-1">{{ convertPeriod(guest.newestPeriod.start, guest.newestPeriod.end) }}</span>
 				<v-chip v-if="guest.guestState === 'CANCELLED GUEST'"
 						  color="#FF6F6F" class="mx-2 my-1">
 					CANCELLED GUEST
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { convertPeriod } from '@/services';
+
 import IconDelete from '@/components/IconDelete.vue';
 import IconEdit from '@/components/IconEdit.vue';
 
@@ -58,7 +60,8 @@ export default {
 			const current = new Date();
 			const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
 			return date;
-		}
+		},
+		convertPeriod
 	},
 	props: {
 		guest: Object

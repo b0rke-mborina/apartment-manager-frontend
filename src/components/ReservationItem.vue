@@ -3,7 +3,7 @@
 		<router-link :to="{ name: 'reservation-detail', params: { id: reservation.ObjectId }}" class="router-link grid-div">
 			<div class="reservation-info">
 				<v-icon class="mx-2">mdi-calendar-check</v-icon>
-				<span class="mx-2 pa-0 d-inline-block">{{ reservation.period.start }} - {{ reservation.period.end }}</span>
+				<span class="mx-2 pa-0 d-inline-block">{{ convertPeriod(reservation.period.start, reservation.period.end) }}</span>
 			</div>
 			<div class="money">
 				<span class="mx-2 pa-0 d-inline">{{ reservation.price.value }} {{ reservation.price.currency }}</span>
@@ -46,11 +46,16 @@
 </template>
 
 <script>
+import { convertPeriod } from '@/services';
+
 import IconDelete from '@/components/IconDelete.vue';
 import IconEdit from '@/components/IconEdit.vue';
 
 export default {
 	name: 'ReservationItem',
+	methods: {
+		convertPeriod
+	},
 	props: {
 		reservation: Object
 	},

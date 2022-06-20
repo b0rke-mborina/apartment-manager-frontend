@@ -64,11 +64,11 @@
 						</router-link>
 						<IconDelete/>
 					</v-toolbar>
-					<!-- Period menu info -->
+					<!-- Period menu info (use service to render period parts) -->
 					<v-card-text>
-						<span>Start: {{ selectedPeriod.start }}</span>
+						<span v-if="selectedPeriod.start">Start: {{ convertDatetime(selectedPeriod.start) }}</span>
 						<br>
-						<span>End: {{ selectedPeriod.end }}</span>
+						<span v-if="selectedPeriod.end">End: {{ convertDatetime(selectedPeriod.end) }}</span>
 					</v-card-text>
 					<!-- Period menu cancel button (close) -->
 					<v-card-actions>
@@ -92,6 +92,8 @@
 </template>
 
 <script>
+import { convertDatetime } from '@/services';
+
 import IconEdit from '@/components/IconEdit.vue';
 import IconDelete from '@/components/IconDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
@@ -198,7 +200,8 @@ export default {
 			}
 			// prevents further propagation of the current event in the capturing and bubbling phases
 			nativeEvent.stopPropagation();
-      }
+      },
+		convertDatetime
 	},
 	components: {
 		IconEdit,

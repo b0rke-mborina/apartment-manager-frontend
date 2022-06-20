@@ -361,7 +361,7 @@ export default {
 			this.reservation.period.name = `Closed (${this.reservation.madeByGuest.firstName} ${this.reservation.madeByGuest.lastName})`
 			// print for check
 			console.log(this.reservation);
-		},
+		}
 	},
 	components: {
 		draggable,
