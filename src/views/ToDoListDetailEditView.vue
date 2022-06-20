@@ -62,7 +62,7 @@
 			<router-link :to="{ name: 'todolists' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete/>
+			<ButtonDialogDelete itemType="to-do list" />
 			<!-- <router-link :to="{ name: 'todolists' }" class="router-link"> -->
 				<ButtonSave @click.native="printToDoList()" />
 			<!-- </router-link> -->

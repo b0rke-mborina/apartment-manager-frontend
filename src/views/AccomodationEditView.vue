@@ -129,7 +129,7 @@
 			<router-link :to="{ name: 'accomodations'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete/>
+			<ButtonDialogDelete itemType="accomodation" />
 			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation.ObjectId }}" class="router-link">
 				<ButtonSave/> <!-- @click.native="printAccomodation()" -->
 			</router-link>

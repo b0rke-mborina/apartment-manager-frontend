@@ -69,7 +69,7 @@
 			<router-link :to="{ name: 'accomodations'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete/>
+			<ButtonDialogDelete itemType="accomodation" />
 			<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation.ObjectId }}" class="router-link">
 				<ButtonEdit/>
 			</router-link>

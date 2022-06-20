@@ -96,7 +96,7 @@
 			<router-link :to="{ name: 'guests'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete/>
+			<ButtonDialogDelete itemType="guest" />
 			<ButtonSave @click.native="printGuest()" />
 		</div>
 		<!-- Empty space at the bottom of page -->

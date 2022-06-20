@@ -38,7 +38,7 @@
 			<router-link :to="{ name: 'calendar' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete/>
+			<ButtonDialogDelete itemType="period" />
 			<!-- <router-link :to="{ name: 'calendar' }" class="router-link"> -->
 				<ButtonSave @click.native="updatePeriod()" />
 			<!-- </router-link> -->

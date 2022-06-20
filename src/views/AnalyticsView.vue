@@ -26,55 +26,59 @@
 			</v-card>
 		</div>
 		<!-- Earnings analytics (per year, per month of year) -->
-		<div>
-			<ChartLine periods="months" :values="analytics.earningsInEur.monthly"
-						  :labels="['January', 'February', 'March', 'April', 'May', 'June',
-									   'July', 'August', 'September', 'October', 'November', 'December']"
-						  title="Earnings in EUR" label="Earnings"
-						  class="chart" />
+		<h3 class="text-center mt-9 mb-4">Earnings analytics</h3>
+		<div class="chart-flex">
 			<ChartLine v-if="analytics.earningsInEur.yearlyLabels.length > 0"
 						  periods="years" :values="analytics.earningsInEur.yearly"
 						  :labels="analytics.earningsInEur.yearlyLabels"
 						  title="Earnings in EUR" label="Earnings"
 						  class="chart" />
-		</div>
-		<!-- Periods (occupied, available) analytics (per year, per month of year) -->
-		<div>
-			<ChartLine periods="months" :values="analytics.daysOccupied.monthly"
+			<ChartLine periods="months" :values="analytics.earningsInEur.monthly"
 						  :labels="['January', 'February', 'March', 'April', 'May', 'June',
 									   'July', 'August', 'September', 'October', 'November', 'December']"
-						  title="Occupied days" label="Days"
+						  title="Earnings in EUR (all years combined)" label="Earnings"
 						  class="chart" />
+		</div>
+		<!-- Periods (occupied, available) analytics (per year, per month of year) -->
+		<h3 class="text-center mt-9 mb-4">Periods analytics</h3>
+		<div class="chart-flex">
 			<ChartLine v-if="analytics.daysOccupied.yearlyLabels.length > 0"
 						  periods="years" :values="analytics.daysOccupied.yearly"
 						  :labels='analytics.daysOccupied.yearlyLabels'
 						  title="Occupied days" label="Days"
 						  class="chart" />
+			<ChartLine periods="months" :values="analytics.daysOccupied.monthly"
+						  :labels="['January', 'February', 'March', 'April', 'May', 'June',
+									   'July', 'August', 'September', 'October', 'November', 'December']"
+						  title="Occupied days (all years combined)" label="Days"
+						  class="chart" />
 		</div>
 		<!-- Reservations (numbers, countries) analytics (per year, per month of year) -->
-		<div>
-			<ChartBar periods="months" :values="analytics.numberOfReservations.monthly"
-						 :labels="['January', 'February', 'March', 'April', 'May', 'June',
-									  'July', 'August', 'September', 'October', 'November', 'December']"
-						 title="Quantity of reservations" label="Reservations"
-						 class="chart" />
+		<h3 class="text-center mt-9 mb-4">Reservations analytics</h3>
+		<div class="chart-flex">
 			<ChartBar v-if="analytics.numberOfReservations.yearlyLabels.length > 0"
 						 periods="years" :values="analytics.numberOfReservations.yearly"
 						 :labels='analytics.numberOfReservations.yearlyLabels'
 						 title="Quantity of reservations" label="Reservations"
 						 class="chart" />
-		</div>
-		<!-- Guests (numbers, countries) analytics (per year, per month of year) -->
-		<div>
-			<ChartBar periods="months" :values="analytics.numberOfGuests.monthly"
+			<ChartBar periods="months" :values="analytics.numberOfReservations.monthly"
 						 :labels="['January', 'February', 'March', 'April', 'May', 'June',
 									  'July', 'August', 'September', 'October', 'November', 'December']"
-						 title="Quantity of guests" label="Guests"
+						 title="Quantity of reservations (all years combined)" label="Reservations"
 						 class="chart" />
+		</div>
+		<!-- Guests (numbers, countries) analytics (per year, per month of year) -->
+		<h3 class="text-center mt-9 mb-4">Guests analytics</h3>
+		<div class="chart-flex">
 			<ChartBar v-if="analytics.numberOfGuests.yearlyLabels.length > 0"
 						 periods="years" :values="analytics.numberOfGuests.yearly"
 						 :labels='analytics.numberOfGuests.yearlyLabels'
 						 title="Quantity of guests" label="Guests"
+						 class="chart" />
+			<ChartBar periods="months" :values="analytics.numberOfGuests.monthly"
+						 :labels="['January', 'February', 'March', 'April', 'May', 'June',
+									  'July', 'August', 'September', 'October', 'November', 'December']"
+						 title="Quantity of guests (all years combined)" label="Guests"
 						 class="chart" />
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -223,6 +227,11 @@ export default {
 			return (({ ObjectId, name }) => ({ ObjectId, name }))(accomodation);
 		});
 		console.log(this.accomodations);
+		// select first accomodation and update data
+		if (this.data.length > 0) {
+			this.selectedAccomodations.push(this.data[0]);
+			this.updateData();
+		}
 	},
 	methods: {
 		updateData() {
@@ -274,8 +283,14 @@ export default {
 
 <style scoped>
 	@import '@/assets/css/views-style.css';
+	.chart-flex {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
 	.chart {
-		width: 50%;
+		width: 40%;
 	}
 	.accomodation-grid {
 		display: grid;

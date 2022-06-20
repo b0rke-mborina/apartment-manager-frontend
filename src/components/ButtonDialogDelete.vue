@@ -9,7 +9,7 @@
 		<v-card class="rounded-xl">
 			<v-card-title class="text-h5">Deletion warning</v-card-title>
 			<v-card-text>
-				Are you sure you want to delete this guest?
+				Are you sure you want to delete this {{ itemType }}?
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer></v-spacer>
@@ -30,6 +30,9 @@ export default {
 		return {
 			dialog: false
 		}
+	},
+	props: {
+		itemType: String
 	},
 	components: {
 		ButtonDelete,

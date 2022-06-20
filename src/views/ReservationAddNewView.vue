@@ -149,7 +149,6 @@
 			<router-link :to="{ name: 'reservations'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete/>
 			<!-- <router-link :to="{ name: 'reservations'}" class="router-link"> -->
 				<ButtonSave @click.native="updateReservation()" />
 			<!-- </router-link> -->
@@ -167,7 +166,6 @@ import FormTextField from '@/components/FormTextField.vue';
 import ButtonCreateNewGuest from '@/components/ButtonCreateNewGuest.vue';
 
 import ButtonBack from '@/components/ButtonBack.vue';
-import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
 
@@ -314,7 +312,6 @@ export default {
 		FormTextField,
 		ButtonCreateNewGuest,
 		ButtonBack,
-		ButtonDialogDelete,
 		ButtonCancel,
 		ButtonSave,
 		NoItemsDiv,

@@ -33,7 +33,6 @@
 			<router-link :to="{ name: 'notes' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete/>
 			<!-- <router-link :to="{ name: 'notes' }" class="router-link"> -->
 				<ButtonSave @click.native="printNote()" />
 			<!-- </router-link> -->
@@ -46,7 +45,6 @@
 <script>
 import FormLabel from '@/components/FormLabel.vue';
 
-import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
 
@@ -84,7 +82,6 @@ export default {
 	},
 	components: {
 		FormLabel,
-		ButtonDialogDelete,
 		ButtonCancel,
 		ButtonSave,
 		EmptyDiv

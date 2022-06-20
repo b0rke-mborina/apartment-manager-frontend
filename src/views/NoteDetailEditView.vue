@@ -32,7 +32,7 @@
 			<router-link :to="{ name: 'notes'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete/>
+			<ButtonDialogDelete itemType="note" />
 			<router-link :to="{ name: 'notes'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>

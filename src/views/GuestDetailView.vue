@@ -58,7 +58,7 @@
 			<router-link :to="{ name: 'guests'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete/>
+			<ButtonDialogDelete itemType="guest" />
 			<router-link :to="{ name: 'guest-modification', params: { id: guest.ObjectId }}" class="router-link">
 				<ButtonEdit/>
 			</router-link>
