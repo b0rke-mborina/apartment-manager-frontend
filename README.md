@@ -1,4 +1,4 @@
-<h1 align="center"><b>Apartment manager</b></h1>
+<h1 align="center"><b>Apartment manager (web application)</b></h1>
 
 
 
@@ -38,7 +38,7 @@
 
 
 
-## Functionalitites
+## Functionalities
 
 - Dashboard (see upcoming work, schedule, accomodations, upcoming reservations, guests)
 - Accomodations (creation, details, modification, deletion)
