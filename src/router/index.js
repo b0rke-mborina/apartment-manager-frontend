@@ -98,7 +98,7 @@ const routes = [
 	{
 		path: '/period/:id',
 		props: true,
-		name: 'period-detail-edit',
+		name: 'period-detail-modification',
 		component: PeriodDetailEditView
 	},
 	{
@@ -136,7 +136,7 @@ const routes = [
 	{
 		path: '/todolist/:id',
 		props: true,
-		name: 'todolist-detail-edit',
+		name: 'todolist-detail-modification',
 		component: ToDoListDetailEditView
 	},
 	{
@@ -152,7 +152,7 @@ const routes = [
 	{
 		path: '/note/:id',
 		props: true,
-		name: 'note-detail-edit',
+		name: 'note-detail-modification',
 		component: NoteDetailEditView
 	},
 	{

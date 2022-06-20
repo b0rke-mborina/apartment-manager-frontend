@@ -36,7 +36,9 @@
 			</div>
 		</router-link>
 		<div class="edit-delete-icons">
-			<IconEdit/>
+			<router-link :to="{ name: 'reservation-modification', params: { id: reservation.ObjectId }}" class="router-link">
+				<IconEdit/>
+			</router-link>
 			<IconDelete itemType="reservation" itemCaptionType="period"
 							:itemName="'from ' + reservation.period.start + ' to ' + reservation.period.end" />
 		</div>

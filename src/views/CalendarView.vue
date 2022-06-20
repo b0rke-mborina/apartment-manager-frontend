@@ -59,7 +59,7 @@
 						<v-toolbar-title v-html="selectedPeriod.name" class="mr-5"></v-toolbar-title>
 						<v-spacer></v-spacer>
 						<!-- Period menu edit and delete (with dialog) icons -->
-						<router-link :to="{ name: 'period-detail-edit', params: { id: selectedPeriod.ObjectId }}" class="router-link">
+						<router-link :to="{ name: 'period-detail-modification', params: { id: selectedPeriod.ObjectId }}" class="router-link">
 							<IconEdit/>
 						</router-link>
 						<IconDelete/>

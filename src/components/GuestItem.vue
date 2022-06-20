@@ -39,7 +39,9 @@
 			</div>
 		</router-link>
 		<div class="edit-delete-icons">
-			<IconEdit/>
+			<router-link :to="{ name: 'guest-modification', params: { id: guest.ObjectId }}" class="router-link">
+				<IconEdit/>
+			</router-link>
 			<IconDelete itemType="guest" itemCaptionType="name" :itemName="guest.firstName + ' ' + guest.lastName" />
 		</div>
 	</v-card>

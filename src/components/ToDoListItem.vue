@@ -1,13 +1,13 @@
 <template>
 	<v-card color="#E3EAEF" width="250" min-height="350" class="ma-4 rounded-xl notes-card d-flex flex-column">
-		<router-link :to="{ name: 'todolist-detail-edit', params: { id: toDoList.ObjectId }}"
+		<router-link :to="{ name: 'todolist-detail-modification', params: { id: toDoList.ObjectId }}"
 						 class="router-link todolists-header pa-3">
 			<v-card-title class="py-2 justify-center text-center text-break">{{ toDoList.title }}</v-card-title>
 			<div class="text-center">
 				<v-card-subtitle class="px-2 py-0">{{ toDoList.date }}</v-card-subtitle>
 			</div>
 		</router-link>
-		<router-link :to="{ name: 'todolist-detail-edit', params: { id: toDoList.ObjectId }}" class="router-link flex-main pa-3">
+		<router-link :to="{ name: 'todolist-detail-modification', params: { id: toDoList.ObjectId }}" class="router-link flex-main pa-3">
 			<v-card-text v-for="item in toDoList.items.slice(0, 5)"  v-bind:key="item.ObjectId" class="pa-1">
 				<v-icon v-if="item.completed === true" icon>mdi-checkbox-marked-circle</v-icon>
 				<v-icon v-if="item.completed === false" icon>mdi-checkbox-blank-circle-outline</v-icon>
@@ -20,7 +20,7 @@
 			<v-card-text v-if="toDoList.completed === true" class="pa-2 text-center completed">COMPLETED</v-card-text>
 		</router-link>
 		<v-card-actions class="flex-bottom pa-3">
-			<router-link :to="{ name: 'todolist-detail-edit', params: { id: toDoList.ObjectId }}" class="router-link">
+			<router-link :to="{ name: 'todolist-detail-modification', params: { id: toDoList.ObjectId }}" class="router-link">
 				<IconEdit/>
 			</router-link>
 			<IconDelete itemType="to-do list" itemCaptionType="title" :itemName="toDoList.title" />
@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import IconDelete from '@/components/IconDelete.vue';
 import IconEdit from '@/components/IconEdit.vue';
+import IconDelete from '@/components/IconDelete.vue';
 
 export default {
 	name: 'ToDoListItem',
@@ -38,8 +38,8 @@ export default {
 		toDoList: Object
 	},
 	components: {
-		IconDelete,
-		IconEdit
+		IconEdit,
+		IconDelete
 	}
 }
 </script>
