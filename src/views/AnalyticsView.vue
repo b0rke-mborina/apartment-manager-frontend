@@ -21,7 +21,7 @@
 				<FormLabel text="Show data for:" class="mb-3" />
 				<v-checkbox v-for="accomodation in data" v-bind:key="accomodation.ObjectId"
 								v-model="selectedAccomodations" :label="accomodation.name" :value="accomodation"
-								@change="updateData()" class="mt-1">
+								@change="updateData(accomodation.ObjectId)" class="mt-1">
 				</v-checkbox>
 			</v-card>
 		</div>
@@ -98,7 +98,7 @@ export default {
 	name: 'AnalyticsView',
 	data() {
 		return {
-			data: {},
+			data: [],
 			analytics: {
 				earningsInEur: {
 					monthly: { data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
@@ -137,8 +137,6 @@ export default {
 					numberOfReservations: {
 						2020: {
 							"Jul": 2, "Aug": 3
-							// Jan: 0, Feb: 0, Mar: 0, Apr: 0, May: 0, Jun: 0,
-							// Jul: 2, Aug: 3, Sep: 0, Oct: 0, Nov: 0, Dec: 0,
 						},
 						2021: {
 							"Jun": 2, "Jul": 3, "Aug": 3
@@ -235,9 +233,13 @@ export default {
 		}
 	},
 	methods: {
-		updateData() {
-			// get selected accomodations and data
+		updateData(accomodationId) {
+			// check selected accomodations and data
 			console.log(this.selectedAccomodations);
+			// if last accomodation was unchecked, recheck it (prevents empty array of selected accomodations and empty data)
+			if (this.selectedAccomodations.length === 0) {
+				this.selectedAccomodations.push(this.data.find(accomodation => accomodation.ObjectId === accomodationId));
+			}
 			// clear all data from analytics
 			for (const dataAspect in this.analytics) {
 				this.analytics[dataAspect].monthly = { data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] };
@@ -270,6 +272,17 @@ export default {
 					}
 				}
 			});
+			// sort yearly data and labels
+			for (const aspect in this.analytics) {
+				console.log(this.analytics[aspect]);
+				let indices = Array.from(this.analytics[aspect].yearly.data.keys())
+					.sort((first, second) =>
+						this.analytics[aspect].yearlyLabels[first].localeCompare(this.analytics[aspect].yearlyLabels[second])
+					);
+				this.analytics[aspect].yearlyLabels = indices.map(index => this.analytics[aspect].yearlyLabels[index]);
+				this.analytics[aspect].yearly.data = indices.map(index => this.analytics[aspect].yearly.data[index]);
+			}
+			// print for check
 			console.log(this.analytics);
 		}
 	},

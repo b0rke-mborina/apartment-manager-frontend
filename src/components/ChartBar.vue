@@ -45,6 +45,7 @@ export default {
 				},
 				scales: {
 					y: {
+						beginAtZero: true,
 						ticks: {
 							precision: 0
 						}
