@@ -68,6 +68,7 @@
 
 <script>
 import FormLabel from '@/components/FormLabel.vue';
+
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {

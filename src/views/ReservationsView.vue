@@ -19,6 +19,7 @@
 
 <script>
 import ReservationItem from '@/components/ReservationItem.vue';
+
 import AddNewButton from '@/components/ButtonAddNew.vue';
 
 import NoItemsDiv from '@/components/NoItemsDiv.vue';

@@ -22,6 +22,7 @@
 
 <script>
 import AccomodationItem from '@/components/AccomodationItem.vue';
+
 import AddNewButton from '@/components/ButtonAddNew.vue';
 
 import NoItemsDiv from '@/components/NoItemsDiv.vue';

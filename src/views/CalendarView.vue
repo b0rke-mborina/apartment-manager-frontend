@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import IconDelete from '@/components/IconDelete.vue';
 import IconEdit from '@/components/IconEdit.vue';
+import IconDelete from '@/components/IconDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';

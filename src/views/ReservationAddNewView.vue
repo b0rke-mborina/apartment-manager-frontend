@@ -147,7 +147,7 @@
 		<!-- Main action buttons -->
 		<div class="text-center">
 			<router-link :to="{ name: 'reservations'}" class="router-link">
-				<ButtonBack/>
+				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'reservations'}" class="router-link"> -->
 				<ButtonSave @click.native="updateReservation()" />
@@ -162,10 +162,8 @@
 import draggable from 'vuedraggable';
 
 import FormLabel from '@/components/FormLabel.vue';
-import FormTextField from '@/components/FormTextField.vue';
-import ButtonCreateNewGuest from '@/components/ButtonCreateNewGuest.vue';
 
-import ButtonBack from '@/components/ButtonBack.vue';
+import ButtonCreateNewGuest from '@/components/ButtonCreateNewGuest.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
 
@@ -309,9 +307,7 @@ export default {
 	components: {
 		draggable,
 		FormLabel,
-		FormTextField,
 		ButtonCreateNewGuest,
-		ButtonBack,
 		ButtonCancel,
 		ButtonSave,
 		NoItemsDiv,

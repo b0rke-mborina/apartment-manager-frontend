@@ -147,7 +147,7 @@
 		<!-- Main action buttons -->
 		<div class="text-center">
 			<router-link :to="{ name: 'reservations'}" class="router-link">
-				<ButtonBack/>
+				<ButtonCancel/>
 			</router-link>
 			<ButtonDialogDelete itemType="reservation" />
 			<!-- <router-link :to="{ name: 'reservations'}" class="router-link"> -->
@@ -163,12 +163,10 @@
 import draggable from 'vuedraggable';
 
 import FormLabel from '@/components/FormLabel.vue';
-import FormTextField from '@/components/FormTextField.vue';
-import ButtonCreateNewGuest from '@/components/ButtonCreateNewGuest.vue';
 
-import ButtonBack from '@/components/ButtonBack.vue';
-import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
+import ButtonCreateNewGuest from '@/components/ButtonCreateNewGuest.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
+import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
 
 import NoItemsDiv from '@/components/NoItemsDiv.vue';
@@ -368,11 +366,9 @@ export default {
 	components: {
 		draggable,
 		FormLabel,
-		FormTextField,
 		ButtonCreateNewGuest,
-		ButtonBack,
-		ButtonDialogDelete,
 		ButtonCancel,
+		ButtonDialogDelete,
 		ButtonSave,
 		NoItemsDiv,
 		EmptyDiv

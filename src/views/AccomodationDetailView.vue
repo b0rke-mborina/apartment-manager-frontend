@@ -85,7 +85,6 @@ import FormTextField from '@/components/FormTextField.vue';
 
 import ButtonBack from '@/components/ButtonBack.vue';
 import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
-import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonEdit from '@/components/ButtonEdit.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';
@@ -124,7 +123,6 @@ export default {
 		FormTextField,
 		ButtonBack,
 		ButtonDialogDelete,
-		ButtonCancel,
 		ButtonEdit,
 		EmptyDiv
 	}

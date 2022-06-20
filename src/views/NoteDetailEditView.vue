@@ -30,12 +30,9 @@
 		<!-- Main action buttons -->
 		<div class="text-center mt-5">
 			<router-link :to="{ name: 'notes'}" class="router-link">
-				<ButtonBack/>
-			</router-link>
-			<ButtonDialogDelete itemType="note" />
-			<router-link :to="{ name: 'notes'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
+			<ButtonDialogDelete itemType="note" />
 			<ButtonSave @click.native="printNote()" />
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -44,9 +41,8 @@
 </template>
 
 <script>
-import ButtonBack from '@/components/ButtonBack.vue';
-import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
+import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';
@@ -84,9 +80,8 @@ export default {
 		}
 	},
 	components: {
-		ButtonBack,
-		ButtonDialogDelete,
 		ButtonCancel,
+		ButtonDialogDelete,
 		ButtonSave,
 		EmptyDiv
 	}

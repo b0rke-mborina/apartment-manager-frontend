@@ -51,8 +51,8 @@
 <script>
 import FormLabel from '@/components/FormLabel.vue';
 
-import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
+import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';
@@ -108,8 +108,8 @@ export default {
 	},
 	components: {
 		FormLabel,
-		ButtonDialogDelete,
 		ButtonCancel,
+		ButtonDialogDelete,
 		ButtonSave,
 		EmptyDiv
 	}

@@ -87,11 +87,12 @@
 </template>
 
 <script>
+import FormLabel from '@/components/FormLabel.vue';
+
 import ChartLine from '@/components/ChartLine.vue';
 import ChartBar from '@/components/ChartBar.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';
-import FormLabel from '@/components/FormLabel.vue';
 
 export default {
 	name: 'AnalyticsView',
@@ -273,9 +274,9 @@ export default {
 		}
 	},
 	components: {
+		FormLabel,
 		ChartLine,
 		ChartBar,
-		FormLabel,
 		EmptyDiv
 	}
 }

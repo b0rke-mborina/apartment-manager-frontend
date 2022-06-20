@@ -22,6 +22,7 @@
 
 <script>
 import NoteItem from '@/components/NoteItem.vue';
+
 import AddNewButton from '@/components/ButtonAddNew.vue';
 
 import NoItemsDiv from '@/components/NoItemsDiv.vue';

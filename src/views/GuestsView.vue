@@ -19,6 +19,7 @@
 
 <script>
 import GuestItem from '@/components/GuestItem.vue';
+
 import AddNewButton from '@/components/ButtonAddNew.vue';
 
 import NoItemsDiv from '@/components/NoItemsDiv.vue';

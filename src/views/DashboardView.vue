@@ -53,20 +53,12 @@
 </template>
 
 <script>
+import DashboardItem from '@/components/DashboardItem.vue';
 import AccomodationItem from '@/components/AccomodationItem.vue';
 import ReservationItem from '@/components/ReservationItem.vue';
 import GuestItem from '@/components/GuestItem.vue';
-import ToDoListItem from '@/components/ToDoListItem.vue';
-import NoteItem from '@/components/NoteItem.vue';
-import DashboardItem from '@/components/DashboardItem.vue';
 
-import ButtonDelete from '@/components/ButtonDelete.vue';
-import ButtonSave from '@/components/ButtonSave.vue';
-import ButtonBack from '@/components/ButtonBack.vue';
 import ButtonSeeMore from '@/components/ButtonSeeMore.vue';
-
-import FormLabel from '@/components/FormLabel.vue';
-import FormTextField from '@/components/FormTextField.vue';
 
 import NoItemsDiv from '@/components/NoItemsDiv.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
@@ -327,18 +319,11 @@ export default {
 		console.log(this.toDoListItem);
 	},
 	components: {
+		DashboardItem,
 		AccomodationItem,
 		ReservationItem,
 		GuestItem,
-		ToDoListItem,
-		NoteItem,
-		DashboardItem,
-		ButtonDelete,
-		ButtonSave,
-		ButtonBack,
 		ButtonSeeMore,
-		FormLabel,
-		FormTextField,
 		NoItemsDiv,
 		EmptyDiv
 	}

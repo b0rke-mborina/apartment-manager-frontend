@@ -94,7 +94,7 @@
 		<!-- Main action buttons -->
 		<div class="text-center mt-5">
 			<router-link :to="{ name: 'guests'}" class="router-link">
-				<ButtonBack/>
+				<ButtonCancel/>
 			</router-link>
 			<ButtonDialogDelete itemType="guest" />
 			<ButtonSave @click.native="printGuest()" />
@@ -106,15 +106,12 @@
 
 <script>
 import FormLabel from '@/components/FormLabel.vue';
-import FormTextField from '@/components/FormTextField.vue';
 
-import ButtonBack from '@/components/ButtonBack.vue';
-import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonCancel from '@/components/ButtonCancel.vue';
+import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';
-
 
 export default {
 	name: 'GuestEditView',
@@ -157,10 +154,8 @@ export default {
 	},
 	components: {
 		FormLabel,
-		FormTextField,
-		ButtonBack,
-		ButtonDialogDelete,
 		ButtonCancel,
+		ButtonDialogDelete,
 		ButtonSave,
 		EmptyDiv
 	}
