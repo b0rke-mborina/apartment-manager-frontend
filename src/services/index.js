@@ -46,4 +46,4 @@ const monthNumberToName = {
 	"12": "December"
 }
 
-export { convertDatetime, convertPeriod };
+export { convertDatetime, convertPeriod, convertDate };

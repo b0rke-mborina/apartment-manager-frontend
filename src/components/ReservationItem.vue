@@ -40,13 +40,13 @@
 				<IconEdit/>
 			</router-link>
 			<IconDelete itemType="reservation" itemCaptionType="period"
-							:itemName="'from ' + reservation.period.start + ' to ' + reservation.period.end" />
+							:itemName="'from ' + convertDate(reservation.period.start) + ' to ' + convertDate(reservation.period.end)" />
 		</div>
 	</v-card>
 </template>
 
 <script>
-import { convertPeriod } from '@/services';
+import { convertPeriod, convertDate } from '@/services';
 
 import IconDelete from '@/components/IconDelete.vue';
 import IconEdit from '@/components/IconEdit.vue';
@@ -54,7 +54,8 @@ import IconEdit from '@/components/IconEdit.vue';
 export default {
 	name: 'ReservationItem',
 	methods: {
-		convertPeriod
+		convertPeriod,
+		convertDate
 	},
 	props: {
 		reservation: Object
