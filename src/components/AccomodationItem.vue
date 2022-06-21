@@ -5,7 +5,7 @@
 				alt="Photo">
 		</v-img>
 		<div class="flex-div">
-			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation.ObjectId }}" class="router-link text-div">
+			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation._id }}" class="router-link text-div">
 				<v-card-title class="py-0 availability">
 					<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
 							icon color="#FFCC00" class="pr-2">
@@ -29,7 +29,7 @@
 				</v-card-subtitle>
 			</router-link>
 			<div class="edit-delete-icons">
-				<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation.ObjectId }}" class="router-link">
+				<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation._id }}" class="router-link">
 					<IconEdit class="mb-2"/>
 				</router-link>
 				<IconDelete itemType="accomodation" itemCaptionType="name"

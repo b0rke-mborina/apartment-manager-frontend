@@ -7,7 +7,7 @@
 			<!-- Empty list sign -->
 			<NoItemsDiv items="accomodations" v-if="accomodations.length === 0" />
 			<!-- List of accomodations -->
-			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation.ObjectId" :accomodation="accomodation" />
+			<AccomodationItem v-for="accomodation in accomodations" v-bind:key="accomodation._id" :accomodation="accomodation" />
 		</div>
 		<!-- Add new accomodation button -->
 		<div class="text-center">
@@ -42,7 +42,7 @@ export default {
 		let response = await AxiosService.get("/privateaccomodations");
 		this.accomodations = response.data;
 		console.log(this.accomodations);
-		let accomodationsFromBackend = [
+		/*let accomodationsFromBackend = [
 			{
 				ObjectId: 111,
 				name: "Apartment Nature",
@@ -99,7 +99,7 @@ export default {
 			}
 		];
 		this.accomodations = accomodationsFromBackend;
-		console.log(this.accomodations);
+		console.log(this.accomodations);*/
 	},
 	components: {
 		AccomodationItem,

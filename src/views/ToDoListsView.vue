@@ -7,7 +7,7 @@
 			<!-- Empty list sign -->
 			<NoItemsDiv items="to-do lists" v-if="toDoLists.length === 0" />
 			<!-- List of to-do lists -->
-			<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList.ObjectId" :toDoList="toDoList" />
+			<ToDoListItem v-for="toDoList in toDoLists" v-bind:key="toDoList._id" :toDoList="toDoList" />
 		</div>
 		<!-- Add new to do list button -->
 		<div class="text-center">
@@ -41,7 +41,7 @@ export default {
 		let response = await AxiosService.get("/todolists");
 		this.toDoLists = response.data;
 		console.log(this.toDoLists);
-		let toDoListsFromBackend = [
+		/*let toDoListsFromBackend = [
 			{
 				ObjectId: 100,
 				title: "Buying backup items",
@@ -128,7 +128,7 @@ export default {
 			}
 		];
 		this.toDoLists = toDoListsFromBackend;
-		console.log(this.toDoLists);
+		console.log(this.toDoLists);*/
 	},
 	components: {
 		ToDoListItem,

@@ -7,7 +7,7 @@
 			<!-- Empty list sign -->
 			<NoItemsDiv items="notes" v-if="notes.length === 0" />
 			<!-- List of notes -->
-			<NoteItem v-for="note in notes" v-bind:key="note.ObjectId" :note="note" />
+			<NoteItem v-for="note in notes" v-bind:key="note._id" :note="note" />
 		</div>
 		<!-- Add new note button -->
 		<div class="text-center">
@@ -42,7 +42,7 @@ export default {
 		let response = await AxiosService.get("/notes");
 		this.notes = response.data;
 		console.log(this.notes);
-		let notesFromBackend = [
+		/*let notesFromBackend = [
 			{
 				ObjectId: 100,
 				heading: "Available periods",
@@ -69,7 +69,7 @@ export default {
 			}
 		];
 		this.notes = notesFromBackend;
-		console.log(this.notes);
+		console.log(this.notes);*/
 	},
 	components: {
 		NoteItem,
