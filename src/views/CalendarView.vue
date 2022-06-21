@@ -62,7 +62,10 @@
 						<router-link :to="{ name: 'period-detail-modification', params: { id: selectedPeriod.ObjectId }}" class="router-link">
 							<IconEdit/>
 						</router-link>
-						<IconDelete/>
+						<IconDelete v-if="selectedPeriod.start && selectedPeriod.end"
+										itemType="period" itemCaptionType="dates and times"
+										:itemName="convertDatetime(selectedPeriod.start) + ' and ' + convertDatetime(selectedPeriod.end)"
+										class="mb-2" />
 					</v-toolbar>
 					<!-- Period menu info (use service to render period parts) -->
 					<v-card-text>

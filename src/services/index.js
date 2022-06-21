@@ -52,4 +52,4 @@ const monthNumberToName = {
 	"12": "December"
 }
 
-export { AxiosService, convertDatetime, convertPeriod };
+export { AxiosService, convertDatetime, convertPeriod, convertDate };
