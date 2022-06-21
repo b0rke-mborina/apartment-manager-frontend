@@ -38,68 +38,10 @@ export default {
 		}
 	},
 	async mounted() {
-		console.log("call data");
+		// save all accomodations data
 		let response = await AxiosService.get("/privateaccomodations");
 		this.accomodations = response.data;
 		console.log(this.accomodations);
-		/*let accomodationsFromBackend = [
-			{
-				ObjectId: 111,
-				name: "Apartment Nature",
-				categoryStarNumber: 3,
-				maxGuestNumber: 6,
-				currentState: "AVAILABLE",
-				location: {
-					street: "Labinska",
-					houseNumber: "2",
-					entranceNumber: "1a",
-					postalNumber: 52100,
-					city: "Pula",
-					country: "Croatia"
-				},
-				hasYard: true,
-				lowestFloor: 0,
-				numberofFloors: 1
-			},
-			{
-				ObjectId: 211,
-				name: "Apartment Marie",
-				categoryStarNumber: 4,
-				maxGuestNumber: 4,
-				currentState: "OCCUPIED",
-				location: {
-					street: "Valturska",
-					houseNumber: "11",
-					entranceNumber: "1a",
-					postalNumber: 52210,
-					city: "Rovinj",
-					country: "Croatia"
-				},
-				hasYard: false,
-				lowestFloor: 1,
-				numberofFloors: 2
-			},
-			{
-				ObjectId: 311,
-				name: "Apartment x",
-				categoryStarNumber: 5,
-				maxGuestNumber: 5,
-				currentState: "PENDING",
-				location: {
-					street: "Valturska",
-					houseNumber: "1d",
-					entranceNumber: "l",
-					postalNumber: 52210,
-					city: "Rovinj",
-					country: "Croatia"
-				},
-				hasYard: false,
-				lowestFloor: 2,
-				numberofFloors: 1
-			}
-		];
-		this.accomodations = accomodationsFromBackend;
-		console.log(this.accomodations);*/
 	},
 	components: {
 		AccomodationItem,

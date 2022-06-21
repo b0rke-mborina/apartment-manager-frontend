@@ -38,38 +38,10 @@ export default {
 		}
 	},
 	async mounted() {
-		console.log("call data");
+		// save all notes data
 		let response = await AxiosService.get("/notes");
 		this.notes = response.data;
 		console.log(this.notes);
-		/*let notesFromBackend = [
-			{
-				ObjectId: 100,
-				heading: "Available periods",
-				body: "1.6. - 28.6., 10.7. - 14.7.",
-				important: true
-			},
-			{
-				ObjectId: 101,
-				heading: "Last guests",
-				body: "clean, quiet, very pleased with them",
-				important: false
-			},
-			{
-				ObjectId: 102,
-				heading: "Bedroom wall",
-				body: "Small damages on it",
-				important: true
-			},
-			{
-				ObjectId: 103,
-				heading: "Music festivals",
-				body: "Don't have\nguests that\nmay be going to\nmusic festivals\naaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaa",
-				important: true
-			}
-		];
-		this.notes = notesFromBackend;
-		console.log(this.notes);*/
 	},
 	components: {
 		NoteItem,

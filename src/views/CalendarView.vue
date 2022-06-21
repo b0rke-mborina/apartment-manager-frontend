@@ -7,7 +7,7 @@
 			<span class="select-text mx-4">Show calendar for: </span>
 			<v-select v-model="privateAccomodationId"
 					 :items="privateAccomodations"
-					 item-value="ObjectId"
+					 item-value="_id"
 					 item-text="name"
 					 label="Private accomodations"
 					 solo rounded
@@ -59,7 +59,7 @@
 						<v-toolbar-title v-html="selectedPeriod.name" class="mr-5"></v-toolbar-title>
 						<v-spacer></v-spacer>
 						<!-- Period menu edit and delete (with dialog) icons -->
-						<router-link :to="{ name: 'period-detail-modification', params: { id: selectedPeriod.ObjectId }}" class="router-link">
+						<router-link :to="{ name: 'period-detail-modification', params: { id: selectedPeriod._id }}" class="router-link">
 							<IconEdit/>
 						</router-link>
 						<IconDelete v-if="selectedPeriod.start && selectedPeriod.end"
@@ -82,7 +82,7 @@
 		</v-sheet>
 		<!-- Add new period button -->
 		<div class="text-center">
-			<router-link :to="{ name: 'period-creation', params: { id: selectedPeriod.ObjectId }}" class="router-link">
+			<router-link :to="{ name: 'period-creation', params: { id: selectedPeriod._id }}" class="router-link">
 				<v-btn elevation="2" rounded large class="mb-4 mt-8 btn-add-new">
 					<v-icon color="#000000" class="mr-2">mdi-plus</v-icon>
 					ADD NEW PERIOD
@@ -120,72 +120,23 @@ export default {
 		}
 	},
 	async mounted() {
-		console.log("call data periods");
-		let responsePeriods = await AxiosService.get("/periods");
-		this.allClosedPeriods = responsePeriods.data;
-		console.log(this.allClosedPeriods);
-		console.log("call data accomodations");
-		let responseAccomodations = await AxiosService.get("/privateaccomodations");
-		this.privateAccomodations = responseAccomodations.data;
+		// parallel calls (accomodations and periods)
+		console.log("parallel calls");
+		let responses = await Promise.all([
+			await AxiosService.get("/privateaccomodations"),
+			await AxiosService.get("/periods")
+		]);
+		// save all accomodations data
+		this.privateAccomodations = responses[0].data;
 		console.log(this.privateAccomodations);
-		let privateAccomodationsFromBackend = [
-			{
-				ObjectId: 111,
-				name: "Apartment Nature"
-			},
-			{
-				ObjectId: 112,
-				name: "Apartment Marie"
-			},
-			{
-				ObjectId: 113,
-				name: "Apartment x"
-			}
-		];
-		let periodsFromBackend = [
-			{
-				ObjectId: 110,
-				start: "2021-05-16 15:00",
-				end: "2021-05-25 10:00",
-				name: "Reservation (Hans Muller)",
-				privateAccomodationObjectId: 111
-			},
-			{
-				ObjectId: 100,
-				start: "2022-05-26 15:00",
-				end: "2022-05-30 10:00",
-				name: "Reservation (Marie Smith)",
-				privateAccomodationObjectId: 111
-			},
-			{
-				ObjectId: 101,
-				start: "2022-06-28 15:00",
-				end: "2022-07-08 10:00",
-				name: "Closed (no reason)",
-				privateAccomodationObjectId: 111
-			},
-			{
-				ObjectId: 102,
-				start: "2022-07-10 15:00",
-				end: "2022-07-20 10:00",
-				name: "Closed (can't get it ready)",
-				privateAccomodationObjectId: 112
-			},
-			{
-				ObjectId: 103,
-				start: "2022-08-01 15:00",
-				end: "2022-08-15 10:00",
-				name: "Closed (vacation)",
-				privateAccomodationObjectId: 112
-			}
-		];
-		this.privateAccomodations = privateAccomodationsFromBackend;
-		console.log(this.privateAccomodations);
-		this.privateAccomodationId = this.privateAccomodations[0].ObjectId;
+		// set initial accomodation (id) for which the periods will show
+		this.privateAccomodationId = this.privateAccomodations[0]._id;
 		console.log(this.privateAccomodationId);
-		this.allClosedPeriods = periodsFromBackend;
+		// save all periods data
+		this.allClosedPeriods = responses[1].data;
 		console.log(this.allClosedPeriods);
-		this.closedPeriodsForPrivateAccomodation = periodsFromBackend.filter(period => period.privateAccomodationObjectId === this.privateAccomodationId);
+		// set initial periods which will show for set private accomodation
+		this.closedPeriodsForPrivateAccomodation = responses[1].data.filter(period => period.privateAccomodationObjectId === this.privateAccomodationId);
 		console.log(this.closedPeriodsForPrivateAccomodation);
 	},
 	methods: {
