@@ -4,7 +4,7 @@
 						 class="router-link todolists-header pa-3">
 			<v-card-title class="py-2 justify-center text-center text-break">{{ toDoList.title }}</v-card-title>
 			<div class="text-center">
-				<v-card-subtitle class="px-2 py-0">{{ toDoList.date }}</v-card-subtitle>
+				<v-card-subtitle class="px-2 py-0">{{ convertDate(toDoList.date) }}</v-card-subtitle>
 			</div>
 		</router-link>
 		<router-link :to="{ name: 'todolist-detail-modification', params: { id: toDoList.ObjectId }}" class="router-link flex-main pa-3">
@@ -29,11 +29,16 @@
 </template>
 
 <script>
+import { convertDate } from '@/services';
+
 import IconEdit from '@/components/IconEdit.vue';
 import IconDelete from '@/components/IconDelete.vue';
 
 export default {
 	name: 'ToDoListItem',
+	methods: {
+		convertDate
+	},
 	props: {
 		toDoList: Object
 	},
