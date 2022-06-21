@@ -1,10 +1,16 @@
+import axios from 'axios';
+
+let AxiosService = axios.create({
+	baseURL: 'http://localhost:3000/',
+	timeout: 1000,
+});
+
 function convertDatetime(datetime) {
 	let dateAndTime = datetime.split(" ");
 	return `${convertDate(dateAndTime[0])} ${dateAndTime[1]}h`;
 }
 
 function convertPeriod(dateStart, dateEnd) {
-	let result = "";
 	let dateStartParts = convertDate(dateStart).split(" ");
 	let dateEndParts = convertDate(dateEnd).split(" ");
 	if (dateStartParts[2] !== dateEndParts[2]) {
@@ -46,4 +52,4 @@ const monthNumberToName = {
 	"12": "December"
 }
 
-export { convertDatetime, convertPeriod };
+export { AxiosService, convertDatetime, convertPeriod };

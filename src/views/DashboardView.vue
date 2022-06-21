@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import DashboardItem from '@/components/DashboardItem.vue';
 import AccomodationItem from '@/components/AccomodationItem.vue';
 import ReservationItem from '@/components/ReservationItem.vue';
@@ -84,7 +86,11 @@ export default {
 			}
 		}
 	},
-	mounted() {
+	async mounted() {
+		let user = await AxiosService.get("/user/current");
+		console.log("user");
+		console.log(user);
+
 		let dataFromBackend = {
 			accomodations: [
 				{
