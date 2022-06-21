@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
 
@@ -34,7 +36,11 @@ export default {
 			toDoLists: []
 		}
 	},
-	mounted() {
+	async mounted() {
+		console.log("call data");
+		let response = await AxiosService.get("/todolists");
+		this.toDoLists = response.data;
+		console.log(this.toDoLists);
 		let toDoListsFromBackend = [
 			{
 				ObjectId: 100,

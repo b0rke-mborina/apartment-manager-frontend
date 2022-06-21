@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import ReservationItem from '@/components/ReservationItem.vue';
 
 import AddNewButton from '@/components/ButtonAddNew.vue';
@@ -32,7 +34,11 @@ export default {
 			reservations: []
 		}
 	},
-	mounted() {
+	async mounted() {
+		console.log("call data");
+		let response = await AxiosService.get("/reservations");
+		this.reservations = response.data;
+		console.log(this.reservations);
 		let reservationsFromBackend = [
 			{
 				ObjectId: 100,

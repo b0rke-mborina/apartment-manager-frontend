@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import NoteItem from '@/components/NoteItem.vue';
 
 import AddNewButton from '@/components/ButtonAddNew.vue';
@@ -35,7 +37,11 @@ export default {
 			notes: []
 		}
 	},
-	mounted() {
+	async mounted() {
+		console.log("call data");
+		let response = await AxiosService.get("/notes");
+		this.notes = response.data;
+		console.log(this.notes);
 		let notesFromBackend = [
 			{
 				ObjectId: 100,

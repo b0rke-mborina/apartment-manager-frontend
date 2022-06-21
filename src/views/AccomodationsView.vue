@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import AccomodationItem from '@/components/AccomodationItem.vue';
 
 import AddNewButton from '@/components/ButtonAddNew.vue';
@@ -35,7 +37,11 @@ export default {
 			accomodations: []
 		}
 	},
-	mounted() {
+	async mounted() {
+		console.log("call data");
+		let response = await AxiosService.get("/privateaccomodations");
+		this.accomodations = response.data;
+		console.log(this.accomodations);
 		let accomodationsFromBackend = [
 			{
 				ObjectId: 111,

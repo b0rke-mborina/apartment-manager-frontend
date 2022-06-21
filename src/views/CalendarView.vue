@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { convertDatetime } from '@/services';
+import { AxiosService, convertDatetime } from "@/services";
 
 import IconEdit from '@/components/IconEdit.vue';
 import IconDelete from '@/components/IconDelete.vue';
@@ -116,7 +116,15 @@ export default {
 			selectedOpen: false,
 		}
 	},
-	mounted() {
+	async mounted() {
+		console.log("call data periods");
+		let responsePeriods = await AxiosService.get("/periods");
+		this.allClosedPeriods = responsePeriods.data;
+		console.log(this.allClosedPeriods);
+		console.log("call data accomodations");
+		let responseAccomodations = await AxiosService.get("/privateaccomodations");
+		this.privateAccomodations = responseAccomodations.data;
+		console.log(this.privateAccomodations);
 		let privateAccomodationsFromBackend = [
 			{
 				ObjectId: 111,
