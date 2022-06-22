@@ -1,6 +1,6 @@
 <template>
 	<v-card color="#E3EAEF" class="my-3 pa-4 rounded-xl main-grid">
-		<router-link :to="{ name: 'guest-detail', params: { id: guest.ObjectId }}" class="router-link grid-div"> <!-- _id -->
+		<router-link :to="{ name: 'guest-detail', params: { id: guest._id }}" class="router-link grid-div"> <!-- _id -->
 			<div class="name-location">
 				<v-icon class="mx-2">mdi-account</v-icon>
 				<span class="mx-2">{{ guest.firstName }} {{ guest.lastName }}</span>
@@ -43,7 +43,7 @@
 			</div>
 		</router-link>
 		<div class="edit-delete-icons">
-			<router-link :to="{ name: 'guest-modification', params: { id: guest.ObjectId }}" class="router-link"> <!-- _id -->
+			<router-link :to="{ name: 'guest-modification', params: { id: guest._id }}" class="router-link"> <!-- _id -->
 				<IconEdit/>
 			</router-link>
 			<IconDelete itemType="guest" itemCaptionType="name" :itemName="guest.firstName + ' ' + guest.lastName" />

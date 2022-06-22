@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import draggable from 'vuedraggable';
 
 import FormLabel from '@/components/FormLabel.vue';
@@ -88,7 +90,7 @@ export default {
 	data() {
 		return {
 			toDoList: {
-				ObjectId: null,
+				_id: null,
 				title: null,
 				date: null,
 				items: []
@@ -96,46 +98,9 @@ export default {
       	drag: false
 		}
 	},
-	mounted() {
-		let toDoListFromBackend = {
-			ObjectId: 100,
-			title: "Buying backup items",
-			date: "2022-04-10",
-			items: [
-				{
-					name: "Buy glasses",
-					position: 1,
-					completed: false
-				},
-				{
-					name: "Buy linens",
-					position: 2,
-					completed: true
-				},
-				{
-					name: "Buy towels",
-					position: 3,
-					completed: true
-				},
-				{
-					name: "Buy detergents",
-					position: 4,
-					completed: true
-				},
-				{
-					name: "Buy plates",
-					position: 5,
-					completed: false
-				},
-				{
-					name: "Buy cups",
-					position: 6,
-					completed: false
-				}
-			],
-			completed: false
-		};
-		this.toDoList = toDoListFromBackend;
+	async mounted() {
+		let response = await AxiosService.get(`/todolist/${this.$route.params.id}`);
+		this.toDoList = response.data;
 		console.log(this.toDoList);
 	},
 	methods: {

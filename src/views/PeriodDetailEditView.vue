@@ -17,9 +17,9 @@
 			<!-- Private accomodation to which the period belongs to -->
 			<div class="mt-5 text-center justify-center">
 				<FormLabel text="Belonging private accomodation:" class="details-label mb-3" />
-				<v-select v-model="period.privateAccomodation"
+				<v-select v-model="period.privateAccomodationObjectId"
 								:items="privateAccomodations"
-								item-value="ObjectId"
+								item-value="_id"
 								item-text="name"
 								solo rounded
 								background-color="#A5D4FF" class="importance-select mx-auto">
@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import ButtonCancel from '@/components/ButtonCancel.vue';
@@ -66,8 +68,17 @@ export default {
 			dates: [],
 		}
 	},
-	mounted() {
-		let privateAccomodationsFromBackend = [
+	async mounted() {
+		let responses = await Promise.all([
+			await AxiosService.get("/privateaccomodations"),
+			await AxiosService.get(`/period/${this.$route.params.id}`)
+		]);
+		this.privateAccomodations = responses[0].data;
+		console.log(this.privateAccomodations);
+		this.period = responses[1].data;
+		console.log(this.period);
+		this.dates = [this.period.start, this.period.end]
+		/*let privateAccomodationsFromBackend = [
 			{
 				ObjectId: 111,
 				name: "Apartment Nature"
@@ -95,7 +106,7 @@ export default {
 		console.log(this.privateAccomodations);
 		this.period = periodFromBackend;
 		console.log(this.period);
-		this.dates = [this.period.start, this.period.end]
+		this.dates = [this.period.start, this.period.end]*/
 	},
 	methods: {
 		updatePeriod() {

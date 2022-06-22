@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
 import ButtonSave from '@/components/ButtonSave.vue';
@@ -64,14 +66,9 @@ export default {
 			]
 		}
 	},
-	mounted() {
-		let noteFromBackend = {
-			ObjectId: 103,
-			heading: "Music festivals",
-			body: "Don't have\nguests that\nmay be going to\nmusic festivals\naaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaa",
-			important: true
-		};
-		this.note = noteFromBackend;
+	async mounted() {
+		let response = await AxiosService.get(`/note/${this.$route.params.id}`);
+		this.note = response.data;
 		console.log(this.note);
 	},
 	methods: {
