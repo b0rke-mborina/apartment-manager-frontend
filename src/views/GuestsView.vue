@@ -5,7 +5,7 @@
 		<!-- Empty list sign -->
 		<NoItemsDiv items="guests" v-if="guests.length === 0" />
 		<!-- List of guests -->
-		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" />
+		<GuestItem v-for="guest in guests" v-bind:key="guest.ObjectId" :guest="guest" /> <!-- _id -->
 		<!-- Add new guest button -->
 		<div class="text-center">
 			<router-link :to="{ name: 'guest-creation' }" class="router-link">
@@ -40,7 +40,7 @@ export default {
 		let response = await AxiosService.get("/guests");
 		this.guests = response.data;
 		console.log(this.guests);
-		let guestsFromBackend = [
+		/*let guestsFromBackend = [
 			{
 				ObjectId: 100,
 				firstName: "Mark",
@@ -115,7 +115,7 @@ export default {
 			}
 		];
 		this.guests = guestsFromBackend;
-		console.log(this.guests);
+		console.log(this.guests);*/
 	},
 	components: {
 		GuestItem,

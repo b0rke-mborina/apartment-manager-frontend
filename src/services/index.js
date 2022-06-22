@@ -2,17 +2,23 @@ import axios from 'axios';
 
 let AxiosService = axios.create({
 	baseURL: 'http://localhost:3000/',
-	timeout: 1000,
+	timeout: 3000,
 });
 
 function convertDatetime(datetime) {
 	let dateAndTime = datetime.split(" ");
-	return `${convertDate(dateAndTime[0])} ${dateAndTime[1]}h`;
+	if (dateAndTime[1]) {
+		return `${convertDate(dateAndTime[0])} ${dateAndTime[1]}h`;
+	} else {
+		return `${convertDate(dateAndTime[0])}`;
+	}
 }
 
 function convertPeriod(dateStart, dateEnd) {
-	let dateStartParts = convertDate(dateStart).split(" ");
-	let dateEndParts = convertDate(dateEnd).split(" ");
+	let datetimeStartParts = dateStart.split(" ");
+	let datetimeEndParts = dateEnd.split(" ");
+	let dateStartParts = convertDate(datetimeStartParts[0]).split(" ");
+	let dateEndParts = convertDate(datetimeEndParts[0]).split(" ");
 	if (dateStartParts[2] !== dateEndParts[2]) {
 		return convertDate(dateStart) + " - " + convertDate(dateEnd);
 	} else {

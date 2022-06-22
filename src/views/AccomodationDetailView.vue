@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
 
@@ -96,26 +98,9 @@ export default {
 			accomodation: {}
 		}
 	},
-	mounted() {
-		let accomodationFromBackend = {
-			ObjectId: 111,
-			name: "Apartment Nature",
-			categoryStarNumber: 3,
-			maxGuestNumber: 6,
-			currentState: "AVAILABLE",
-			location: {
-				street: "Labinska",
-				houseNumber: "2",
-				entranceNumber: "1a",
-				postalNumber: 52100,
-				city: "Pula",
-				country: "Croatia"
-			},
-			hasYard: true,
-			lowestFloor: 0,
-			numberofFloors: 1
-		};
-		this.accomodation = accomodationFromBackend;
+	async mounted() {
+		let response = await AxiosService.get(`/privateaccomodation/${this.$route.params.id}`);
+		this.accomodation = response.data;
 		console.log(this.accomodation);
 	},
 	components: {

@@ -1,9 +1,11 @@
 <template>
 	<v-card color="#E3EAEF" class="my-3 pa-4 rounded-xl main-grid">
-		<router-link :to="{ name: 'reservation-detail', params: { id: reservation.ObjectId }}" class="router-link grid-div">
+		<router-link :to="{ name: 'reservation-detail', params: { id: reservation._id }}" class="router-link grid-div">
 			<div class="reservation-info">
 				<v-icon class="mx-2">mdi-calendar-check</v-icon>
-				<span class="mx-2 pa-0 d-inline-block">{{ convertPeriod(reservation.period.start, reservation.period.end) }}</span>
+				<span v-if="reservation.period" class="mx-2 pa-0 d-inline-block">
+					{{ convertPeriod(reservation.period.start, reservation.period.end) }}
+				</span>
 			</div>
 			<div class="money">
 				<span class="mx-2 pa-0 d-inline">{{ reservation.price.value }} {{ reservation.price.currency }}</span>
@@ -24,29 +26,32 @@
 				</v-chip>
 			</div>
 			<div class="guest-info">
-				<span v-if="reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber" class="mx-2 pa-0 d-inline text-center">
+				<span v-if="reservation.madeByGuest && reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber"
+						class="mx-2 pa-0 d-inline text-center">
 					{{ reservation.madeByGuest.email }}
 				</span>
-				<span v-if="reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber" class="mx-2 pa-0 d-inline text-center">
+				<span v-if="reservation.madeByGuest && reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber"
+						class="mx-2 pa-0 d-inline text-center">
 					{{ reservation.madeByGuest.phoneNumber }}
 				</span>
-				<span v-else class="mx-2 pa-0 d-inline text-center">
+				<span v-else-if="reservation.madeByGuest && reservation.madeByGuest.firstName && reservation.madeByGuest.lastName"
+						class="mx-2 pa-0 d-inline text-center">
 					{{ reservation.madeByGuest.firstName }} {{ reservation.madeByGuest.lastName }}
 				</span>
 			</div>
 		</router-link>
 		<div class="edit-delete-icons">
-			<router-link :to="{ name: 'reservation-modification', params: { id: reservation.ObjectId }}" class="router-link">
+			<router-link :to="{ name: 'reservation-modification', params: { id: reservation._id }}" class="router-link">
 				<IconEdit/>
 			</router-link>
-			<IconDelete itemType="reservation" itemCaptionType="period"
+			<IconDelete v-if="reservation.period" itemType="reservation" itemCaptionType="period"
 							:itemName="'from ' + convertDate(reservation.period.start) + ' to ' + convertDate(reservation.period.end)" />
 		</div>
 	</v-card>
 </template>
 
 <script>
-import { convertPeriod, convertDate } from '@/services';
+import { convertPeriod, convertDatetime, convertDate } from '@/services';
 
 import IconDelete from '@/components/IconDelete.vue';
 import IconEdit from '@/components/IconEdit.vue';
@@ -55,6 +60,7 @@ export default {
 	name: 'ReservationItem',
 	methods: {
 		convertPeriod,
+		convertDatetime,
 		convertDate
 	},
 	props: {
