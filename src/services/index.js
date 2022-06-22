@@ -20,7 +20,7 @@ function convertPeriod(dateStart, dateEnd) {
 	let dateStartParts = convertDate(datetimeStartParts[0]).split(" ");
 	let dateEndParts = convertDate(datetimeEndParts[0]).split(" ");
 	if (dateStartParts[2] !== dateEndParts[2]) {
-		return convertDate(dateStart) + " - " + convertDate(dateEnd);
+		return convertDate(datetimeStartParts[0]) + " - " + convertDate(datetimeEndParts[0]);
 	} else {
 		if (dateStartParts[1] !== dateEndParts[1]) {
 			return `${dateStartParts[0]} ${dateStartParts[1]} - ${dateEndParts[0]} ${dateEndParts[1]} ${dateEndParts[2]}`;

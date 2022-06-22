@@ -87,242 +87,32 @@ export default {
 		}
 	},
 	async mounted() {
-		let user = await AxiosService.get("/user/current");
-		console.log("user");
-		console.log(user);
-
-		let dataFromBackend = {
-			accomodations: [
-				{
-					ObjectId: 111,
-					name: "Apartment Nature",
-					categoryStarNumber: 3,
-					maxGuestNumber: 6,
-					currentState: "AVAILABLE",
-					location: {
-						street: "Labinska",
-						houseNumber: "2",
-						entranceNumber: "1a",
-						postalNumber: 52100,
-						city: "Pula",
-						country: "Croatia"
-					},
-					hasYard: true,
-					lowestFloor: 0,
-					numberofFloors: 1
-				},
-				{
-					ObjectId: 211,
-					name: "Apartment Marie",
-					categoryStarNumber: 4,
-					maxGuestNumber: 4,
-					currentState: "OCCUPIED",
-					location: {
-						street: "Valturska",
-						houseNumber: "11",
-						entranceNumber: "1a",
-						postalNumber: 52210,
-						city: "Rovinj",
-						country: "Croatia"
-					},
-					hasYard: false,
-					lowestFloor: 1,
-					numberofFloors: 2
-				},
-				{
-					ObjectId: 311,
-					name: "Apartment x",
-					categoryStarNumber: 5,
-					maxGuestNumber: 5,
-					currentState: "NOT READY",
-					location: {
-						street: "Valturska",
-						houseNumber: "1d",
-						entranceNumber: "l",
-						postalNumber: 52210,
-						city: "Rovinj",
-						country: "Croatia"
-					},
-					hasYard: false,
-					lowestFloor: 2,
-					numberofFloors: 1
-				}
-			],
-			reservations: [
-				{
-					ObjectId: 100,
-					period: {
-						ObjectId: 100,
-						start: "2022-05-26",
-						end: "2022-05-30"
-					},
-					madeByGuest: {
-						ObjectId: 100,
-						firstName: "Mark",
-						lastName: "Williams",
-						email: "mwilliams@gmail.com",
-						phoneNumber: "+000 000 0000",
-						country: "United Kingdom",
-						city: "London"
-					},
-					guests: [
-						{
-							ObjectId: 100,
-							firstName: "Mark",
-							lastName: "Williams",
-							email: "mwilliams@gmail.com",
-							phoneNumber: "+000 000 0000",
-							country: "United Kingdom",
-							city: "London"
-						},
-						{
-							ObjectId: 102,
-							firstName: "Marie",
-							lastName: "Smith",
-							email: "msmith@gmail.com",
-							phoneNumber: "+222 222 2222",
-							country: "United States",
-							city: "Los Angeles"
-						},
-						{
-							ObjectId: 103,
-							firstName: "Mario",
-							lastName: "Vercetti",
-							email: "mvercetti@gmail.com",
-							phoneNumber: "+333 333 3333",
-							country: "Italy",
-							city: "Milano"
-						}
-					],
-					currentState: "CONFIRMED",
-					price: {
-						value: 1000,
-						currency: "EUR",
-						valueInEur: 1000
-					}
-				},
-				{
-					ObjectId: 101,
-					period: {
-						ObjectId: 101,
-						start: "2022-06-28",
-						end: "2022-07-08"
-					},
-					madeByGuest: {
-						ObjectId: 103,
-						firstName: "Mario",
-						lastName: "Vercetti",
-						email: "mvercetti@gmail.com",
-						phoneNumber: "+333 333 3333",
-						country: "Italy",
-						city: "Milano"
-					},
-					guests: [
-						{
-							ObjectId: 103,
-							firstName: "Mario",
-							lastName: "Vercetti",
-							email: "mvercetti@gmail.com",
-							phoneNumber: "+333 333 3333",
-							country: "Italy",
-							city: "Milano"
-						},
-						{
-							ObjectId: 100,
-							firstName: "Mark",
-							lastName: "Williams",
-							email: "mwilliams@gmail.com",
-							phoneNumber: "+000 000 0000",
-							country: "United Kingdom",
-							city: "London"
-						},
-						{
-							ObjectId: 101,
-							firstName: "Hans",
-							lastName: "Muller",
-							email: "hmuller@gmail.com",
-							phoneNumber: "+111 111 1111",
-							country: "Germany",
-							city: "Munchen"
-						}
-					],
-					currentState: "INQUIRY",
-					price: {
-						value: 3500,
-						currency: "HRK",
-						valueInEur: 1000
-					}
-				}
-			],
-			guests: [
-				{
-					ObjectId: 110,
-					firstName: "Mark",
-					lastName: "Williams",
-					email: "mwilliams@gmail.com",
-					phoneNumber: "+000 000 0000",
-					country: "United Kingdom",
-					city: "London",
-					newestPeriod: {
-						start: "2022-07-01",
-						end: "2022-07-10",
-						privateAccomodation: {
-							ObjectId: 111,
-							name: "Apartment Nature"
-						}
-					},
-					guestState: "CONFIRMED GUEST"
-				},
-				{
-					ObjectId: 111,
-					firstName: "Hans",
-					lastName: "Muller",
-					email: "hmuller@gmail.com",
-					phoneNumber: "+111 111 1111",
-					country: "Germany",
-					city: "Munchen",
-					newestPeriod: {
-						start: "2022-08-01",
-						end: "2022-08-10",
-						privateAccomodation: {
-							ObjectId: 111,
-							name: "Apartment Nature"
-						}
-					},
-					guestState: "POSSIBLE GUEST"
-				},
-				{
-					ObjectId: 102,
-					firstName: "Marie",
-					lastName: "Smith",
-					email: "msmith@gmail.com",
-					phoneNumber: "+222 222 2222",
-					country: "United States",
-					city: "Los Angeles",
-					newestPeriod: {
-						start: "2022-07-10",
-						end: "2022-07-31",
-						privateAccomodation: {
-							ObjectId: 111,
-							name: "Apartment Nature"
-						}
-					},
-					guestState: "POTENTIAL GUEST"
-				}
-			],
-			noteItemsNumber: 3,
-			toDoListItemsNumber: 2
-		};
-		this.accomodations = dataFromBackend.accomodations;
+		let responses = await Promise.all([
+			await AxiosService.get("/privateaccomodations?limit=3"),
+			await AxiosService.get("/reservations?limit=3"),
+			await AxiosService.get("/guests?limit=3"),
+			await AxiosService.get("/notes?important=true"),
+			await AxiosService.get("/todolists?completed=false")
+		]);
+		this.accomodations = responses[0].data;
+		console.log("accomodations");
 		console.log(this.accomodations);
-		this.reservations = dataFromBackend.reservations;
+
+		this.reservations = responses[1].data;
+		console.log("reservations");
 		console.log(this.reservations);
-		this.guests = dataFromBackend.guests;
+
+		this.guests = responses[2].data;
+		console.log("guests");
 		console.log(this.guests);
-		this.noteItem.number = dataFromBackend.noteItemsNumber;
-		console.log(this.noteItem);
-		this.toDoListItem.number = dataFromBackend.toDoListItemsNumber;
-		console.log(this.toDoListItem);
+
+		this.noteItem.number = responses[3].data.length;
+		console.log("noteItem");
+		console.log(this.noteItem.number);
+
+		this.toDoListItem.number = responses[4].data.length;
+		console.log("toDoListItem");
+		console.log(this.toDoListItem.number);
 	},
 	components: {
 		DashboardItem,
