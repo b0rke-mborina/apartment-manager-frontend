@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { convertPeriod } from '@/services';
+import { AxiosService, convertPeriod } from '@/services';
 
 import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
@@ -86,26 +86,10 @@ export default {
 			guest: {}
 		}
 	},
-	mounted() {
-		let guestFromBackend = {
-			ObjectId: 100,
-			firstName: "Mark",
-			lastName: "Williams",
-			email: "mwilliams@gmail.com",
-			phoneNumber: "+000 000 0000",
-			country: "United Kingdom",
-			city: "London",
-			newestPeriod: {
-				start: "2022-07-01",
-				end: "2022-07-10",
-				privateAccomodation: {
-					ObjectId: 111,
-					name: "Apartment Nature"
-				}
-			},
-			guestState: "CONFIRMED GUEST"
-		};
-		this.guest = guestFromBackend;
+	async mounted() {
+		console.log("call");
+		let response = await AxiosService.get(`/guest/${this.$route.params.id}`);
+		this.guest = response.data;
 		console.log(this.guest);
 	},
 	methods: {

@@ -46,8 +46,8 @@
 			<div class="details-grid-item">
 				<FormLabel text="Other guests" class="details-label" />
 				<div v-if="reservation.guests">
-					<div v-for="guest in reservation.guests" v-bind:key="guest.ObjectId">
-						<FormTextField v-if="guest.ObjectId !== reservation.madeByGuest.ObjectId"
+					<div v-for="guest in reservation.guests" v-bind:key="guest._id">
+						<FormTextField v-if="guest._id !== reservation.madeByGuest._id"
 											readonly
 											:text="guest.firstName + ' ' + guest.lastName" />
 					</div>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { convertPeriod } from '@/services';
+import { AxiosService, convertPeriod } from '@/services';
 
 import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
@@ -88,60 +88,10 @@ export default {
 			reservation: {}
 		}
 	},
-	mounted() {
-		let reservationFromBackend = {
-			ObjectId: 100,
-			period: {
-				ObjectId: 100,
-				start: "2022-05-26",
-				end: "2022-05-30"
-			},
-			madeByGuest: {
-				ObjectId: 100,
-				firstName: "Mark",
-				lastName: "Williams",
-				email: "mwilliams@gmail.com",
-				phoneNumber: "+000 000 0000",
-				country: "United Kingdom",
-				city: "London"
-			},
-			guests: [
-				{
-					ObjectId: 100,
-					firstName: "Mark",
-					lastName: "Williams",
-					email: "mwilliams@gmail.com",
-					phoneNumber: "+000 000 0000",
-					country: "United Kingdom",
-					city: "London"
-				},
-				{
-					ObjectId: 102,
-					firstName: "Marie",
-					lastName: "Smith",
-					email: "msmith@gmail.com",
-					phoneNumber: "+222 222 2222",
-					country: "United States",
-					city: "Los Angeles"
-				},
-				{
-					ObjectId: 103,
-					firstName: "Mario",
-					lastName: "Vercetti",
-					email: "mvercetti@gmail.com",
-					phoneNumber: "+333 333 3333",
-					country: "Italy",
-					city: "Milano"
-				}
-			],
-			currentState: "CONFIRMED",
-			price: {
-				value: 1000,
-				currency: "EUR",
-				valueInEur: 1000
-			}
-		};
-		this.reservation = reservationFromBackend;
+	async mounted() {
+		console.log("call");
+		let response = await AxiosService.get(`/reservation/${this.$route.params.id}`);
+		this.reservation = response.data;
 		console.log(this.reservation);
 	},
 	methods: {
