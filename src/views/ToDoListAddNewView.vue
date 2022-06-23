@@ -63,7 +63,7 @@
 				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'todolists' }" class="router-link"> -->
-				<ButtonSave @click.native="printToDoList()" />
+				<ButtonSave @click.native="saveToDoList()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import draggable from 'vuedraggable';
 
 import FormLabel from '@/components/FormLabel.vue';
@@ -86,7 +88,6 @@ export default {
 	data() {
 		return {
 			toDoList: {
-				ObjectId: null,
 				title: null,
 				date: null,
 				items: []
@@ -122,14 +123,20 @@ export default {
 				completed: false
 			});
 		},
-		printToDoList() {
-			let numberOfNotCompleted = this.toDoList.items.filter(item => item.completed === false).length;
-			if (numberOfNotCompleted === 0) {
-				this.toDoList.completed = true;
-			} else {
-				this.toDoList.completed = false;
-			}
-			console.log(this.toDoList);
+		async saveToDoList() {
+			const toDoListIsFull = Object.values(this.toDoList).every(x => x !== null && x !== '' && x.length !== 0);
+			const itemListIsNotEmpty = this.toDoList.items.every(x => x.name !== null && x.name !== '');
+			if (toDoListIsFull && itemListIsNotEmpty) {
+				let numberOfNotCompleted = this.toDoList.items.filter(item => item.completed === false).length;
+				if (numberOfNotCompleted === 0) {
+					this.toDoList.completed = true;
+				} else {
+					this.toDoList.completed = false;
+				}
+				console.log(this.toDoList);
+				console.log("full");
+				await AxiosService.post("/todolists", this.toDoList);
+			} else console.log("An error has occured. Please try again.");
 		}
 	},
 	components: {

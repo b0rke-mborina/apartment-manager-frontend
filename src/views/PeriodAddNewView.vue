@@ -17,9 +17,8 @@
 			<!-- Private accomodation to which the period belongs to -->
 			<div class="mt-5 text-center justify-center">
 				<FormLabel text="Belonging private accomodation:" class="details-label mb-3" />
-				<v-select v-model="period.privateAccomodation"
+				<v-select v-model="period.privateAccomodation" return-object
 								:items="privateAccomodations"
-								item-value="ObjectId"
 								item-text="name"
 								label="Select an accomodation"
 								solo rounded
@@ -40,7 +39,7 @@
 				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'calendar' }" class="router-link"> -->
-				<ButtonSave @click.native="updatePeriod()" />
+				<ButtonSave @click.native="savePeriod()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -49,6 +48,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import ButtonCancel from '@/components/ButtonCancel.vue';
@@ -61,7 +62,6 @@ export default {
 	data() {
 		return {
 			period: {
-				ObjectId: null,
 				start: null,
 				end: null,
 				name: null,
@@ -71,35 +71,36 @@ export default {
 			dates: [],
 		}
 	},
-	mounted() {
-		let privateAccomodationsFromBackend = [
-			{
-				ObjectId: 111,
-				name: "Apartment Nature"
-			},
-			{
-				ObjectId: 112,
-				name: "Apartment Marie"
-			},
-			{
-				ObjectId: 113,
-				name: "Apartment x"
-			}
-		];
-		this.privateAccomodations = privateAccomodationsFromBackend;
+	async mounted() {
+		let response = await AxiosService.get("/privateaccomodations");
+		let accomodationsWithLocations = response.data;
+		this.privateAccomodations = accomodationsWithLocations.map(accomodation => {
+			accomodation.location = accomodation.location._id;
+			return accomodation;
+		});
+		console.log(this.privateAccomodations);
 	},
 	methods: {
-		updatePeriod() {
+		async savePeriod() {
 			// update start and end dates
 			this.dates = this.dates.sort();
 			console.log(this.dates);
-			this.period.start = this.dates[0];
-			this.period.end = this.dates[1];
+			this.period.start = this.dates[0] + " 15:00";
+			this.period.end = this.dates[1] + " 10:00";
 			// update private accomodation
-			this.period.privateAccomodation = this.privateAccomodations.find(accomodation =>
-				accomodation.ObjectId === this.period.privateAccomodation);
+			this.period.privateAccomodation = {
+				_id: this.period.privateAccomodation._id,
+				name: this.period.privateAccomodation.name
+			}
 			// print for check
 			console.log(this.period);
+
+			// check if period data is complete
+			const periodIsFull = Object.values(this.period).every(x => x !== null && x !== undefined && x !== '');
+			if (periodIsFull) {
+				console.log("full");
+				await AxiosService.post("/periods", this.period);
+			} else console.log("An error has occured. Please try again.");
 		}
 	},
 	components: {

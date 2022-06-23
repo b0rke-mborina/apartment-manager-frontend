@@ -66,7 +66,7 @@
 				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'guests' }" class="router-link"> -->
-				<ButtonSave @click.native="printGuest()" />
+				<ButtonSave @click.native="saveGuest()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -75,6 +75,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import ButtonCancel from '@/components/ButtonCancel.vue';
@@ -87,7 +89,6 @@ export default {
 	data() {
 		return {
 			guest: {
-				ObjectId: null,
 				firstName: null,
 				lastName: null,
 				email: null,
@@ -101,8 +102,13 @@ export default {
 		
 	},
 	methods: {
-		printGuest() {
+		async saveGuest() {
 			console.log(this.guest);
+			const guestIsFull = Object.values(this.guest).every(x => x !== null && x !== '');
+			if (guestIsFull) {
+				console.log("full");
+				await AxiosService.post("/guests", this.guest);
+			}
 		}
 	},
 	components: {

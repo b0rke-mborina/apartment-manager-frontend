@@ -34,7 +34,7 @@
 				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'notes' }" class="router-link"> -->
-				<ButtonSave @click.native="printNote()" />
+				<ButtonSave @click.native="saveNote()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import ButtonCancel from '@/components/ButtonCancel.vue';
@@ -51,11 +53,10 @@ import ButtonSave from '@/components/ButtonSave.vue';
 import EmptyDiv from '@/components/EmptyDiv.vue';
 
 export default {
-	name: 'PeriodAddNewView',
+	name: 'NoteAddNewView',
 	data() {
 		return {
 			note: {
-				ObjectId: null,
 				heading: null,
 				body: null,
 				important: null
@@ -72,12 +73,14 @@ export default {
 			]
 		}
 	},
-	mounted() {
-		
-	},
 	methods: {
-		printNote() {
+		async saveNote() {
 			console.log(this.note);
+			const noteIsFull = Object.values(this.note).every(x => x !== null && x !== '');
+			if (noteIsFull) {
+				console.log("full");
+				await AxiosService.post("/notes", this.note);
+			}
 		}
 	},
 	components: {

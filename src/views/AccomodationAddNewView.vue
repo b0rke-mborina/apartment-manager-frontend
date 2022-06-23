@@ -84,6 +84,19 @@
 					</v-text-field>
 				</div>
 			</div>
+			<div class="details-grid-item">
+				<div class="details-grid-subitem">
+				</div>
+				<div class="details-grid-subitem">
+					<!-- Country - address info -->
+					<FormLabel text="Country (address)" class="details-label mr-4" />
+					<v-text-field v-model="location.country" solo rounded
+									clearable clear-icon="mdi-close-circle"
+									label="Name of country"
+									background-color="#A5D4FF">
+					</v-text-field>
+				</div>
+			</div>
 			<h3 class="mt-9 mb-2">Other information</h3>
 			<!-- Lowest and highest floors info -->
 			<div class="details-grid-item">
@@ -114,7 +127,7 @@
 				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'accomodations' }" class="router-link"> -->
-				<ButtonSave @click.native="printAccomodationAndLocation()" />
+				<ButtonSave @click.native="saveAccomodationAndLocation()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
@@ -123,6 +136,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import ButtonCancel from '@/components/ButtonCancel.vue';
@@ -135,18 +150,15 @@ export default {
 	data() {
 		return {
 			accomodation: {
-				ObjectId: null,
 				name: null,
 				categoryStarNumber: null,
 				maxGuestNumber: null,
-				currentState: "AVAILABLE",
 				location: null,
-				hasYard: null,
+				hasYard: false,
 				lowestFloor: null,
 				numberofFloors: null
 			},
 			location: {
-				ObjectId: null,
 				street: null,
 				houseNumber: null,
 				entranceNumber: null,
@@ -156,13 +168,43 @@ export default {
 			}
 		}
 	},
-	mounted() {
-		
-	},
 	methods: {
-		printAccomodationAndLocation() {
-			console.log(this.accomodation);
-			console.log(this.location);
+		async saveAccomodationAndLocation() {
+			// console.log(this.accomodation);
+			// console.log(this.location);
+			// check if address / location already exists and save it
+			let response = await AxiosService
+				.get(`/addresses?street=${this.location.street}&houseNumber=${this.location.houseNumber}&entranceNumber=${this.location.entranceNumber}&postalNumber=${this.location.postalNumber}&city=${this.location.city}&country=${this.location.country}`);
+			let address = response.data;
+			// console.log("address");
+			// console.log(address);
+			// if address is already in database, save both objects to database, else save only accomodation to database
+			if (address.length === 0) {
+				// add location to addresses collection in database and set accomodation.location to its _id if location data is complete
+				const locationIsFull = Object.values(this.location).every(x => x !== null && x !== '');
+				// console.log("locationIsFull");
+				// console.log(locationIsFull);
+				if (locationIsFull) {
+					let locationId = await AxiosService.post('/addresses', this.location);
+					this.accomodation.location = locationId._id;
+				} else console.log("An error has occured, please try again.");
+				// add accomodation to privateaccomodations collection in database if accomodation data is complete
+				const accomodationIsFull = Object.values(this.accomodation).every(x => x !== null && x !== '');
+				// console.log("accomodationIsFull");
+				// console.log(accomodationIsFull);
+				if (accomodationIsFull) await AxiosService.post('/privateaccomodations',this.accomodation);
+				else console.log("An error has occured, please try again.");
+			} else {
+				// set accomodation.location to address _id
+				this.accomodation.location = address[0]._id;
+				// check if accomodation data is complete
+				const accomodationIsFull = Object.values(this.accomodation).every(x => x !== null && x !== '');
+				// console.log("accomodationIsFull");
+				// console.log(accomodationIsFull);
+				// save accomodation to database
+				if (accomodationIsFull) await AxiosService.post('/privateaccomodations', this.accomodation);
+				else console.log("An error has occured, please try again.");
+			}
 		}
 	},
 	components: {
