@@ -33,7 +33,7 @@
 				<ButtonCancel/>
 			</router-link>
 			<ButtonDialogDelete itemType="note" service="note" :_id="note._id" />
-			<ButtonSave @click.native="printNote()" />
+			<ButtonSave/> <!--  @click.native="printNote()"  -->
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
@@ -54,6 +54,7 @@ export default {
 	data() {
 		return {
 			note: {},
+			// items for importance selection list
 			selectItems: [
 				{
 					value: true,
@@ -67,12 +68,14 @@ export default {
 		}
 	},
 	async mounted() {
+		// get note data from backend and set it to view data
 		let response = await AxiosService.get(`/note/${this.$route.params.id}`);
 		this.note = response.data;
 		console.log(this.note);
 	},
 	methods: {
-		printNote() {
+		// checks completeness of note data and sends it to backend for updating
+		updateNote() {
 			console.log(this.note);
 		}
 	},

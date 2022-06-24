@@ -1,4 +1,5 @@
 <template>
+	<!-- Edit button -->
 	<v-btn elevation="2" rounded large class="ma-4 btn-edit">
 		<v-icon color="#000000" class="mr-2">mdi-pencil</v-icon>
 		EDIT

@@ -1,9 +1,11 @@
 <template>
 	<v-card color="#E3EAEF" width="250" class="ma-4 rounded-xl notes-card d-flex flex-column">
+		<!-- Dashboard item title -->
 		<div class="notes-header pt-3">
 			<v-card-title v-if="!item" class="pt-1 justify-center text-break">Calendars</v-card-title>
 			<v-card-title v-else class="pt-1 justify-center text-break">{{ item.title }}</v-card-title>
 		</div>
+		<!-- Dashboard item message -->
 		<div class="flex-div text-center">
 			<v-card-text v-if="!item">Check your calendars</v-card-text>
 			<v-card-text v-else-if="item.aspect === 'important'">
@@ -14,6 +16,7 @@
 			</v-card-text>
 		</div>
 		<v-spacer></v-spacer>
+		<!-- See more button -->
 		<div class="text-center">
 			<router-link v-if="!item" to="/calendar" class="router-link">
 				<ButtonSeeMore notElevated />

@@ -38,7 +38,7 @@ export default {
 		}
 	},
 	async mounted() {
-		// save all notes data
+		// get all notes data set it to view data
 		let response = await AxiosService.get("/notes");
 		this.notes = response.data;
 		console.log(this.notes);

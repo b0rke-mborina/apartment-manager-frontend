@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+// axios service for making requests to backend
 let AxiosService = axios.create({
 	baseURL: 'http://localhost:3000/',
 	timeout: 3000,
 });
 
+// function for datetime conversion, returns date(time) in Day(sufix: e.g. th) Month Year Hours:Minutes format
 function convertDatetime(datetime) {
 	let dateAndTime = datetime.split(" ");
 	if (dateAndTime[1]) {
@@ -14,6 +16,7 @@ function convertDatetime(datetime) {
 	}
 }
 
+// function for period conversion, supprots date and datetime parameters
 function convertPeriod(dateStart, dateEnd) {
 	let datetimeStartParts = dateStart.split(" ");
 	let datetimeEndParts = dateEnd.split(" ");
@@ -30,6 +33,7 @@ function convertPeriod(dateStart, dateEnd) {
 	}
 }
 
+// function for date conversion, returns date in Day(sufix: e.g. th) Month Year format
 function convertDate(date) {
 	let dateParts = date.split("-");
 	let daySufix = "";
@@ -43,6 +47,7 @@ function convertDate(date) {
 	return `${dateParts[2]}${daySufix} ${monthNumberToName[dateParts[1]]} ${dateParts[0]}`;
 }
 
+// mapping month in MM format to month name
 const monthNumberToName = {
 	"01": "January",
 	"02": "Febuary",

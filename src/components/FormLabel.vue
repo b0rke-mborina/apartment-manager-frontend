@@ -1,4 +1,5 @@
 <template>
+	<!-- Label which shows the received text -->
 	<div>
 		<span class="body-1">{{ text }}</span>
 	</div>

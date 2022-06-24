@@ -43,6 +43,7 @@ import IconDelete from '@/components/IconDelete.vue';
 export default {
 	name: 'ToDoListItem',
 	methods: {
+		// imported function for converting date
 		convertDate
 	},
 	props: {

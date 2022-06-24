@@ -37,6 +37,7 @@ import IconEdit from '@/components/IconEdit.vue';
 export default {
 	name: 'NoteItem',
 	methods: {
+		// returns 100 characters of note body for render 
 		getStringForRender() {
 			if (this.note.body.length < 100 && (this.note.body.split(/\r\n|\r|\n/).length) < 3) return this.note.body;
 			let substringLength = 97;

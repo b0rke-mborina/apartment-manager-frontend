@@ -65,11 +65,13 @@ import IconEdit from '@/components/IconEdit.vue';
 export default {
 	name: 'GuestItem',
 	methods: {
+		// returns current date in YYYY-MM-DD format
 		currentDate() {
 			const current = new Date();
 			const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
 			return date;
 		},
+		// imported function for converting period
 		convertPeriod
 	},
 	props: {

@@ -97,7 +97,7 @@
 				<ButtonCancel/>
 			</router-link>
 			<ButtonDialogDelete itemType="guest" service="guest" :_id="guest._id" />
-			<ButtonSave @click.native="printGuest()" />
+			<ButtonSave/> <!--  @click.native="printGuest()"  -->
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
@@ -121,6 +121,7 @@ export default {
 		}
 	},
 	mounted() {
+		// get guest data from backend and save it to view data
 		let guestFromBackend = {
 			ObjectId: 100,
 			firstName: "Mark",
@@ -143,12 +144,14 @@ export default {
 		console.log(this.guest);
 	},
 	methods: {
+		// returns current date in YYYY-MM-DD format
 		currentDate() {
 			const current = new Date();
 			const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
 			return date;
 		},
-		printGuest() {
+		// updates guest data and sends it to backend for updating
+		updateGuest() {
 			console.log(this.guest);
 		}
 	},

@@ -1,4 +1,5 @@
 <template>
+	<!-- Div with no items message -->
 	<div class="no-items text-center ma-4">
 		<span>There are no {{ items }} here currently...</span>
 	</div>

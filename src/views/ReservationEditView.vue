@@ -216,6 +216,7 @@ export default {
 		}
 	},
 	mounted() {
+		// parallel calls
 		let reservationFromBackend = {
 			ObjectId: 100,
 			period: {
@@ -316,10 +317,13 @@ export default {
 				city: "Milano"
 			}
 		];
+		// set retrieved reservation data to view data
 		this.reservation = reservationFromBackend;
 		console.log(this.reservation);
+		// set retrieved accomodations data to view data
 		this.privateAccomodations = privateAccomodationsFromBackend;
 		console.log(this.privateAccomodations);
+		// set retrieved guests data to view data
 		this.guests = guestsFromBackend;
 		console.log(this.guests);
 		// set available guests to be all guests but ones in reservation
@@ -333,6 +337,7 @@ export default {
 		this.dates = [this.reservation.period.start, this.reservation.period.end];
 	},
 	methods: {
+		// updates guest list, guest who made the reservation and list of available guests
 		updateGuestList(guestId) {
 			this.reservation.madeByGuest = this.guests.find(guest => guest.ObjectId === guestId);
 			this.reservation.guests = this.reservation.guests.filter(guest => guest.ObjectId !== guestId);
@@ -341,14 +346,17 @@ export default {
 				.filter(availableGuest => !this.reservation.guests
 				.find(guest => guest.ObjectId === availableGuest.ObjectId));
 		},
+		// removes guest from reservation list and updates list of available guests
 		removeGuest(guestId) {
 			this.reservation.guests = this.reservation.guests.filter(guest => guest.ObjectId !== guestId);
 			this.availableGuests.push(this.guests.find(guest => guest.ObjectId === guestId));
 		},
+		// adds guest to reservation list and updates list of available guests
 		addGuest(guestId) {
 			this.reservation.guests.push(this.availableGuests.find(guest => guest.ObjectId === guestId));
 			this.availableGuests = this.availableGuests.filter(guest => guest.ObjectId !== guestId);
 		},
+		// modifies reservation data, checks its completeness and sends it to backend for saving
 		updateReservation() {
 			// update start and end dates
 			this.dates = this.dates.sort();

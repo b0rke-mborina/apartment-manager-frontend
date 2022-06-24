@@ -72,6 +72,7 @@ export default {
 		}
 	},
 	async mounted() {
+		// get all accomodations data, modify it and set it to view data
 		let response = await AxiosService.get("/privateaccomodations");
 		let accomodationsWithLocations = response.data;
 		this.privateAccomodations = accomodationsWithLocations.map(accomodation => {
@@ -81,6 +82,7 @@ export default {
 		console.log(this.privateAccomodations);
 	},
 	methods: {
+		// modifies poriod data, checks its completeness and sends it to backend for saving
 		async savePeriod() {
 			// update start and end dates
 			this.dates = this.dates.sort();
@@ -94,8 +96,7 @@ export default {
 			}
 			// print for check
 			console.log(this.period);
-
-			// check if period data is complete
+			// check if period data is complete and send it to backend for saving
 			const periodIsFull = Object.values(this.period).every(x => x !== null && x !== undefined && x !== '');
 			if (periodIsFull) {
 				console.log("full");

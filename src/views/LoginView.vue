@@ -4,7 +4,7 @@
 		<v-card color="#E3EAEF" class="details-grid mt-9 mx-auto py-4 px-10 rounded-xl">
 			<!-- Page title -->
 			<h1 class="my-5 text-center">Log in</h1>
-			<!-- Email -->
+			<!-- Email info -->
 			<div class="details-grid-item my-5">
 				<FormLabel text="Email" class="details-label text-center" />
 				<v-text-field v-model="user.email" solo rounded
@@ -14,7 +14,7 @@
 								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
-			<!-- Password -->
+			<!-- Password info -->
 			<div class="details-grid-item mb-5">
 				<FormLabel text="Password" class="details-label text-center" />
 				<v-text-field v-model="user.password" solo rounded

@@ -38,7 +38,7 @@ export default {
 		}
 	},
 	async mounted() {
-		// save all accomodations data
+		// get all accomodations data from backend and set it to view data
 		let response = await AxiosService.get("/privateaccomodations");
 		this.accomodations = response.data;
 		console.log(this.accomodations);

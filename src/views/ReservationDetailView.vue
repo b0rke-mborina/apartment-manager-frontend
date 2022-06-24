@@ -89,12 +89,14 @@ export default {
 		}
 	},
 	async mounted() {
+		// get reservation data and set it to view data
 		console.log("call");
 		let response = await AxiosService.get(`/reservation/${this.$route.params.id}`);
 		this.reservation = response.data;
 		console.log(this.reservation);
 	},
 	methods: {
+		// imported function for period conversion
 		convertPeriod
 	},
 	components: {

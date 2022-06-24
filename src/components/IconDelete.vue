@@ -36,6 +36,7 @@ export default {
 		}
 	},
 	methods: {
+		// sends DELETE request to backend to specified service and with specified id
 		async deleteItem() {
 			await AxiosService.delete(`${this.service}/${this._id}`);
 		}

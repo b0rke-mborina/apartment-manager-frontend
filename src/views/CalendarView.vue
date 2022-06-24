@@ -141,12 +141,15 @@ export default {
 		console.log(this.closedPeriodsForPrivateAccomodation);
 	},
 	methods: {
+		// sets calndar month to current month
 		setToday () {
 			this.value = ''
 		},
+		// updates periods shown on calendar based on selected accomodation
 		updateClosedPeriodsForPrivateAcomodation() {
 			this.closedPeriodsForPrivateAccomodation = this.allClosedPeriods.filter(period => period.privateAccomodation === this.privateAccomodationId);
 		},
+		// opens period detail popup menu when a calendar (event) period is clicked
       showEvent ({ nativeEvent, event }) {
 			// function that opens menu after click on period
 			const open = () => {
@@ -164,6 +167,7 @@ export default {
 			// prevents further propagation of the current event in the capturing and bubbling phases
 			nativeEvent.stopPropagation();
       },
+		// imported function for datetime conversion
 		convertDatetime
 	},
 	components: {

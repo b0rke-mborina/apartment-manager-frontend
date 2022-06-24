@@ -1,4 +1,5 @@
 <template>
+	<!-- Empty div for adding empty space to bottom of page -->
 	<div class="empty">
 		&nbsp;
 	</div>

@@ -157,6 +157,7 @@ export default {
 		}
 	},
 	mounted() {
+		// get data from backend and set it to view data
 		let accomodationFromBackend = {
 			ObjectId: 111,
 			name: "Apartment Nature",
@@ -179,7 +180,8 @@ export default {
 		console.log(this.accomodation);
 	},
 	methods: {
-		printAccomodation() {
+		// checks completeness of accomodation data and sends it to backend for updating
+		updateAccomodation() {
 			console.log(this.accomodation);
 		}
 	},

@@ -169,6 +169,7 @@ export default {
 		}
 	},
 	methods: {
+		// modifies data and sends it to backend for saving
 		async saveAccomodationAndLocation() {
 			// console.log(this.accomodation);
 			// console.log(this.location);

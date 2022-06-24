@@ -1,4 +1,5 @@
 <template>
+	<!-- Bar chart -->
 	<Bar
 		:chart-options="chartOptions"
 		:chart-data="data"
@@ -24,6 +25,7 @@ export default {
 				labels: [],
 				datasets: [
 					{
+						// modifies colors and label of chart
 						borderColor: '#A5D4FF',
 						backgroundColor: '#A5D4FF',
 						color: "#000000",
@@ -35,6 +37,7 @@ export default {
 			chartOptions: {
 				responsive: true,
 				plugins: {
+					// displays title of chart and hides its legend
 					title: {
 						display: true,
 						text: this.title
@@ -44,6 +47,7 @@ export default {
 					}
 				},
 				scales: {
+					// makes chart start at 0 and show only integer values on y axis
 					y: {
 						beginAtZero: true,
 						ticks: {
@@ -55,15 +59,18 @@ export default {
 		}
 	},
 	mounted() {
+		// set received labels and data to chart
 		console.log(this.labels);
 		console.log(this.data.datasets);
 		this.data.labels = this.labels;
 		this.data.datasets = [ this.values ];
 	},
 	watch: {
+		// updates chart with new data when received values change
 		values() {
 			this.data.datasets = [ this.values ];
 		},
+		// updates chart with new labels when received labels change
 		labels() {
 			this.data.labels = this.labels;
 		},

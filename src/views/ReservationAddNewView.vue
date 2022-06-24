@@ -244,6 +244,7 @@ export default {
 		console.log(this.availableGuests);
 	},
 	methods: {
+		// updates guest list, guest who made the reservation and list of available guests
 		updateGuestList(guestId) {
 			// change the guest who made the reservation, remove him from reservation guest list (if needed),
 			// and remove him from list of available guests (if needed)
@@ -255,16 +256,19 @@ export default {
 				.filter(availableGuest => !this.reservation.guests
 				.find(guest => guest._id === availableGuest._id));
 		},
+		// removes guest from reservation list and updates list of available guests
 		removeGuest(guestId) {
 			// remove guest from reservation list and add him to list of available guests
 			this.reservation.guests = this.reservation.guests.filter(guest => guest._id !== guestId);
 			this.availableGuests.push(this.guests.find(guest => guest._id === guestId));
 		},
+		// adds guest to reservation list and updates list of available guests
 		addGuest(guestId) {
 			// add guest to reservation list and remove him from list of available guests
 			this.reservation.guests.push(this.availableGuests.find(guest => guest._id === guestId));
 			this.availableGuests = this.availableGuests.filter(guest => guest._id !== guestId);
 		},
+		// modifies reservation data, checks its completeness and sends it to backend for saving
 		async saveReservation() {
 			// update start and end dates
 			this.dates = this.dates.sort();

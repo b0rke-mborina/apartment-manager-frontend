@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+// imports of main views
 import DashboardView from '../views/DashboardView.vue';
 import AccomodationsView from '../views/AccomodationsView.vue';
 import ReservationsView from '../views/ReservationsView.vue';
@@ -12,35 +13,44 @@ import LoginView from '../views/LoginView.vue';
 import SignupView from '../views/SignupView.vue';
 import AnalyticsView from '../views/AnalyticsView.vue';
 
+// imports of accomodation views (detail, edit, add new)
 import AccomodationDetailView from '../views/AccomodationDetailView.vue';
 import AccomodationEditView from '../views/AccomodationEditView.vue';
 import AccomodationAddNewView from '../views/AccomodationAddNewView.vue';
 
+// imports of reservation views (detail, edit, add new)
 import ReservationDetailView from '../views/ReservationDetailView.vue';
 import ReservationEditView from '../views/ReservationEditView.vue';
 import ReservationAddNewView from '../views/ReservationAddNewView.vue';
 
+// imports of period views (detail-edit, add new)
 import PeriodDetailEditView from '@/views/PeriodDetailEditView.vue';
 import PeriodAddNewView from '@/views/PeriodAddNewView.vue';
 
+// imports of guest views (detail, edit, add new)
 import GuestDetailView from '../views/GuestDetailView.vue';
 import GuestEditView from '../views/GuestEditView.vue';
 import GuestAddNewView from '../views/GuestAddNewView.vue';
 
+// imports of to-do list views (detail-edit, add new)
 import ToDoListDetailEditView from '../views/ToDoListDetailEditView.vue';
 import ToDoListAddNewView from '../views/ToDoListAddNewView.vue';
 
+// imports of note views (detail-edit, add new)
 import NoteDetailEditView from '../views/NoteDetailEditView.vue';
 import NoteAddNewView from '../views/NoteAddNewView.vue';
 
 Vue.use(VueRouter)
 
+// routes list
 const routes = [
+	// dashboard route
 	{
 		path: '/',
 		name: 'dashboard',
 		component: DashboardView
 	},
+	// accomodation routes
 	{
 		path: '/accomodations',
 		name: 'accomodations',
@@ -63,6 +73,7 @@ const routes = [
 		name: 'accomodation-modification',
 		component: AccomodationEditView
 	},
+	// reservation routes
 	{
 		path: '/reservations',
 		name: 'reservations',
@@ -85,6 +96,7 @@ const routes = [
 		name: 'reservation-modification',
 		component: ReservationEditView
 	},
+	// calendar and period routes
 	{
 		path: '/calendar',
 		name: 'calendar',
@@ -101,6 +113,7 @@ const routes = [
 		name: 'period-detail-modification',
 		component: PeriodDetailEditView
 	},
+	// guest routes
 	{
 		path: '/guests',
 		name: 'guests',
@@ -123,6 +136,7 @@ const routes = [
 		name: 'guest-modification',
 		component: GuestEditView
 	},
+	// to-do list routes
 	{
 		path: '/todolists',
 		name: 'todolists',
@@ -139,6 +153,7 @@ const routes = [
 		name: 'todolist-detail-modification',
 		component: ToDoListDetailEditView
 	},
+	// note routes
 	{
 		path: '/notes',
 		name: 'notes',
@@ -155,11 +170,13 @@ const routes = [
 		name: 'note-detail-modification',
 		component: NoteDetailEditView
 	},
+	// analytics route
 	{
 		path: '/analytics',
 		name: 'analytics',
 		component: AnalyticsView
 	},
+	// authentification routes
 	{
 		path: '/login',
 		name: 'login',
@@ -176,6 +193,7 @@ const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
 	routes,
+	// shows top of view after route change
 	scrollBehavior() {
 		return { x: 0, y: 0 };
 	},

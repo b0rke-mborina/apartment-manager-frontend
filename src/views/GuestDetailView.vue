@@ -87,17 +87,20 @@ export default {
 		}
 	},
 	async mounted() {
+		// get guest data from backend and save it to view data
 		console.log("call");
 		let response = await AxiosService.get(`/guest/${this.$route.params.id}`);
 		this.guest = response.data;
 		console.log(this.guest);
 	},
 	methods: {
+		// returns current date in YYYY-MM-DD format
 		currentDate() {
 			const current = new Date();
 			const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
 			return date;
 		},
+		// imported function for period conversion
 		convertPeriod
 	},
 	components: {

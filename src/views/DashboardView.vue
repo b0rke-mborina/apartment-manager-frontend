@@ -87,6 +87,7 @@ export default {
 		}
 	},
 	async mounted() {
+		// parallel calls
 		let responses = await Promise.all([
 			await AxiosService.get("/privateaccomodations?limit=3"),
 			await AxiosService.get("/reservations?limit=3"),
@@ -94,22 +95,23 @@ export default {
 			await AxiosService.get("/notes?important=true"),
 			await AxiosService.get("/todolists?completed=false")
 		]);
+		// set retrieved accomodation data to view data
 		this.accomodations = responses[0].data;
 		console.log("accomodations");
 		console.log(this.accomodations);
-
+		// set retrieved reservation data to view data
 		this.reservations = responses[1].data;
 		console.log("reservations");
 		console.log(this.reservations);
-
+		// set retrieved guest data to view data
 		this.guests = responses[2].data;
 		console.log("guests");
 		console.log(this.guests);
-
+		// set length of retrieved note data to view data
 		this.noteItem.number = responses[3].data.length;
 		console.log("noteItem");
 		console.log(this.noteItem.number);
-
+		// set length of retrieved to-do list data to view data
 		this.toDoListItem.number = responses[4].data.length;
 		console.log("toDoListItem");
 		console.log(this.toDoListItem.number);

@@ -98,10 +98,8 @@ export default {
 			}
 		}
 	},
-	mounted() {
-		
-	},
 	methods: {
+		// checks completeness of guest data and sends it to backend for saving
 		async saveGuest() {
 			console.log(this.guest);
 			const guestIsFull = Object.values(this.guest).every(x => x !== null && x !== '');

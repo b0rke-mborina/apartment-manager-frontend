@@ -61,6 +61,7 @@ export default {
 				body: null,
 				important: null
 			},
+			// items for importance selection list
 			selectItems: [
 				{
 					value: true,
@@ -74,6 +75,7 @@ export default {
 		}
 	},
 	methods: {
+		// checks completeness of note data and sends it to backend for saving
 		async saveNote() {
 			console.log(this.note);
 			const noteIsFull = Object.values(this.note).every(x => x !== null && x !== '');

@@ -1,4 +1,5 @@
 <template>
+	<!-- Line chart -->
 	<LineComponent
 		:chart-options="chartOptions"
 		:chart-data="data"

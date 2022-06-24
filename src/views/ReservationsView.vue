@@ -35,6 +35,7 @@ export default {
 		}
 	},
 	async mounted() {
+		// get all reservations data set it to view data
 		let response = await AxiosService.get("/reservations");
 		this.reservations = response.data;
 		console.log(this.reservations);

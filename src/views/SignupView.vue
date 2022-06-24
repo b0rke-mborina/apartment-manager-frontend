@@ -85,6 +85,7 @@ export default {
 		}
 	},
 	methods: {
+		// checks if values in password and password confirmation inputs are the same
 		checkPasswordConfirmation() {
 			this.user.password === this.passwordConfirm
 				? console.log("Password confirmed!")

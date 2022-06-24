@@ -1,4 +1,5 @@
 <template>
+	<!-- Form input used for showing received data -->
 	<v-text-field v-if="readonly === true" :value="text"
 					  solo rounded dense readonly
 					  background-color="#A5D4FF">

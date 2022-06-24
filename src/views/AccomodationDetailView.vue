@@ -99,6 +99,7 @@ export default {
 		}
 	},
 	async mounted() {
+		// get data from backend and set it to view data
 		let response = await AxiosService.get(`/privateaccomodation/${this.$route.params.id}`);
 		this.accomodation = response.data;
 		console.log(this.accomodation);

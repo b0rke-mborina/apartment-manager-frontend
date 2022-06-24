@@ -69,17 +69,21 @@ export default {
 		}
 	},
 	async mounted() {
+		// parallel calls
 		let responses = await Promise.all([
 			await AxiosService.get("/privateaccomodations"),
 			await AxiosService.get(`/period/${this.$route.params.id}`)
 		]);
+		// set retrieved accomodations data to view data
 		this.privateAccomodations = responses[0].data;
 		console.log(this.privateAccomodations);
+		// set retrieved period data to view data, set dates to period select
 		this.period = responses[1].data;
 		console.log(this.period);
 		this.dates = [this.period.start, this.period.end];
 	},
 	methods: {
+		// modifies period data, checks its completeness and sends it to backend for updating
 		updatePeriod() {
 			this.dates = this.dates.sort();
 			console.log(this.dates);

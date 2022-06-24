@@ -37,7 +37,7 @@ export default {
 		}
 	},
 	async mounted() {
-		// save all to-do lists data
+		// get all to-do lists data and save it to view data
 		let response = await AxiosService.get("/todolists");
 		this.toDoLists = response.data;
 		console.log(this.toDoLists);

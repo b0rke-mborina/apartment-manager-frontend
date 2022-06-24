@@ -96,6 +96,7 @@ export default {
 		}
 	},
 	methods: {
+		// updates positions of to-do list items based on their current position in list
 		updatePositions() {
 			this.toDoList.items = this.toDoList.items.map(item => item = {
 				name: item.name,
@@ -103,9 +104,11 @@ export default {
 				completed: item.completed
 			});
 		},
+		// removes to-do list item from to-do list based on its current position
 		removeItem(itemPosition) {
 			this.toDoList.items = this.toDoList.items.filter(item => item.position !== itemPosition);
 		},
+		// adds an item to to-do list and sets its values
 		addItem() {
 			let numberOfEmptyItems = this.toDoList.items.filter(item => item.name === "").length;
 			if (this.toDoList.items.length === 0 || numberOfEmptyItems === 0) {
@@ -116,6 +119,7 @@ export default {
 				});
 			}
 		},
+		// unchecks all items in to-do list and makes them not completed
 		uncheckAllItems() {
 			this.toDoList.items = this.toDoList.items.map(item => item = {
 				name: item.name,
@@ -123,16 +127,20 @@ export default {
 				completed: false
 			});
 		},
+		// modifies to-do list data, checks its completeness and sends it to backend for saving
 		async saveToDoList() {
+			// check completeness of data
 			const toDoListIsFull = Object.values(this.toDoList).every(x => x !== null && x !== '' && x.length !== 0);
 			const itemListIsNotEmpty = this.toDoList.items.every(x => x.name !== null && x.name !== '');
 			if (toDoListIsFull && itemListIsNotEmpty) {
+				// set value of completeness
 				let numberOfNotCompleted = this.toDoList.items.filter(item => item.completed === false).length;
 				if (numberOfNotCompleted === 0) {
 					this.toDoList.completed = true;
 				} else {
 					this.toDoList.completed = false;
 				}
+				// send data to backend for saving
 				console.log(this.toDoList);
 				console.log("full");
 				await AxiosService.post("/todolists", this.toDoList);

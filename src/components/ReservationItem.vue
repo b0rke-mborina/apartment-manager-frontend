@@ -65,6 +65,7 @@ import IconEdit from '@/components/IconEdit.vue';
 export default {
 	name: 'ReservationItem',
 	methods: {
+		// imported function for period, datetime and date conversions
 		convertPeriod,
 		convertDatetime,
 		convertDate

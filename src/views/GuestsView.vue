@@ -36,6 +36,7 @@ export default {
 		}
 	},
 	async mounted() {
+		// get all guest data from backend and set it to view data
 		console.log("call data");
 		let response = await AxiosService.get("/guests");
 		this.guests = response.data;

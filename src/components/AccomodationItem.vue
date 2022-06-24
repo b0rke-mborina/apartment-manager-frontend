@@ -8,7 +8,7 @@
 		<!-- Accomodation information -->
 		<div class="flex-div">
 			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation._id }}" class="router-link text-div">
-				<!-- Accomodation availability (based on current state of accomodation) -->
+				<!-- Accomodation availability (based of current state of accomodation) -->
 				<v-card-title class="py-0 availability">
 					<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
 							icon color="#FFCC00" class="pr-2">

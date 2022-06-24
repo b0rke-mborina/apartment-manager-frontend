@@ -128,6 +128,7 @@ export default {
 		}
 	},
 	mounted() {
+		// get data from backend and save it to view data
 		let dataFromBackend = {
 			ObjectId: 1111,
 			accomodations: [
@@ -233,6 +234,7 @@ export default {
 		}
 	},
 	methods: {
+		// updates analytics data based on selected accomodations
 		updateData(accomodationId) {
 			// check selected accomodations and data
 			console.log(this.selectedAccomodations);
