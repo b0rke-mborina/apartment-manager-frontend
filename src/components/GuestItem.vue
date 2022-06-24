@@ -1,13 +1,16 @@
 <template>
 	<v-card color="#E3EAEF" class="my-3 pa-4 rounded-xl main-grid">
-		<router-link :to="{ name: 'guest-detail', params: { id: guest._id }}" class="router-link grid-div"> <!-- _id -->
+		<router-link :to="{ name: 'guest-detail', params: { id: guest._id }}" class="router-link grid-div">
+			<!-- Guest main information (name and address) -->
 			<div class="name-location">
 				<v-icon class="mx-2">mdi-account</v-icon>
 				<span class="mx-2">{{ guest.firstName }} {{ guest.lastName }}</span>
 				<span class="mx-2 location">{{ guest.city }}, {{ guest.country }}</span>
 			</div>
 			<div class="period-dates">
+				<!-- Guest period dates -->
 				<span v-if="guest.newestPeriod" class="mx-2 my-1">{{ convertPeriod(guest.newestPeriod.start, guest.newestPeriod.end) }}</span>
+				<!-- Guest type (based on guest state) -->
 				<v-chip v-if="guest.guestState === 'NOT A GUEST YET'"
 						  color="#B5B5B5" class="mx-2 my-1">
 					NOT A GUEST YET
@@ -42,11 +45,13 @@
 				</v-chip>
 			</div>
 		</router-link>
+		<!-- Main action icons -->
 		<div class="edit-delete-icons">
 			<router-link :to="{ name: 'guest-modification', params: { id: guest._id }}" class="router-link"> <!-- _id -->
 				<IconEdit/>
 			</router-link>
-			<IconDelete itemType="guest" itemCaptionType="name" :itemName="guest.firstName + ' ' + guest.lastName" />
+			<IconDelete itemType="guest" itemCaptionType="name" :itemName="guest.firstName + ' ' + guest.lastName"
+							service="guest" :_id="guest._id" />
 		</div>
 	</v-card>
 </template>

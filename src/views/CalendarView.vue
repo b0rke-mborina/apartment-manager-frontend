@@ -65,6 +65,7 @@
 						<IconDelete v-if="selectedPeriod.start && selectedPeriod.end"
 										itemType="period" itemCaptionType="dates and times"
 										:itemName="convertDatetime(selectedPeriod.start) + ' and ' + convertDatetime(selectedPeriod.end)"
+										service="period" :_id="selectedPeriod._id"
 										class="mb-2" />
 					</v-toolbar>
 					<!-- Period menu info (use service to render period parts) -->
@@ -136,7 +137,7 @@ export default {
 		this.allClosedPeriods = responses[1].data;
 		console.log(this.allClosedPeriods);
 		// set initial periods which will show for set private accomodation
-		this.closedPeriodsForPrivateAccomodation = responses[1].data.filter(period => period.privateAccomodationObjectId === this.privateAccomodationId);
+		this.closedPeriodsForPrivateAccomodation = responses[1].data.filter(period => period.privateAccomodation === this.privateAccomodationId);
 		console.log(this.closedPeriodsForPrivateAccomodation);
 	},
 	methods: {
@@ -144,7 +145,7 @@ export default {
 			this.value = ''
 		},
 		updateClosedPeriodsForPrivateAcomodation() {
-			this.closedPeriodsForPrivateAccomodation = this.allClosedPeriods.filter(period => period.privateAccomodationObjectId === this.privateAccomodationId);
+			this.closedPeriodsForPrivateAccomodation = this.allClosedPeriods.filter(period => period.privateAccomodation === this.privateAccomodationId);
 		},
       showEvent ({ nativeEvent, event }) {
 			// function that opens menu after click on period

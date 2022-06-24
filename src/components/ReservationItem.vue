@@ -1,6 +1,7 @@
 <template>
 	<v-card color="#E3EAEF" class="my-3 pa-4 rounded-xl main-grid">
 		<router-link :to="{ name: 'reservation-detail', params: { id: reservation._id }}" class="router-link grid-div">
+			<!-- Reservation item period -->
 			<div class="reservation-info">
 				<v-icon class="mx-2">mdi-calendar-check</v-icon>
 				<span v-if="reservation.period" class="mx-2 pa-0 d-inline-block">
@@ -8,7 +9,9 @@
 				</span>
 			</div>
 			<div class="money">
+				<!-- Reservation item price (with currency) -->
 				<span class="mx-2 pa-0 d-inline">{{ reservation.price.value }} {{ reservation.price.currency }}</span>
+				<!-- Reservation item state -->
 				<v-chip v-if="reservation.currentState === 'CONFIRMED'" color="#55FF66" class="mx-2 d-inline">
 					CONFIRMED
 				</v-chip>
@@ -26,6 +29,7 @@
 				</v-chip>
 			</div>
 			<div class="guest-info">
+				<!-- Information about guest who made the reservation -->
 				<span v-if="reservation.madeByGuest && reservation.madeByGuest.email && reservation.madeByGuest.phoneNumber"
 						class="mx-2 pa-0 d-inline text-center">
 					{{ reservation.madeByGuest.email }}
@@ -40,12 +44,14 @@
 				</span>
 			</div>
 		</router-link>
+		<!-- Main action icons -->
 		<div class="edit-delete-icons">
 			<router-link :to="{ name: 'reservation-modification', params: { id: reservation._id }}" class="router-link">
 				<IconEdit/>
 			</router-link>
 			<IconDelete v-if="reservation.period" itemType="reservation" itemCaptionType="period"
-							:itemName="'from ' + convertDate(reservation.period.start) + ' to ' + convertDate(reservation.period.end)" />
+							:itemName="'from ' + convertDate(reservation.period.start) + ' to ' + convertDate(reservation.period.end)"
+							service="reservation" :_id="reservation._id" />
 		</div>
 	</v-card>
 </template>

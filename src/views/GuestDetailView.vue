@@ -57,7 +57,7 @@
 			<router-link :to="{ name: 'guests'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete itemType="guest" />
+			<ButtonDialogDelete itemType="guest" service="guest" :_id="guest._id" />
 			<router-link :to="{ name: 'guest-modification', params: { id: guest.ObjectId }}" class="router-link">
 				<ButtonEdit/>
 			</router-link>
@@ -95,7 +95,7 @@ export default {
 	methods: {
 		currentDate() {
 			const current = new Date();
-			const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
+			const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
 			return date;
 		},
 		convertPeriod

@@ -1,11 +1,14 @@
 <template>
 	<v-card color="#E3EAEF" width="250" class="ma-4 rounded-xl accomodation-card">
+		<!-- Accomodation item photo (makes it look like it is an accomodation) -->
 		<v-img height="126px"
 				src="https://apartmentsborina.hr/resources/gallery/terrace-tables-chairs-light-sunny.jpg"
 				alt="Photo">
 		</v-img>
+		<!-- Accomodation information -->
 		<div class="flex-div">
 			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation._id }}" class="router-link text-div">
+				<!-- Accomodation availability (based on current state of accomodation) -->
 				<v-card-title class="py-0 availability">
 					<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
 							icon color="#FFCC00" class="pr-2">
@@ -21,19 +24,23 @@
 					</v-icon>
 					{{ accomodation.currentState }}
 				</v-card-title>
+				<!-- Accomodation name -->
 				<v-card-title class="text-break text-center pt-3">
 						{{ accomodation.name }}
 				</v-card-title>
+				<!-- Accomodation address -->
 				<v-card-subtitle class="text-break address pt-0">
 					{{ accomodation.location.street }} {{ accomodation.location.houseNumber }}
 				</v-card-subtitle>
 			</router-link>
+			<!-- Main action icons -->
 			<div class="edit-delete-icons">
 				<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation._id }}" class="router-link">
 					<IconEdit class="mb-2"/>
 				</router-link>
-				<IconDelete itemType="accomodation" itemCaptionType="name"
-								:itemName="accomodation.name" class="mb-2" />
+				<IconDelete itemType="accomodation" itemCaptionType="name" :itemName="accomodation.name"
+								service="privateaccomodation" :_id="accomodation._id"
+								class="mb-2" />
 			</div>
 		</div>
 	</v-card>

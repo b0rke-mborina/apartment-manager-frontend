@@ -59,7 +59,7 @@
 			<router-link :to="{ name: 'reservations'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete itemType="reservation" />
+			<ButtonDialogDelete itemType="reservation" service="reservation" :_id="reservation._id" />
 			<router-link :to="{ name: 'reservation-modification'}" class="router-link">
 				<ButtonEdit/>
 			</router-link>

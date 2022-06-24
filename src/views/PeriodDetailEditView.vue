@@ -38,7 +38,7 @@
 			<router-link :to="{ name: 'calendar' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete itemType="period" />
+			<ButtonDialogDelete itemType="period" service="period" :_id="period._id" />
 			<!-- <router-link :to="{ name: 'calendar' }" class="router-link"> -->
 				<ButtonSave @click.native="updatePeriod()" />
 			<!-- </router-link> -->
@@ -77,36 +77,7 @@ export default {
 		console.log(this.privateAccomodations);
 		this.period = responses[1].data;
 		console.log(this.period);
-		this.dates = [this.period.start, this.period.end]
-		/*let privateAccomodationsFromBackend = [
-			{
-				ObjectId: 111,
-				name: "Apartment Nature"
-			},
-			{
-				ObjectId: 112,
-				name: "Apartment Marie"
-			},
-			{
-				ObjectId: 113,
-				name: "Apartment x"
-			}
-		];
-		let periodFromBackend = {
-			ObjectId: 103,
-			start: "2021-05-16 15:00",
-			end: "2021-05-25 10:00",
-			name: "Reservation (Hans Muller)",
-			privateAccomodation: {
-				ObjectId: 111,
-				name: "Apartment Nature"
-			}
-		};
-		this.privateAccomodations = privateAccomodationsFromBackend;
-		console.log(this.privateAccomodations);
-		this.period = periodFromBackend;
-		console.log(this.period);
-		this.dates = [this.period.start, this.period.end]*/
+		this.dates = [this.period.start, this.period.end];
 	},
 	methods: {
 		updatePeriod() {

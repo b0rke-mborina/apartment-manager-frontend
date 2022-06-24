@@ -149,7 +149,7 @@
 			<router-link :to="{ name: 'reservations'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete itemType="reservation" />
+			<ButtonDialogDelete itemType="reservation" service="reservation" :_id="reservation._id" />
 			<!-- <router-link :to="{ name: 'reservations'}" class="router-link"> -->
 				<ButtonSave @click.native="updateReservation()" />
 			<!-- </router-link> -->

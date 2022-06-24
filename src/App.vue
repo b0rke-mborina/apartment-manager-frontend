@@ -7,14 +7,17 @@
 			<v-toolbar-title class="toolbar-title">Apartment manager</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<!-- App bar left side (account icon, login button, signup button) -->
+			<!-- Account icon -->
 			<v-btn icon color="#000000">
 				<v-icon class="mx-2">mdi-account-circle</v-icon>
 			</v-btn>
+			<!-- Login button -->
 			<router-link :to="{ name: 'login' }" class="router-link">
 				<v-btn text rounded class="login-signup">
 					<span>Log in</span>
 				</v-btn>
 			</router-link>
+			<!-- Signup button -->
 			<router-link :to="{ name: 'signup' }" class="router-link">
 				<v-btn text rounded class="login-signup">
 					<span>Sign up</span>
@@ -24,10 +27,11 @@
 		<!-- Sidebar / drawer -->
 		<v-navigation-drawer app color="#A5D4FF" temporary v-model="drawer" rounded>
 			<v-list>
-				<!-- App logo and name, fold button -->
 				<v-list-item class="px-2 my-5">
+					<!-- App logo and name -->
 					<v-img src="@/assets/ApartmentManagerLogo.png" max-height="40" max-width="40" class="logo"></v-img>
 					<span class="app-name">Apartment<br>manager</span>
+					<!-- Fold button -->
 					<v-btn icon @click.stop="drawer = !drawer" class="fold-btn">
 						<v-icon color="#000000">mdi-chevron-left</v-icon>
         			</v-btn>
@@ -35,9 +39,11 @@
 				<!-- Navigation items -->
 				<v-list-item-group v-model="selectedItem" color="#000000" class="mt-5">
 					<v-list-item v-for="item in items" :key="item.title" :to="item.route">
+					<!-- Navigation item icon -->
 						<v-list-item-icon>
 							<v-icon color="#000000">{{ item.icon }}</v-icon>
 						</v-list-item-icon>
+					<!-- Navigation item title -->
 						<v-list-item-content>
 							<v-list-item-title color="#000000">{{ item.title }}</v-list-item-title>
 						</v-list-item-content>

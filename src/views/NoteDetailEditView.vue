@@ -32,7 +32,7 @@
 			<router-link :to="{ name: 'notes'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete itemType="note" />
+			<ButtonDialogDelete itemType="note" service="note" :_id="note._id" />
 			<ButtonSave @click.native="printNote()" />
 		</div>
 		<!-- Empty space at the bottom of page -->
