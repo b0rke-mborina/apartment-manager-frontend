@@ -6,15 +6,12 @@
 			<!-- Note item important icon (visible if note is important) -->
 			<v-card-subtitle class="text-center pb-1">
 				<v-icon v-if="note.important === true" icon color="#FF6F6F">mdi-alert-circle-outline</v-icon>
-				<v-icon v-else-if="note.important === false"></v-icon>
+				<v-icon v-else></v-icon>
 			</v-card-subtitle>
 		</router-link>
 		<router-link :to="{ name: 'note-detail-modification', params: { id: note._id }}" class="router-link flex-main">
 			<!-- Note item body / main content -->
-			<v-card-text v-if="note.body.length <= 100">{{ note.body }}</v-card-text>
-			<v-card-text v-else-if="note.body.length > 100
-										  || (note.body.split(/\r\n|\r|\n/).length) > 3"
-							 class="note-body">{{ getStringForRender() }}...</v-card-text>
+			<v-card-text class="note-body">{{ getStringForRender(note.body) }}</v-card-text>
 			<!-- Spacer and empty text element (make items the same size) -->
 			<v-spacer></v-spacer>
 			<v-card-text class="pa-0"></v-card-text>
@@ -37,12 +34,11 @@ import IconEdit from '@/components/IconEdit.vue';
 export default {
 	name: 'NoteItem',
 	methods: {
-		// returns 100 characters of note body for render 
-		getStringForRender() {
-			if (this.note.body.length < 100 && (this.note.body.split(/\r\n|\r|\n/).length) < 3) return this.note.body;
-			let substringLength = 97;
-			if (this.note.body.split("\n", 3).join("\n").length < 97) substringLength = this.note.body.split("\n", 3).join("\n").length;
-			return this.note.body.substring(0, substringLength);
+		// returns first 100 characters of string for render 
+		getStringForRender(bodyString) {
+			let substring = bodyString.slice(0, bodyString.split(/\r\n|\r|\n/, 2).join(/\r\n|\r|\n/).length);
+			if (substring.length <= 100 && substring == bodyString) return substring;
+			else return substring.slice(0, 97) + "...";
 		}
 	},
 	props: {
@@ -66,7 +62,7 @@ export default {
 	height: 108px;
 }
 .note-body {
-	white-space: pre;
+	white-space: pre-wrap; 
 }
 .flex-bottom {
 	display: flex;

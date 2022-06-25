@@ -1,6 +1,6 @@
 <template>
 	<!-- Save button -->
-	<v-btn elevation="2" rounded large class="ma-4 btn-save">
+	<v-btn :loading="loading" elevation="2" rounded large class="ma-4 btn-save">
 		<v-icon color="#000000" class="mr-2">mdi-content-save</v-icon>
 		SAVE
 	</v-btn>
@@ -8,7 +8,10 @@
 
 <script>
 export default {
-	name: 'ButtonSave'
+	name: 'ButtonSave',
+	props: {
+		loading: Boolean
+	}
 }
 </script>
 

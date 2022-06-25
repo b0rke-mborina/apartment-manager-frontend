@@ -1,6 +1,6 @@
 <template>
 	<!-- Delete button -->
-	<v-btn elevation="2" rounded large class="ma-4 btn-delete">
+	<v-btn :loading="loading" elevation="2" rounded large class="ma-4 btn-delete">
 		<v-icon color="#000000" class="mr-2">mdi-trash-can-outline</v-icon>
 		DELETE
 	</v-btn>
@@ -8,7 +8,10 @@
 
 <script>
 export default {
-	name: 'ButtonDelete'
+	name: 'ButtonDelete',
+	props: {
+		loading: Boolean
+	}
 }
 </script>
 
