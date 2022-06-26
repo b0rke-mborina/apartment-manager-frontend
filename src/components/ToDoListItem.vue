@@ -10,13 +10,13 @@
 		</router-link>
 		<router-link :to="{ name: 'todolist-detail-modification', params: { id: toDoList._id }}" class="router-link flex-main pa-3">
 			<!-- List of to-do list items -->
-			<v-card-text v-for="item in toDoList.items.slice(0, 5)"  v-bind:key="item.ObjectId" class="pa-1">
+			<v-card-text v-for="item in toDoList.items.slice(0, 4)"  v-bind:key="item.ObjectId" class="pa-1">
 				<v-icon v-if="item.completed === true" icon>mdi-checkbox-marked-circle</v-icon>
 				<v-icon v-if="item.completed === false" icon>mdi-checkbox-blank-circle-outline</v-icon>
 				<span class="px-2">{{ item.name }}</span>
 			</v-card-text>
 			<!-- Three dots icon in case there are more than 5 items in to-do list -->
-			<v-card-text v-if="toDoList.items.length > 5" class="pa-0 ml-9 dots">
+			<v-card-text v-if="toDoList.items.length > 4" class="pa-0 ml-9 dots">
 				<v-icon icon color="#000000">mdi-dots-horizontal</v-icon>
 			</v-card-text>
 			<!-- Text on bottom about completion of to-do list (visible only if to-do list is completed) -->

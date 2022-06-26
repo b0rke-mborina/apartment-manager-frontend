@@ -90,7 +90,7 @@ export default {
 		// checks completeness of note data and sends it to backend for saving
 		async saveNote() {
 			console.log(this.note);
-			const noteIsFull = Object.values(this.note).every(x => x !== null && x !== '');
+			const noteIsFull = Object.values(this.note).every(value => value !== null && value !== '');
 			if (noteIsFull) {
 				console.log("full");
 				this.loading = true;

@@ -2,15 +2,19 @@
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Edit a to-do list</h1>
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loadingData" indeterminate color="#A5D4FF"></v-progress-circular>
+		</div>
 		<!-- To-do list title -->
-		<v-text-field v-model="toDoList.title" solo rounded
+		<v-text-field v-model="toDoList.title" solo rounded v-if="!loadingData"
 						clearable clear-icon="mdi-close-circle"
 						label="To-do list title..."
 						background-color="#A5D4FF"
 						class="heading-text-field mt-9 mb-4 mx-auto">
 		</v-text-field>
 		<!-- To-do list items -->
-		<draggable v-model="toDoList.items"
+		<draggable v-model="toDoList.items" v-if="!loadingData"
 					  :group="{ name: 'toDoListItems', pull: 'clone', put: false }"
 					  @start="drag=true" @end="drag=false" @change="updatePositions()"
 					  :animation="200"
@@ -38,10 +42,10 @@
 			</transition-group>
 		</draggable>
 		<!-- If to-do list contains no items -->
-		<FormLabel v-if="toDoList.items.length === 0" text="There are no items in this list."
+		<FormLabel v-if="toDoList.items.length === 0 && !loadingData" text="There are no items in this list."
 					  class="details-label mb-5 text-center" />
 		<!-- Items modification buttons -->
-		<div class="mb-12 text-center">
+		<div v-if="!loadingData" class="mb-12 text-center">
 			<v-btn elevation="2" rounded @click="addItem()" class="list-btn mx-3 my-2">
 				<v-icon color="#000000" class="mr-2">mdi-plus</v-icon>
 					ADD NEW ITEM
@@ -53,7 +57,7 @@
 			</v-btn>
 		</div>
 		<!-- To-do list date select -->
-		<div class="my-5 text-center">
+		<div v-if="!loadingData" class="my-5 text-center">
 			<FormLabel text="Deadline:" class="details-label mb-3" />
 			<v-date-picker v-model="toDoList.date"></v-date-picker>
 		</div>
@@ -62,11 +66,20 @@
 			<router-link :to="{ name: 'todolists' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete itemType="to-do list" service="todolist" :_id="toDoList._id" />
+			<ButtonDialogDelete itemType="to-do list" service="todolist" :_id="toDoList._id" routeName="todolists" />
 			<!-- <router-link :to="{ name: 'todolists' }" class="router-link"> -->
 				<ButtonSave/> <!-- @click.native="printToDoList()" -->
 			<!-- </router-link> -->
 		</div>
+		<!-- Snackbar for showing successes and errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -95,13 +108,28 @@ export default {
 				date: null,
 				items: []
 			},
-      	drag: false
+      	drag: false,
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
 		// get to-do list data and set it to view data
-		let response = await AxiosService.get(`/todolist/${this.$route.params.id}`);
-		this.toDoList = response.data;
+		this.loadingData = true;
+		try {
+			let response = await AxiosService.get(`/todolist/${this.$route.params.id}`);
+			this.toDoList = response.data;
+			this.updatePositions();
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loadingData = false;
 		console.log(this.toDoList);
 	},
 	methods: {
@@ -109,7 +137,7 @@ export default {
 		updatePositions() {
 			this.toDoList.items = this.toDoList.items.map(item => item = {
 				name: item.name,
-				position: this.toDoList.items.indexOf(item) + 1,
+				position: this.toDoList.items.indexOf(item),
 				completed: item.completed
 			});
 		},
@@ -123,7 +151,7 @@ export default {
 			if (this.toDoList.items.length === 0 || numberOfEmptyItems === 0) {
 				this.toDoList.items.push({
 					name: "",
-					position: this.toDoList.items.length + 1,
+					position: this.toDoList.items.length,
 					completed: false
 				});
 			}
@@ -137,14 +165,36 @@ export default {
 			});
 		},
 		// modifies to-do list data, checks its completeness and sends it to backend for saving
-		updateToDoList() {
-			let numberOfNotCompleted = this.toDoList.items.filter(item => item.completed === false).length;
-			if (numberOfNotCompleted === 0) {
-				this.toDoList.completed = true;
+		async updateToDoList() {
+			this.updatePositions();
+			// check completeness of data
+			const toDoListIsFull = Object.values(this.toDoList).every(value => value !== null && value !== '' && value.length !== 0);
+			const itemListIsNotEmpty = this.toDoList.items.every(item => item.name !== null && item.name !== '');
+			if (toDoListIsFull && itemListIsNotEmpty) {
+				// set value of completeness
+				let numberOfNotCompleted = this.toDoList.items.filter(item => item.completed === false).length;
+				if (numberOfNotCompleted === 0) this.toDoList.completed = true;
+				else this.toDoList.completed = false;
+				// send data to backend for saving
+				console.log(this.toDoList);
+				console.log("full");
+				this.loading = true;
+				try {
+					await AxiosService.patch(`todolist/${this.toDoList._id}`, this.toDoList);
+					this.snackbarMsg = "Note updated successfully.";
+					this.snackbarColor = "#55FF66";
+					this.snackbar = true;
+				} catch (error) {
+					this.snackbarMsg = "Error has occured. Please try again.";
+					this.snackbarColor = "#FF6F6F";
+					this.snackbar = true;
+					console.log(Object.keys(error), error.message);
+				}
+				this.loading = false;
 			} else {
-				this.toDoList.completed = false;
+				this.errorMsg = "All fields are required and list must not be empty. Fill everything and try again.";
+				this.snackbar = true;
 			}
-			console.log(this.toDoList);
 		}
 	},
 	components: {

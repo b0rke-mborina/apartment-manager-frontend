@@ -8,7 +8,7 @@
 		</div>
 		<div class="head-flex">
 			<!-- Note heading -->
-			<v-text-field v-model="note.heading" v-if="note.heading"
+			<v-text-field v-model="note.heading" v-if="!loadingData"
 							solo rounded
 							clearable clear-icon="mdi-close-circle"
 							label="Note heading..."
@@ -16,7 +16,7 @@
 							class="heading-text-field mt-5 mr-3">
 			</v-text-field>
 			<!-- Is note important? - select -->
-			<v-select v-model="note.important" v-if="note.heading"
+			<v-select v-model="note.important" v-if="!loadingData"
 						 :items="selectItems"
 						 item-value="value"
 						 item-text="name"
@@ -28,7 +28,7 @@
 			</v-select>
 		</div>
 		<!-- Note body -->
-		<v-textarea v-model="note.body" v-if="note.body"
+		<v-textarea v-model="note.body" v-if="!loadingData"
 						solo rounded auto-grow
 						clearable clear-icon="mdi-close-circle"
 						label="Write a note here..."
@@ -38,7 +38,7 @@
 			<router-link :to="{ name: 'notes'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete itemType="note" service="note" :_id="note._id" />
+			<ButtonDialogDelete itemType="note" service="note" :_id="note._id" routeName="notes" />
 			<ButtonSave @click.native="updateNote()" :loading="loading" />
 		</div>
 		<!-- Snackbar for showing successes and errors -->
@@ -108,7 +108,7 @@ export default {
 		// checks completeness of note data and sends it to backend for updating
 		async updateNote() {
 			console.log(this.note);
-			const noteIsFull = Object.values(this.note).every(x => x !== null && x !== '');
+			const noteIsFull = Object.values(this.note).every(value => value !== null && value !== '');
 			if (noteIsFull) {
 				console.log("full");
 				this.loading = true;

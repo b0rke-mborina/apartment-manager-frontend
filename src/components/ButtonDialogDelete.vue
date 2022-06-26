@@ -56,7 +56,7 @@ export default {
 			this.loading = true;
 			try {
 				await AxiosService.delete(`${this.service}/${this._id}`);
-				this.$router.push({ name: 'notes' });
+				this.$router.push({ name: this.routeName });
 			} catch (error) {
 				this.errorMsg = "Error has occured. Please try again.";
 				this.snackbar = true;
@@ -68,7 +68,8 @@ export default {
 	props: {
 		itemType: String,
 		service: String,
-		_id: String
+		_id: String,
+		routeName: String
 	},
 	components: {
 		ButtonDelete,

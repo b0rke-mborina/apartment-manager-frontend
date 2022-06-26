@@ -63,9 +63,18 @@
 				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'todolists' }" class="router-link"> -->
-				<ButtonSave @click.native="saveToDoList()" />
+				<ButtonSave @click.native="saveToDoList()" :loading="loading" />
 			<!-- </router-link> -->
 		</div>
+		<!-- Snackbar for showing errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" color="#FF6F6F" width="400">
+			<span class="snackbar">{{ errorMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="errorMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -92,7 +101,10 @@ export default {
 				date: null,
 				items: []
 			},
-      	drag: false
+      	drag: false,
+			loading: false,
+			errorMsg: null,
+			snackbar: false
 		}
 	},
 	methods: {
@@ -100,7 +112,7 @@ export default {
 		updatePositions() {
 			this.toDoList.items = this.toDoList.items.map(item => item = {
 				name: item.name,
-				position: this.toDoList.items.indexOf(item) + 1,
+				position: this.toDoList.items.indexOf(item),
 				completed: item.completed
 			});
 		},
@@ -114,7 +126,7 @@ export default {
 			if (this.toDoList.items.length === 0 || numberOfEmptyItems === 0) {
 				this.toDoList.items.push({
 					name: "",
-					position: this.toDoList.items.length + 1,
+					position: this.toDoList.items.length,
 					completed: false
 				});
 			}
@@ -129,22 +141,32 @@ export default {
 		},
 		// modifies to-do list data, checks its completeness and sends it to backend for saving
 		async saveToDoList() {
+			this.updatePositions();
 			// check completeness of data
-			const toDoListIsFull = Object.values(this.toDoList).every(x => x !== null && x !== '' && x.length !== 0);
-			const itemListIsNotEmpty = this.toDoList.items.every(x => x.name !== null && x.name !== '');
+			const toDoListIsFull = Object.values(this.toDoList).every(value => value !== null && value !== '' && value.length !== 0);
+			const itemListIsNotEmpty = this.toDoList.items.every(item => item.name !== null && item.name !== '');
 			if (toDoListIsFull && itemListIsNotEmpty) {
 				// set value of completeness
 				let numberOfNotCompleted = this.toDoList.items.filter(item => item.completed === false).length;
-				if (numberOfNotCompleted === 0) {
-					this.toDoList.completed = true;
-				} else {
-					this.toDoList.completed = false;
-				}
+				if (numberOfNotCompleted === 0) this.toDoList.completed = true;
+				else this.toDoList.completed = false;
 				// send data to backend for saving
 				console.log(this.toDoList);
 				console.log("full");
-				await AxiosService.post("/todolists", this.toDoList);
-			} else console.log("An error has occured. Please try again.");
+				this.loading = true;
+				try {
+					await AxiosService.post("/todolists", this.toDoList);
+					this.$router.push({ name: 'todolists' });
+				} catch (error) {
+					this.errorMsg = "Error has occured. Please try again.";
+					this.snackbar = true;
+					console.log(Object.keys(error), error.message);
+				}
+				this.loading = false;
+			} else {
+				this.errorMsg = "All fields are required and list must not be empty. Fill everything and try again.";
+				this.snackbar = true;
+			}
 		}
 	},
 	components: {
@@ -192,6 +214,14 @@ export default {
 	}
 	.btn:before {
 		background: none;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:700px) {
 		.heading-text-field {
