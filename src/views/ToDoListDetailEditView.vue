@@ -181,7 +181,7 @@ export default {
 				this.loading = true;
 				try {
 					await AxiosService.patch(`todolist/${this.toDoList._id}`, this.toDoList);
-					this.snackbarMsg = "Note updated successfully.";
+					this.snackbarMsg = "To-do list updated successfully.";
 					this.snackbarColor = "#55FF66";
 					this.snackbar = true;
 				} catch (error) {

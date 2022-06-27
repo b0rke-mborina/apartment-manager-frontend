@@ -1,40 +1,13 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 text-center">Edit guest accomodation</h1>
-		<!-- Current state of the guest -->
-		<div v-if="guest.newestPeriod" class="text-center mb-9">
-			<v-chip v-if="guest.guestState === 'CANCELLED GUEST'"
-					  color="#FF6F6F" class="mx-2 my-1">
-				CANCELLED GUEST
-			</v-chip>
-			<v-chip v-else-if="guest.guestState === 'POSSIBLE GUEST'"
-					  color="#6666ff" class="mx-2 my-1">
-				POSSIBLE GUEST
-			</v-chip>
-			<v-chip v-else-if="guest.guestState === 'POTENTIAL GUEST'"
-					  color="#FFCC00" class="mx-2 my-1">
-				POTENTIAL GUEST
-			</v-chip>
-			<v-chip v-else-if="guest.newestPeriod.end < currentDate()
-									&& guest.guestState === 'CONFIRMED GUEST'"
-					  color="#B5B5B5" class="mx-2 my-1">
-				FORMER GUEST
-			</v-chip>
-			<v-chip v-else-if="guest.newestPeriod.start >= currentDate()
-									&& guest.newestPeriod.end <= currentDate()
-									&& guest.guestState === 'CONFIRMED GUEST'"
-					  icon color="#55FF66" class="pr-2">
-				CURRENT GUEST
-			</v-chip>
-			<v-chip v-else-if="guest.newestPeriod.start > currentDate()
-									&& guest.guestState === 'CONFIRMED GUEST'"
-					  icon color="#55FF66" class="pr-2">
-				FUTURE GUEST
-			</v-chip>
+		<h1 class="mt-5 text-center">Edit guest</h1>
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loadingData" indeterminate color="#A5D4FF"></v-progress-circular>
 		</div>
 		<!-- Main information grid -->
-		<div class="details-grid">
+		<div v-if="!loadingData" class="details-grid mt-5">
 			<!-- First name info -->
 			<div class="details-grid-item">
 				<FormLabel text="First name" class="details-label" />
@@ -96,15 +69,26 @@
 			<router-link :to="{ name: 'guests'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete itemType="guest" service="guest" :_id="guest._id" />
-			<ButtonSave/> <!--  @click.native="printGuest()"  -->
+			<ButtonDialogDelete itemType="guest" service="guest" :_id="guest._id" routeName="guests" />
+			<ButtonSave @click.native="updateGuest()" :loading="loading" />
 		</div>
+		<!-- Snackbar for showing successes and errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
+import { AxiosService } from '@/services';
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import ButtonCancel from '@/components/ButtonCancel.vue';
@@ -117,42 +101,53 @@ export default {
 	name: 'GuestEditView',
 	data() {
 		return {
-			guest: {}
+			guest: {},
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
-	mounted() {
+	async mounted() {
 		// get guest data from backend and save it to view data
-		let guestFromBackend = {
-			ObjectId: 100,
-			firstName: "Mark",
-			lastName: "Williams",
-			email: "mwilliams@gmail.com",
-			phoneNumber: "+000 000 0000",
-			country: "United Kingdom",
-			city: "London",
-			newestPeriod: {
-				start: "2022-07-01",
-				end: "2022-07-10",
-				privateAccomodation: {
-					ObjectId: 111,
-					name: "Apartment Nature"
-				}
-			},
-			guestState: "CONFIRMED GUEST"
-		};
-		this.guest = guestFromBackend;
+		this.loadingData = true;
+		try {
+			let response = await AxiosService.get(`/guest/${this.$route.params.id}`);
+			this.guest = response.data;
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loadingData = false;
 		console.log(this.guest);
 	},
 	methods: {
-		// returns current date in YYYY-MM-DD format
-		currentDate() {
-			const current = new Date();
-			const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
-			return date;
-		},
 		// updates guest data and sends it to backend for updating
-		updateGuest() {
+		async updateGuest() {
+			// check completeness of data
 			console.log(this.guest);
+			const check = Boolean(this.guest.firstName && this.guest.lastName && this.guest.country && this.guest.city);
+			if (check) {
+				// send data to backend for saving
+				this.loading = true;
+				try {
+					await AxiosService.patch(`guest/${this.guest._id}`, this.guest);
+					this.$router.push({ name: 'guest-detail', params: { id: this.guest._id } });
+				} catch (error) {
+					this.snackbarMsg = "Error has occured. Please try again.";
+					this.snackbarColor = "#FF6F6F";
+					this.snackbar = true;
+					console.log(Object.keys(error), error.message);
+				}
+				this.loading = false;
+			} else {
+				this.snackbarMsg = "All fields except email and phone number are required. Fill required fields and try again.";
+				this.snackbarColor = "#FF6F6F";
+				this.snackbar = true;
+			}
 		}
 	},
 	components: {

@@ -1,13 +1,17 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
-		<h1 class="mt-5 text-center">{{ guest.firstName }} {{ guest.lastName }}</h1>
+		<h1 v-if="!loadingData" class="mt-5 text-center">{{ guest.firstName }} {{ guest.lastName }}</h1>
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loadingData" indeterminate color="#A5D4FF"></v-progress-circular>
+		</div>
 		<!-- Guest's email -->
-		<div class="text-center mb-2">{{ guest.email }}</div>
+		<div v-if="guest.email && !loadingData" class="text-center mb-2">{{ guest.email }}</div>
 		<!-- Guest's phone number -->
-		<div class="text-center mb-2">{{ guest.phoneNumber }}</div>
+		<div v-if="guest.phoneNumber && !loadingData" class="text-center mb-2">{{ guest.phoneNumber }}</div>
 		<!-- Current state of the guest -->
-		<div v-if="guest.newestPeriod" class="text-center mb-5">
+		<div v-if="guest.newestPeriod && !loadingData" class="text-center mb-5">
 			<v-chip v-if="guest.guestState === 'CANCELLED GUEST'"
 					  color="#FF6F6F" class="mx-2 my-1">
 				CANCELLED GUEST
@@ -20,35 +24,42 @@
 					  color="#FFCC00" class="mx-2 my-1">
 				POTENTIAL GUEST
 			</v-chip>
-			<v-chip v-else-if="guest.newestPeriod.end < currentDate()
-									&& guest.guestState === 'CONFIRMED GUEST'"
+			<v-chip v-else-if="guest.newestPeriod.start && guest.newestPeriod.end
+									&& guest.newestPeriod.end.localeCompare(currentDate()) === -1
+									&& guest.currentState === 'CONFIRMED GUEST'"
 					  color="#B5B5B5" class="mx-2 my-1">
 				FORMER GUEST
 			</v-chip>
-			<v-chip v-else-if="guest.newestPeriod.start >= currentDate()
-									&& guest.newestPeriod.end <= currentDate()
-									&& guest.guestState === 'CONFIRMED GUEST'"
+			<v-chip v-else-if="guest.newestPeriod.start && guest.newestPeriod.end
+										&& (guest.newestPeriod.start.localeCompare(currentDate())
+											|| guest.newestPeriod.start.localeCompare(currentDate()) === 0)
+										&& (guest.newestPeriod.end.localeCompare(currentDate()) === -1
+											|| guest.newestPeriod.end.localeCompare(currentDate()) === 0)
+										&& guest.currentState === 'CONFIRMED GUEST'"
 					  icon color="#55FF66" class="pr-2">
 				CURRENT GUEST
 			</v-chip>
-			<v-chip v-else-if="guest.newestPeriod.start > currentDate()
-									&& guest.guestState === 'CONFIRMED GUEST'"
+			<v-chip v-else-if="guest.newestPeriod.start && guest.newestPeriod.end
+									&& guest.newestPeriod.start.localeCompare(currentDate())
+									&& guest.currentState === 'CONFIRMED GUEST'"
 					  icon color="#55FF66" class="pr-2">
 				FUTURE GUEST
 			</v-chip>
 		</div>
 		<!-- Main information grid -->
-		<div class="details-grid">
+		<div v-if="!loadingData" class="details-grid">
 			<!-- Maximum number of guests -->
 			<div class="details-grid-item">
 				<FormLabel text="From..." class="details-label" />
 				<FormTextField :text="guest.city + ', ' + guest.country" readonly />
 			</div>
 			<!-- Guest's newest reservation -->
-			<div v-if="guest.newestPeriod && guest.newestPeriod.privateAccomodation" class="details-grid-item">
+			<div v-if="guest.newestPeriod && guest.newestPeriod.start
+						 && guest.newestPeriod.end && guest.newestPeriod.privateAccomodation"
+				  class="details-grid-item">
 				<FormLabel text="Newest reservation" class="details-label" />
 				<FormTextField :text="convertPeriod(guest.newestPeriod.start, guest.newestPeriod.end)
-											+ ' (' + guest.newestPeriod.privateAccomodation.name + ')'"
+											+ ' (' + guest.newestPeriod.privateAccomodation + ')'"
 									readonly />
 			</div>
 		</div>
@@ -57,11 +68,20 @@
 			<router-link :to="{ name: 'guests'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete itemType="guest" service="guest" :_id="guest._id" />
-			<router-link :to="{ name: 'guest-modification', params: { id: guest.ObjectId }}" class="router-link">
+			<ButtonDialogDelete itemType="guest" service="guest" :_id="guest._id" routeName="guests" />
+			<router-link :to="{ name: 'guest-modification', params: { id: guest._id } }" class="router-link">
 				<ButtonEdit/>
 			</router-link>
 		</div>
+		<!-- Snackbar for showing successes and errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -83,21 +103,39 @@ export default {
 	name: 'GuestDetailView',
 	data() {
 		return {
-			guest: {}
+			guest: {},
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
 		// get guest data from backend and save it to view data
-		console.log("call");
-		let response = await AxiosService.get(`/guest/${this.$route.params.id}`);
-		this.guest = response.data;
+		this.loadingData = true;
+		try {
+			let response = await AxiosService.get(`/guest/${this.$route.params.id}`);
+			this.guest = response.data;
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loadingData = false;
 		console.log(this.guest);
 	},
 	methods: {
 		// returns current date in YYYY-MM-DD format
 		currentDate() {
 			const current = new Date();
-			const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+			let year = current.getFullYear();
+			let month = current.getMonth()+1;
+			let day = current.getDate();
+			if (month < 10) month = "0" + month;
+			if (day < 10) month = "0" + day;
+			const date = `${year}-${month}-${day}`;
 			return date;
 		},
 		// imported function for period conversion

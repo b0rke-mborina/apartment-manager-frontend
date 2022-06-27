@@ -18,7 +18,7 @@
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<ButtonCancel @click.native="dialog = false" />
-					<ButtonDelete @click.native="deleteItem(), dialog = false" />
+					<ButtonDelete @click.native="deleteItem()" :loading="loading" />
 				</v-card-actions>
 			</v-card>
 		</v-dialog>

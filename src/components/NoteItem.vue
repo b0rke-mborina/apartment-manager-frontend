@@ -1,6 +1,6 @@
 <template>
 	<v-card color="#E3EAEF" width="250" class="ma-4 rounded-xl notes-card d-flex flex-column">
-		<router-link :to="{ name: 'note-detail-modification', params: { id: note._id }}" class="router-link notes-header pt-3">
+		<router-link :to="{ name: 'note-detail-modification', params: { id: note._id } }" class="router-link notes-header pt-3">
 			<!-- Note item title -->
 			<v-card-title class="pt-1 justify-center text-break">{{ note.heading }}</v-card-title>
 			<!-- Note item important icon (visible if note is important) -->
@@ -9,7 +9,7 @@
 				<v-icon v-else></v-icon>
 			</v-card-subtitle>
 		</router-link>
-		<router-link :to="{ name: 'note-detail-modification', params: { id: note._id }}" class="router-link flex-main">
+		<router-link :to="{ name: 'note-detail-modification', params: { id: note._id } }" class="router-link flex-main">
 			<!-- Note item body / main content -->
 			<v-card-text class="note-body">{{ getStringForRender(note.body) }}</v-card-text>
 			<!-- Spacer and empty text element (make items the same size) -->
@@ -18,7 +18,7 @@
 		</router-link>
 		<!-- Main action icons -->
 		<v-card-actions class="flex-bottom pa-3">
-			<router-link :to="{ name: 'note-detail-modification', params: { id: note._id }}" class="router-link">
+			<router-link :to="{ name: 'note-detail-modification', params: { id: note._id } }" class="router-link">
 				<IconEdit/>
 			</router-link>
 			<IconDelete itemType="note" itemCaptionType="heading" :itemName="note.heading"
