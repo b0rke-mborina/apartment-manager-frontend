@@ -1,15 +1,19 @@
 <template>
 	<v-container absolute fluid class="main-content">
 		<!-- Page title (name of private accomodation) -->
-		<h1 class="mt-5 text-center">{{ accomodation.name }}</h1>
+		<h1 v-if="!loadingData" class="mt-5 text-center">{{ accomodation.name }}</h1>
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loadingData" indeterminate color="#A5D4FF"></v-progress-circular>
+		</div>
 		<!-- Stars based on number of stars / category -->
-		<div class="text-center mb-2">
+		<div v-if="!loadingData" class="text-center mb-2">
 			<span v-for="i in accomodation.categoryStarNumber" v-bind:key="i" class="mt-5 mb-4 text-center">
 				<v-icon icon color="#FFCC00">mdi-star</v-icon>
 			</span>
 		</div>
 		<!-- Current state of private accomodation -->
-		<div class="text-center mb-5">
+		<div v-if="!loadingData" class="text-center mb-5">
 			CURRENTLY {{ accomodation.currentState }}
 			<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
 					icon color="#FFCC00" class="pr-2">
@@ -25,7 +29,7 @@
 			</v-icon>
 		</div>
 		<!-- Main information grid -->
-		<div class="details-grid">
+		<div v-if="!loadingData" class="details-grid">
 			<!-- Maximum number of guests -->
 			<div class="details-grid-item">
 				<FormLabel text="Maximum number of guests" class="details-label" />
@@ -50,12 +54,13 @@
 			<!-- Floors info -->
 			<div class="details-grid-item">
 				<FormLabel text="Floors" class="details-label" />
-				<FormTextField v-if="accomodation.lowestFloor === 0 && accomodation.numberofFloors === 1"
+				<FormTextField v-if="accomodation.lowestFloor === 0 && accomodation.floorsNumber === 1"
 									text="Ground floor" readonly />
-				<FormTextField v-else-if="accomodation.lowestFloor !== 0 && accomodation.numberofFloors === 1"
-									:text="accomodation.lowestFloor + '. floor'" readonly />
+				<FormTextField v-else-if="accomodation.lowestFloor !== 0 && accomodation.floorsNumber === 1"
+									:text="'Floor ' + accomodation.lowestFloor" readonly />
 				<FormTextField v-else readonly
-									:text="'Floors ' + accomodation.lowestFloor + ' to ' + (accomodation.numberofFloors - 1)" />
+									:text="'Floors ' + accomodation.lowestFloor
+											+ ' to ' + (accomodation.lowestFloor +accomodation.floorsNumber - 1)" />
 			</div>
 			<!-- Yard info -->
 			<div class="details-grid-item">
@@ -69,11 +74,21 @@
 			<router-link :to="{ name: 'accomodations'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete itemType="accomodation" service="privateaccomodation" :_id="accomodation._id" />
-			<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation.ObjectId }}" class="router-link">
+			<ButtonDialogDelete itemType="accomodation" service="privateaccomodation" :_id="accomodation._id"
+									  routeName="accomodations" />
+			<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation._id } }" class="router-link">
 				<ButtonEdit/>
 			</router-link>
 		</div>
+		<!-- Snackbar for showing successes and errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -95,13 +110,27 @@ export default {
 	name: 'AccomodationDetailView',
 	data() {
 		return {
-			accomodation: {}
+			accomodation: {},
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
 		// get data from backend and set it to view data
-		let response = await AxiosService.get(`/privateaccomodation/${this.$route.params.id}`);
-		this.accomodation = response.data;
+		this.loadingData = true;
+		try {
+			let response = await AxiosService.get(`/privateaccomodation/${this.$route.params.id}`);
+			this.accomodation = response.data;
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loadingData = false;
 		console.log(this.accomodation);
 	},
 	components: {

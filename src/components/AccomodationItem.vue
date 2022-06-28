@@ -7,7 +7,7 @@
 		</v-img>
 		<!-- Accomodation information -->
 		<div class="flex-div">
-			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation._id }}" class="router-link text-div">
+			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation._id } }" class="router-link text-div">
 				<!-- Accomodation availability (based of current state of accomodation) -->
 				<v-card-title class="py-0 availability">
 					<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
@@ -25,7 +25,7 @@
 					{{ accomodation.currentState }}
 				</v-card-title>
 				<!-- Accomodation name -->
-				<v-card-title class="text-break text-center pt-3">
+				<v-card-title class="text-break pt-3">
 						{{ accomodation.name }}
 				</v-card-title>
 				<!-- Accomodation address -->
@@ -35,7 +35,7 @@
 			</router-link>
 			<!-- Main action icons -->
 			<div class="edit-delete-icons">
-				<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation._id }}" class="router-link">
+				<router-link :to="{ name: 'accomodation-modification', params: { id: accomodation._id } }" class="router-link">
 					<IconEdit class="mb-2"/>
 				</router-link>
 				<IconDelete itemType="accomodation" itemCaptionType="name" :itemName="accomodation.name"
@@ -64,50 +64,51 @@ export default {
 
 <style scoped>
 	@import '@/assets/css/views-style.css';
-.accomodation-card {
-	justify-content: center;
-}
-.availability {
-	font-size: 14px;
-}
-.flex-div {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-}
-.text-div {
-	padding: 10px 0px;
-}
-.edit-delete-icons {
-	display: flex;
-	flex-direction: column;
-	justify-content: bottom;
-	align-items: right;
-	padding: 10px 0px;
-}
-@media (max-width:500px) {
-	.grid-div {
-		grid-template-columns: auto;
+	.accomodation-card {
+		justify-content: center;
 	}
-}
-@media (max-width:300px) {
+	.availability {
+		font-size: 14px;
+	}
 	.flex-div {
 		display: flex;
 		flex-direction: row;
-		justify-content: center;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+	}
+	.text-div {
+		padding: 10px 0px;
 	}
 	.edit-delete-icons {
 		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		width: 70%;
+		flex-direction: column;
+		justify-content: bottom;
+		align-items: right;
+		padding: 10px 0px;
 	}
-	.availability {
-		justify-content: center;
+	@media (max-width:500px) {
+		.grid-div {
+			grid-template-columns: auto;
+		}
 	}
-	.address {
-		text-align: center;
-		padding-bottom: 4px;
+	@media (max-width:300px) {
+		.flex-div {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+		}
+		.edit-delete-icons {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			width: 70%;
+		}
+		.availability {
+			justify-content: center;
+		}
+		.address {
+			text-align: center;
+			padding-bottom: 4px;
+		}
 	}
-}
 </style>

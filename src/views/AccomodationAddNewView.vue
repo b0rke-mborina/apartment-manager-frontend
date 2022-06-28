@@ -39,7 +39,7 @@
 			<!-- Street name - address info -->
 			<div class="details-grid-item">
 				<FormLabel text="Street (address)" class="details-label mr-4" />
-				<v-text-field v-model="location.street" solo rounded
+				<v-text-field v-model="accomodation.location.street" solo rounded
 								clearable clear-icon="mdi-close-circle"
 								label="Name of street"
 								background-color="#A5D4FF">
@@ -50,7 +50,7 @@
 				<!-- House number - address info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="House number (address)" class="details-label mr-4" />
-					<v-text-field v-model="location.houseNumber" solo rounded
+					<v-text-field v-model="accomodation.location.houseNumber" solo rounded
 									label="Number of the house"
 									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
@@ -58,7 +58,7 @@
 				<!-- Entrance number - address info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="Entrance number (address)" class="details-label mr-4" />
-					<v-text-field v-model="location.entranceNumber" solo rounded
+					<v-text-field v-model="accomodation.location.entranceNumber" solo rounded
 									label="Entrance label"
 									background-color="#A5D4FF" class="input-number ml-auto">
 					</v-text-field>
@@ -68,16 +68,15 @@
 				<!-- Postal number - address info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="Postal number (address)" class="details-label mr-4" />
-					<v-text-field v-model.number="location.postalNumber" solo rounded
-									single-line type="number"
-									label="Post office number"
+					<v-text-field v-model.number="accomodation.location.postalNumber" solo rounded
+									single-line type="number" step="1"
 									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
 				</div>
 				<!-- City - address info -->
 				<div class="details-grid-subitem input-city">
 					<FormLabel text="City (address)" class="details-label mr-4" />
-					<v-text-field v-model="location.city" solo rounded
+					<v-text-field v-model="accomodation.location.city" solo rounded
 									clearable clear-icon="mdi-close-circle"
 									label="Name of city"
 									background-color="#A5D4FF" class="ml-auto">
@@ -90,7 +89,7 @@
 				<div class="details-grid-subitem">
 					<!-- Country - address info -->
 					<FormLabel text="Country (address)" class="details-label mr-4" />
-					<v-text-field v-model="location.country" solo rounded
+					<v-text-field v-model="accomodation.location.country" solo rounded
 									clearable clear-icon="mdi-close-circle"
 									label="Name of country"
 									background-color="#A5D4FF">
@@ -103,23 +102,21 @@
 				<div class="details-grid-subitem">
 					<FormLabel text="From floor (lowest level)" class="details-label mr-4" />
 					<v-text-field v-model.number="accomodation.lowestFloor" solo rounded
-									single-line type="number"
-									label="Level number (0 is ground floor)"
+									single-line type="number" step="1"
 									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
 				</div>
 				<!-- Highest floor info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="To floor (highest level)" class="details-label mr-4" />
-					<v-text-field v-model.number="accomodation.numberofFloors" solo rounded
-									single-line type="number"
-									label="Level number (0 is ground floor)"
+					<v-text-field v-model.number="toFloor" solo rounded
+									single-line type="number" step="1"
 									background-color="#A5D4FF" class="input-number ml-auto">
 					</v-text-field>
 				</div>
 			</div>
 			<!-- Yard info - address info -->
-			<v-checkbox v-model="accomodation.hasYard" label="Has a yard" class="mt-0 pt-0"></v-checkbox>
+			<v-checkbox v-model="accomodation.hasYard" label="Has a yard" class="mt-0 pt-0 yard-check"></v-checkbox>
 		</div>
 		<!-- Main action buttons -->
 		<div class="text-center mt-5">
@@ -127,9 +124,18 @@
 				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'accomodations' }" class="router-link"> -->
-				<ButtonSave @click.native="saveAccomodationAndLocation()" />
+				<ButtonSave @click.native="saveAccomodationAndLocation()" :loading="loading" />
 			<!-- </router-link> -->
 		</div>
+		<!-- Snackbar for showing errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" color="#FF6F6F" width="400">
+			<span class="snackbar">{{ errorMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="errorMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -151,61 +157,71 @@ export default {
 		return {
 			accomodation: {
 				name: null,
-				categoryStarNumber: null,
-				maxGuestNumber: null,
-				location: null,
+				categoryStarNumber: 3,
+				maxGuestNumber: 1,
+				location: {
+					street: null,
+					houseNumber: null,
+					entranceNumber: null,
+					postalNumber: null,
+					city: null,
+					country: null
+				},
 				hasYard: false,
-				lowestFloor: null,
-				numberofFloors: null
+				lowestFloor: 0,
+				floorsNumber: 1,
+				currentState: "AVAILABLE"
 			},
-			location: {
-				street: null,
-				houseNumber: null,
-				entranceNumber: null,
-				postalNumber: null,
-				city: null,
-				country: null
-			}
+			toFloor: 0,
+			loading: false,
+			errorMsg: null,
+			snackbar: false
 		}
 	},
 	methods: {
+		// updates number of floors for accomodation
+		updateFloorsNumber() {
+			// make sure values of floors are OK
+			if (this.toFloor < this.accomodation.lowestFloor) {
+				this.accomodation.lowestFloor = [this.toFloor, this.toFloor = this.accomodation.lowestFloor][0];
+			}
+			// update number of floors
+			this.accomodation.floorsNumber = this.toFloor - this.accomodation.lowestFloor + 1;
+			// console.log(this.accomodation);
+		},
 		// modifies data and sends it to backend for saving
 		async saveAccomodationAndLocation() {
-			// console.log(this.accomodation);
-			// console.log(this.location);
-			// check if address / location already exists and save it
-			let response = await AxiosService
-				.get(`/addresses?street=${this.location.street}&houseNumber=${this.location.houseNumber}&entranceNumber=${this.location.entranceNumber}&postalNumber=${this.location.postalNumber}&city=${this.location.city}&country=${this.location.country}`);
-			let address = response.data;
-			// console.log("address");
-			// console.log(address);
-			// if address is already in database, save both objects to database, else save only accomodation to database
-			if (address.length === 0) {
-				// add location to addresses collection in database and set accomodation.location to its _id if location data is complete
-				const locationIsFull = Object.values(this.location).every(x => x !== null && x !== '');
-				// console.log("locationIsFull");
-				// console.log(locationIsFull);
-				if (locationIsFull) {
-					let locationId = await AxiosService.post('/addresses', this.location);
-					this.accomodation.location = locationId._id;
-				} else console.log("An error has occured, please try again.");
-				// add accomodation to privateaccomodations collection in database if accomodation data is complete
-				const accomodationIsFull = Object.values(this.accomodation).every(x => x !== null && x !== '');
-				// console.log("accomodationIsFull");
-				// console.log(accomodationIsFull);
-				if (accomodationIsFull) await AxiosService.post('/privateaccomodations',this.accomodation);
-				else console.log("An error has occured, please try again.");
+			console.log(this.accomodation);
+			// check completeness of data
+			const accomodationIsFull = Object.values(this.accomodation).every(value => value !== null && value !== '');
+			const locationIsFull = Object.values(this.accomodation.location).every(value => value !== null && value !== '');
+			if (accomodationIsFull && locationIsFull) {
+				console.log("full");
+				// send data to backend for saving
+				this.loading = true;
+				try {
+					await AxiosService.post("/privateaccomodations", this.accomodation);
+					this.$router.push({ name: 'accomodations' });
+				} catch (error) {
+					this.errorMsg = "Error has occured. Please try again.";
+					this.snackbar = true;
+					console.log(Object.keys(error), error.message);
+				}
+				this.loading = false;
 			} else {
-				// set accomodation.location to address _id
-				this.accomodation.location = address[0]._id;
-				// check if accomodation data is complete
-				const accomodationIsFull = Object.values(this.accomodation).every(x => x !== null && x !== '');
-				// console.log("accomodationIsFull");
-				// console.log(accomodationIsFull);
-				// save accomodation to database
-				if (accomodationIsFull) await AxiosService.post('/privateaccomodations', this.accomodation);
-				else console.log("An error has occured, please try again.");
+				this.errorMsg = "All fields are required. Fill all fields and try again.";
+				this.snackbar = true;
 			}
+		}
+	},
+	watch: {
+		// updates number of floors every time value of top floor is changed
+		toFloor() {
+			this.updateFloorsNumber();
+		},
+		// updates number of floors every time value of lowest floor is changed
+		'accomodation.lowestFloor': function() {
+			this.updateFloorsNumber();
 		}
 	},
 	components: {
@@ -237,6 +253,9 @@ export default {
 	}
 	.input-city div:nth-child(2) {
 		width: 100%;
+	}
+	.yard-check {
+		width: 130px;
 	}
 	@media (max-width:750px) {
 		.details-grid-item {

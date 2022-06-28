@@ -55,7 +55,7 @@
 			<!-- Street name - address info -->
 			<div v-if="accomodation.location" class="details-grid-item">
 				<FormLabel text="Street (address)" class="details-label mr-4" />
-				<v-text-field v-model="accomodation.location.street" solo rounded
+				<v-text-field v-model="address.street" solo rounded
 								clearable clear-icon="mdi-close-circle"
 								label="Name of street"
 								background-color="#A5D4FF">
@@ -66,7 +66,7 @@
 				<!-- House number - address info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="House number (address)" class="details-label mr-4" />
-					<v-text-field v-model="accomodation.location.houseNumber" solo rounded
+					<v-text-field v-model="address.houseNumber" solo rounded
 									label="Number of the house"
 									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
@@ -74,7 +74,7 @@
 				<!-- Entrance number - address info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="Entrance number (address)" class="details-label mr-4" />
-					<v-text-field v-model="accomodation.location.entranceNumber" solo rounded
+					<v-text-field v-model="address.entranceNumber" solo rounded
 									label="Entrance label"
 									background-color="#A5D4FF" class="input-number ml-auto">
 					</v-text-field>
@@ -84,7 +84,7 @@
 				<!-- Postal number - address info -->
 				<div v-if="accomodation.location" class="details-grid-subitem">
 					<FormLabel text="Postal number (address)" class="details-label mr-4" />
-					<v-text-field v-model.number="accomodation.location.postalNumber" solo rounded
+					<v-text-field v-model.number="address.postalNumber" solo rounded
 									single-line type="number"
 									label="Post office number"
 									background-color="#A5D4FF" class="input-number">
@@ -93,7 +93,7 @@
 				<!-- City - address info -->
 				<div v-if="accomodation.location" class="details-grid-subitem input-city">
 					<FormLabel text="City (address)" class="details-label mr-4" />
-					<v-text-field v-model="accomodation.location.city" solo rounded
+					<v-text-field v-model="address.city" solo rounded
 									clearable clear-icon="mdi-close-circle"
 									label="Name of city"
 									background-color="#A5D4FF" class="ml-auto">
@@ -106,33 +106,32 @@
 				<div class="details-grid-subitem">
 					<FormLabel text="From floor (lowest level)" class="details-label mr-4" />
 					<v-text-field v-model.number="accomodation.lowestFloor" solo rounded
-									single-line type="number"
-									label="Level number (0 is ground floor)"
+									single-line type="number" step="1"
 									background-color="#A5D4FF" class="input-number">
 					</v-text-field>
 				</div>
 				<!-- Highest floor info -->
 				<div class="details-grid-subitem">
 					<FormLabel text="To floor (highest level)" class="details-label mr-4" />
-					<v-text-field v-model.number="accomodation.numberofFloors" solo rounded
-									single-line type="number"
-									label="Level number (0 is ground floor)"
+					<v-text-field v-model.number="toFloor" solo rounded
+									single-line type="number" step="1"
 									background-color="#A5D4FF" class="input-number ml-auto">
 					</v-text-field>
 				</div>
 			</div>
 			<!-- Yard info - address info -->
-			<v-checkbox v-model="accomodation.hasYard" label="Has a yard" class="mt-0 pt-0"></v-checkbox>
+			<v-checkbox v-model="accomodation.hasYard" label="Has a yard" class="mt-0 pt-0 yard-check"></v-checkbox>
 		</div>
 		<!-- Main action buttons -->
 		<div class="text-center mt-5">
 			<router-link :to="{ name: 'accomodations'}" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete itemType="accomodation" service="privateaccomodation" :_id="accomodation._id" />
-			<router-link :to="{ name: 'accomodation-detail', params: { id: accomodation.ObjectId }}" class="router-link">
-				<ButtonSave/> <!-- @click.native="printAccomodation()" -->
-			</router-link>
+			<ButtonDialogDelete itemType="accomodation" service="privateaccomodation" :_id="accomodation._id"
+									  routeName="accomodations" />
+			<!-- <router-link :to="{ name: 'accomodation-detail', params: { id: accomodation._id } }" class="router-link"> -->
+				<ButtonSave @click.native="updateAccomodation()" :loading="loading" />
+			<!-- </router-link> -->
 		</div>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
@@ -140,6 +139,8 @@
 </template>
 
 <script>
+import { AxiosService } from "@/services";
+
 import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
 
@@ -153,36 +154,109 @@ export default {
 	name: 'AccomodationEditView',
 	data() {
 		return {
-			accomodation: {}
+			accomodation: {},
+			address: {},
+			addressOriginal: {},
+			accomodationsOnAddress: 0,
+			toFloor: 0,
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
-	mounted() {
-		// get data from backend and set it to view data
-		let accomodationFromBackend = {
-			ObjectId: 111,
-			name: "Apartment Nature",
-			categoryStarNumber: 3,
-			maxGuestNumber: 6,
-			currentState: "AVAILABLE",
-			location: {
-				street: "Labinska",
-				houseNumber: "2",
-				entranceNumber: "1a",
-				postalNumber: 52100,
-				city: "Pula",
-				country: "Croatia"
-			},
-			hasYard: true,
-			lowestFloor: 0,
-			numberofFloors: 1
-		};
-		this.accomodation = accomodationFromBackend;
+	async mounted() {		
+		// get accomodation data from backend and save it to view data
+		this.loadingData = true;
+		try {
+			// parallel calls (accomodation and address)
+			let responses = await Promise.all([
+				await AxiosService.get(`/privateaccomodation/${this.$route.params.id}`),
+				await AxiosService.get(`/privateaccomodation/${this.$route.params.id}/address`)
+			]);
+			// set retrieved accomodations data to view data
+			this.accomodation = responses[0].data;
+			this.address = responses[1].data;
+			this.addressOriginal = responses[1].data;
+			this.accomodation.location = this.address._id;
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loadingData = false;
 		console.log(this.accomodation);
+		console.log(this.address);
+		try {
+			let response = await AxiosService.get(`/address/${this.address._id}/privateaccomodations`);
+			this.accomodationsOnAddress = response.data.length;
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		console.log(this.accomodationsOnAddress);
 	},
 	methods: {
+		// updates number of floors for accomodation
+		updateFloorsNumber() {
+			// make sure values of floors are OK
+			if (this.toFloor < this.accomodation.lowestFloor) {
+				this.accomodation.lowestFloor = [this.toFloor, this.toFloor = this.accomodation.lowestFloor][0];
+			}
+			// update number of floors
+			this.accomodation.floorsNumber = this.toFloor - this.accomodation.lowestFloor + 1;
+			// console.log(this.accomodation);
+		},
 		// checks completeness of accomodation data and sends it to backend for updating
-		updateAccomodation() {
+		async updateAccomodation() {
+			// check completeness of data
 			console.log(this.accomodation);
+			console.log(this.address);
+			console.log(this.addressOriginal);
+			const accomodationIsFull = Object.values(this.accomodation).every(value => value !== null && value !== '');
+			const locationIsFull = Object.values(this.accomodation.location).every(value => value !== null && value !== '');
+			if (accomodationIsFull && locationIsFull) {
+				// send data to backend for saving
+				this.loading = true;
+				try {
+					if (this.accomodationsOnAddress > 1) { // && JSON.stringify(this.address) === JSON.stringify(this.addressOriginal)
+						delete this.address._id;
+						let responseAddress = await AxiosService.post("/addresses", this.address);
+						console.log("responseAddress");
+						console.log(responseAddress);
+					} else {
+						await Promise.all([
+							await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation),
+							await AxiosService.patch(`address/${this.address._id}`, this.address)
+						]);
+					}
+					this.$router.push({ name: 'accomodation-detail', params: { id: this.accomodation._id } });
+				} catch (error) {
+					this.snackbarMsg = "Error has occured. Please try again.";
+					this.snackbarColor = "#FF6F6F";
+					this.snackbar = true;
+					console.log(Object.keys(error), error.message);
+				}
+				this.loading = false;
+			} else {
+				this.snackbarMsg = "All fields are required. Fill all fields and try again.";
+				this.snackbarColor = "#FF6F6F";
+				this.snackbar = true;
+			}
+		}
+	},
+	watch: {
+		// updates number of floors every time value of top floor is changed
+		toFloor() {
+			this.updateFloorsNumber();
+		},
+		// updates number of floors every time value of lowest floor is changed
+		'accomodation.lowestFloor': function() {
+			this.updateFloorsNumber();
 		}
 	},
 	components: {
@@ -216,6 +290,9 @@ export default {
 	}
 	.input-city div:nth-child(2) {
 		width: 100%;
+	}
+	.yard-check {
+		width: 130px;
 	}
 	@media (max-width:750px) {
 		.details-grid-item {
