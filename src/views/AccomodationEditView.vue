@@ -100,6 +100,19 @@
 					</v-text-field>
 				</div>
 			</div>
+			<div class="details-grid-item">
+				<div class="details-grid-subitem">
+				</div>
+				<div class="details-grid-subitem">
+					<!-- Country - address info -->
+					<FormLabel text="Country (address)" class="details-label mr-4" />
+					<v-text-field v-model="address.country" solo rounded
+									clearable clear-icon="mdi-close-circle"
+									label="Name of country"
+									background-color="#A5D4FF">
+					</v-text-field>
+				</div>
+			</div>
 			<h3 class="mt-9 mb-2">Other information</h3>
 			<!-- Lowest and highest floors info -->
 			<div class="details-grid-item">
@@ -133,6 +146,15 @@
 				<ButtonSave @click.native="updateAccomodation()" :loading="loading" />
 			<!-- </router-link> -->
 		</div>
+		<!-- Snackbar for showing errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -158,6 +180,7 @@ export default {
 			address: {},
 			addressOriginal: {},
 			accomodationsOnAddress: 0,
+			addresses: 0,
 			toFloor: 0,
 			loading: false,
 			loadingData: false,
@@ -190,8 +213,13 @@ export default {
 		console.log(this.accomodation);
 		console.log(this.address);
 		try {
-			let response = await AxiosService.get(`/address/${this.address._id}/privateaccomodations`);
-			this.accomodationsOnAddress = response.data.length;
+			// parallel calls (accomodation and address)
+			let responsesAddresses = await Promise.all([
+				await AxiosService.get(`/address/${this.address._id}/privateaccomodations`),
+				await AxiosService.get(`/addresses`)
+			]);
+			this.accomodationsOnAddress = responsesAddresses[0].data.length;
+			this.addresses = responsesAddresses[1].data;
 		} catch (error) {
 			this.snackbarMsg = "Error has occured. Please try again.";
 			this.snackbarColor = "#FF6F6F";
@@ -199,6 +227,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		console.log(this.accomodationsOnAddress);
+		console.log(this.addresses);
 	},
 	methods: {
 		// updates number of floors for accomodation
@@ -219,20 +248,35 @@ export default {
 			console.log(this.addressOriginal);
 			const accomodationIsFull = Object.values(this.accomodation).every(value => value !== null && value !== '');
 			const locationIsFull = Object.values(this.accomodation.location).every(value => value !== null && value !== '');
+			const locationExists = this.addresses.find(address =>
+				address.street === this.address.street && address.houseNumber === this.address.houseNumber
+				&& address.entranceNumber === this.address.entranceNumber && address.postalNumber === this.address.postalNumber
+				&& address.city === this.address.city && address.country === this.address.country
+			);
 			if (accomodationIsFull && locationIsFull) {
 				// send data to backend for saving
 				this.loading = true;
 				try {
-					if (this.accomodationsOnAddress > 1) { // && JSON.stringify(this.address) === JSON.stringify(this.addressOriginal)
-						delete this.address._id;
-						let responseAddress = await AxiosService.post("/addresses", this.address);
-						console.log("responseAddress");
-						console.log(responseAddress);
-					} else {
-						await Promise.all([
-							await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation),
-							await AxiosService.patch(`address/${this.address._id}`, this.address)
-						]);
+					if (JSON.stringify(this.address) === JSON.stringify(this.addressOriginal)) {
+						if (this.accomodationsOnAddress > 1) {
+							delete this.address._id;
+							let responseAddress = await AxiosService.post("/addresses", this.address);
+							this.accomodation.location = responseAddress.data._id;
+							await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation);
+							console.log("responseAddress");
+							console.log(responseAddress);
+						} else if (locationExists) {
+							this.accomodation.location = locationExists._id;
+							await Promise.all([
+								await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation),
+								await AxiosService.delete(`address/${this.address._id}`)
+							]);
+						} else {
+							await Promise.all([
+								await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation),
+								await AxiosService.patch(`address/${this.address._id}`, this.address)
+							]);
+						}
 					}
 					this.$router.push({ name: 'accomodation-detail', params: { id: this.accomodation._id } });
 				} catch (error) {
