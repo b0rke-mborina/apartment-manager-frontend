@@ -3,9 +3,22 @@
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Reservations</h1>
 		<!-- Empty list sign -->
-		<NoItemsDiv items="reservations" v-if="reservations.length === 0" />
+		<NoItemsDiv items="reservations" v-if="reservations.length === 0 && !loading" />
 		<!-- List of reservations -->
 		<ReservationItem v-for="reservation in reservations" v-bind:key="reservation._id" :reservation="reservation" />
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loading" indeterminate color="#A5D4FF"></v-progress-circular>
+		</div>
+		<!-- Snackbar for showing errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" color="#FF6F6F" width="400">
+			<span class="snackbar">{{ errorMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="errorMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Add new reservation button -->
 		<div class="text-center">
 			<router-link :to="{ name: 'reservation-creation' }" class="router-link">
@@ -31,13 +44,24 @@ export default {
 	name: 'ReservationsView',
 	data() {
 		return {
-			reservations: []
+			reservations: [],
+			loading: false,
+			errorMsg: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
 		// get all reservations data set it to view data
-		let response = await AxiosService.get("/reservations");
-		this.reservations = response.data;
+		this.loading = true;
+		try {
+			let response = await AxiosService.get("/reservations");
+			this.reservations = response.data;
+		} catch (error) {
+			this.errorMsg = "Error has occured. Please try again.";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loading = false;
 		console.log(this.reservations);
 	},
 	components: {

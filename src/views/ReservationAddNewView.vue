@@ -151,9 +151,18 @@
 				<ButtonCancel/>
 			</router-link>
 			<!-- <router-link :to="{ name: 'reservations'}" class="router-link"> -->
-				<ButtonSave @click.native="saveReservation()" />
+				<ButtonSave @click.native="saveReservation()" :loading="loading" />
 			<!-- </router-link> -->
 		</div>
+		<!-- Snackbar for showing errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" color="#FF6F6F" width="400">
+			<span class="snackbar">{{ errorMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="errorMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -183,7 +192,7 @@ export default {
 					start: null,
 					end: null,
 					privateAccomodation: {
-						_id: null,
+						id: null,
 						name: null
 					}
 				},
@@ -211,36 +220,51 @@ export default {
 			dates: [],
 			privateAccomodations: [],
 			guests: [],
-			availableGuests: []
+			availableGuests: [],
+			loading: false,
+			errorMsg: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
-		// get accomodations from backend, modify them for simplicity and save them to view data
-		let responseAccomodations = await AxiosService.get("/privateaccomodations");
-		this.privateAccomodations = responseAccomodations.data;
-		this.privateAccomodations = this.privateAccomodations.map(accomodation => {
-			return {
-				_id: accomodation._id,
-				name: accomodation.name
-			}
-		});
-		console.log(this.privateAccomodations);
 		// get guests from backend, modify them for simplicity and save them to view data (guests and available guests)
-		let responseGuests = await AxiosService.get("/guests");
-		this.guests = responseGuests.data;
-		this.guests = this.guests.map(guest => {
-			return {
-				_id: guest._id,
-				firstName: guest.firstName,
-				lastName: guest.lastName,
-				email: guest.email,
-				phoneNumber: guest.phoneNumber,
-				country: guest.country,
-				city: guest.city
-			}
-		});
+		this.loadingData = true;
+		try {
+			// parallel calls (accomodations and guests)
+			let responses = await Promise.all([
+				await AxiosService.get("/privateaccomodations"),
+				await AxiosService.get("/guests")
+			]);
+			// set retrieved accomodations data to view data and modify it for simplicity
+			this.privateAccomodations = responses[0].data;
+			this.privateAccomodations = this.privateAccomodations.map(accomodation => {
+				return {
+					id: accomodation._id,
+					name: accomodation.name
+				}
+			});
+			// modify retrieved guests for simplicity and save them to view data (guests and available guests)
+			this.guests = responses[1].data;
+			this.guests = this.guests.map(guest => {
+				return {
+					_id: guest._id,
+					firstName: guest.firstName,
+					lastName: guest.lastName,
+					email: guest.email,
+					phoneNumber: guest.phoneNumber,
+					country: guest.country,
+					city: guest.city
+				}
+			});
+			this.availableGuests = this.guests;
+		} catch (error) {
+			this.errorMsg = "Error has occured. Please try again.";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loadingData = false;
+		console.log(this.privateAccomodations);
 		console.log(this.guests);
-		this.availableGuests = this.guests;
 		console.log(this.availableGuests);
 	},
 	methods: {
@@ -279,16 +303,19 @@ export default {
 			this.reservation.price.valueInEur = null;
 			// update period name
 			if (this.reservation.madeByGuest) {
-				this.reservation.period.name = `Closed (${this.reservation.madeByGuest.firstName} ${this.reservation.madeByGuest.lastName})`;
+				this.reservation.period.name = `Reservation (${this.reservation.madeByGuest.firstName} ${this.reservation.madeByGuest.lastName})`;
 			}
-			
 			console.log(this.reservation);
-					
 			// check if reservation data is complete
 			const reservationIsFull = Object.values(this.reservation)
 				.every(x => x !== null && x !== undefined && x !== '');
 			if (reservationIsFull) {
-				const madeByGuestIsFull = Object.values(this.reservation.madeByGuest)
+				const madeByGuestIsFull = Boolean(
+					this.reservation.madeByGuest._id
+					&& this.reservation.madeByGuest.firstName && this.reservation.madeByGuest.lastName
+					&& this.reservation.madeByGuest.city && this.reservation.madeByGuest.country
+				);
+				Object.values(this.reservation.madeByGuest)
 					.every(x => x !== null && x !== undefined && x !== '');
 				const periodIsFull = Object.values(this.reservation.period)
 					.every(x => x !== null && x !== undefined && x !== '');
@@ -301,15 +328,29 @@ export default {
 					this.reservation.madeByGuest = this.reservation.madeByGuest._id;
 					this.reservation.guests = this.reservation.guests.map(guest => guest._id);
 					console.log("full");
-					// save period to database
-					console.log(this.reservation.period);
-					let periodId = await AxiosService.post("/periods", this.reservation.period);
-					this.reservation.period = periodId._id;
-					// save reservation to database
 					console.log(this.reservation);
-					await AxiosService.post("/reservations", this.reservation);
-				} else console.log("An error has occured. Please try again.");
-			} else console.log("An error has occured. Please try again.");
+					// send data to backend for saving
+					this.loading = true;
+					try {
+						await AxiosService.post("/reservations", this.reservation);
+						this.$router.push({ name: 'reservations' });
+					} catch (error) {
+						this.errorMsg = "Error has occured. Please try again.";
+						this.snackbar = true;
+						console.log(Object.keys(error), error.message);
+					}
+					this.loading = false;
+					this.reservation.guests = this.reservation.guests.map(guestId => {
+						return this.guests.find(guest => guest._id == guestId);
+					});
+				} else {
+					this.errorMsg = "All fields are required. Fill all fields and try again.";
+					this.snackbar = true;
+				}
+			} else {
+				this.errorMsg = "All fields are required. Fill all fields and try again.";
+				this.snackbar = true;
+			}
 		},
 	},
 	components: {
@@ -359,6 +400,14 @@ export default {
 	}
 	.list-btn {
 		background-color: #A5D4FF !important;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	.item-flex {
 		width: 100%;

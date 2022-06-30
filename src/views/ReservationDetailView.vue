@@ -2,16 +2,20 @@
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Reservation information</h1>
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loadingData" indeterminate color="#A5D4FF"></v-progress-circular>
+		</div>
 		<!-- Reservation period -->
-		<div v-if="reservation.period" class="text-center mb-2">
+		<div v-if="reservation.period && !loadingData" class="text-center mb-2">
 			{{ convertPeriod(reservation.period.start, reservation.period.end) }}
 		</div>
 		<!-- Reservation price -->
-		<div v-if="reservation.price" class="text-center mb-2">
+		<div v-if="reservation.price && !loadingData" class="text-center mb-2">
 			{{ reservation.price.value }} {{ reservation.price.currency }}
 		</div>
 		<!-- Current state of reservation -->
-		<div class="text-center mb-5">
+		<div v-if="!loadingData" class="text-center mb-5">
 			<v-chip v-if="reservation.currentState === 'CONFIRMED'" color="#55FF66" class="mx-2 mb-2">
 				CONFIRMED
 			</v-chip>
@@ -29,22 +33,22 @@
 			</v-chip>
 		</div>
 		<!-- Main information grid -->
-		<div class="details-grid">
+		<div v-if="!loadingData" class="details-grid">
 			<!-- Value of reservation in EUR -->
 			<div class="details-grid-item">
-				<FormLabel text="Value in EUR" class="details-label" />
+				<FormLabel v-if="reservation.price" text="Value in EUR" class="details-label" />
 				<FormTextField v-if="reservation.price" readonly
 									:text="reservation.price.valueInEur + ' EUR'" />
 			</div>
 			<!-- Guest who made the reservation -->
 			<div class="details-grid-item">
-				<FormLabel text="Guest who made the reservation" class="details-label" />
+				<FormLabel v-if="reservation.madeByGuest" text="Guest who made the reservation" class="details-label" />
 				<FormTextField v-if="reservation.madeByGuest" readonly
 									:text="reservation.madeByGuest.firstName + ' ' + reservation.madeByGuest.lastName" />
 			</div>
 			<!-- Other guests -->
 			<div class="details-grid-item">
-				<FormLabel text="Other guests" class="details-label" />
+				<FormLabel v-if="reservation.guests" text="Other guests" class="details-label" />
 				<div v-if="reservation.guests">
 					<div v-for="guest in reservation.guests" v-bind:key="guest._id">
 						<FormTextField v-if="guest._id !== reservation.madeByGuest._id"
@@ -59,11 +63,21 @@
 			<router-link :to="{ name: 'reservations'}" class="router-link">
 				<ButtonBack/>
 			</router-link>
-			<ButtonDialogDelete itemType="reservation" service="reservation" :_id="reservation._id" />
+			<ButtonDialogDelete itemType="reservation" service="reservation" :_id="reservation._id"
+									  routeName="reservations" />
 			<router-link :to="{ name: 'reservation-modification'}" class="router-link">
 				<ButtonEdit/>
 			</router-link>
 		</div>
+		<!-- Snackbar for showing successes and errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -85,14 +99,27 @@ export default {
 	name: 'ReservationDetailView',
 	data() {
 		return {
-			reservation: {}
+			reservation: {},
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
 		// get reservation data and set it to view data
-		console.log("call");
-		let response = await AxiosService.get(`/reservation/${this.$route.params.id}`);
-		this.reservation = response.data;
+		this.loadingData = true;
+		try {
+			let response = await AxiosService.get(`/reservation/${this.$route.params.id}`);
+			this.reservation = response.data;
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loadingData = false;
 		console.log(this.reservation);
 	},
 	methods: {

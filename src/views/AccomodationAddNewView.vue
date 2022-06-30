@@ -257,6 +257,14 @@ export default {
 	.yard-check {
 		width: 130px;
 	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
+	}
 	@media (max-width:750px) {
 		.details-grid-item {
 			grid-template-columns: auto;
