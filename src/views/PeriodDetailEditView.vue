@@ -2,12 +2,17 @@
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
 		<h1 class="mt-5 text-center">Edit a period</h1>
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loadingData" indeterminate color="#A5D4FF"></v-progress-circular>
+		</div>
 		<!-- Main information grid -->
-		<div class="details-grid">
+		<div v-if="period.privateAccomodation && !loadingData" class="details-grid">
 			<!-- Period name -->
 			<div class="mt-9 text-center">
 				<FormLabel text="Name" class="details-label mb-3" />
-				<v-text-field v-model="period.name" solo rounded
+				<v-text-field v-model="period.name" v-if="!loadingData"
+									solo rounded
 									clearable clear-icon="mdi-close-circle"
 									label="Period name..."
 									background-color="#A5D4FF"
@@ -17,7 +22,7 @@
 			<!-- Private accomodation to which the period belongs to -->
 			<div class="mt-5 text-center justify-center">
 				<FormLabel text="Belonging private accomodation:" class="details-label mb-3" />
-				<v-select v-model="period.privateAccomodationObjectId"
+				<v-select v-model="period.privateAccomodation.id"
 								:items="privateAccomodations"
 								item-value="_id"
 								item-text="name"
@@ -38,11 +43,20 @@
 			<router-link :to="{ name: 'calendar' }" class="router-link">
 				<ButtonCancel/>
 			</router-link>
-			<ButtonDialogDelete itemType="period" service="period" :_id="period._id" />
+			<ButtonDialogDelete itemType="period" service="period" :_id="period._id" routeName="calendar" />
 			<!-- <router-link :to="{ name: 'calendar' }" class="router-link"> -->
-				<ButtonSave @click.native="updatePeriod()" />
+				<ButtonSave @click.native="updatePeriod()" :loading="loading" />
 			<!-- </router-link> -->
 		</div>
+		<!-- Snackbar for showing successes and errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -66,30 +80,73 @@ export default {
 			period: {},
 			privateAccomodations: [],
 			dates: [],
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
-		// parallel calls
-		let responses = await Promise.all([
-			await AxiosService.get("/privateaccomodations"),
-			await AxiosService.get(`/period/${this.$route.params.id}`)
-		]);
-		// set retrieved accomodations data to view data
-		this.privateAccomodations = responses[0].data;
+		// get all data and set it to view data		
+		this.loadingData = true;
+		try {
+			// parallel calls
+			let responses = await Promise.all([
+				await AxiosService.get("/privateaccomodations"),
+				await AxiosService.get(`/period/${this.$route.params.id}`)
+			]);
+			// set retrieved accomodations data to view data
+			this.privateAccomodations = responses[0].data;
+			// set retrieved period data to view data, set dates to period select
+			this.period = responses[1].data;
+			this.dates = [this.period.start, this.period.end];
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
+		this.loadingData = false;
 		console.log(this.privateAccomodations);
-		// set retrieved period data to view data, set dates to period select
-		this.period = responses[1].data;
 		console.log(this.period);
-		this.dates = [this.period.start, this.period.end];
 	},
 	methods: {
 		// modifies period data, checks its completeness and sends it to backend for updating
-		updatePeriod() {
+		async updatePeriod() {
+			// modify period data
 			this.dates = this.dates.sort();
 			console.log(this.dates);
 			this.period.start = this.dates[0];
 			this.period.end = this.dates[1];
+			this.period.privateAccomodation.name = this.privateAccomodations
+				.find(accomodation => accomodation._id === this.period.privateAccomodation.id).name;
 			console.log(this.period);
+			// check if period data is complete and send it to backend for saving
+			const periodIsFull = Object.values(this.period).every(x => x !== null && x !== undefined && x !== '');
+			const accomodationIsFull = Object.values(this.period.privateAccomodation)
+				.every(x => x !== null && x !== undefined && x !== '');
+			if (periodIsFull && accomodationIsFull) {
+				console.log("full");
+				// send data to backend for saving
+				this.loading = true;
+				try {
+					await AxiosService.patch(`period/${this.period._id}`, this.period);
+					this.snackbarMsg = "Note updated successfully.";
+					this.snackbarColor = "#55FF66";
+					this.snackbar = true;
+				} catch (error) {
+					this.snackbarMsg = "Error has occured. Please try again.";
+					this.snackbarColor = "#FF6F6F";
+					this.snackbar = true;
+					console.log(Object.keys(error), error.message);
+				}
+				this.loading = false;
+			} else {
+				this.snackbarMsg = "All fields are required. Fill all fields and try again.";
+				this.snackbarColor = "#FF6F6F";
+				this.snackbar = true;
+			}
 		}
 	},
 	components: {
@@ -124,6 +181,14 @@ export default {
 	}
 	.heading-text-field .v-icon {
 		color: #000000 !important;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:1200px) {
 		.heading-text-field {

@@ -39,7 +39,7 @@
 			</v-btn>
 		</v-sheet>
 		<!-- Sheet with calendar items -->
-		<v-sheet height="420">
+		<v-sheet min-height="250">
 			<v-calendar ref="calendar"
 							v-model="value"
 							event-overlap-mode="stack"
@@ -59,20 +59,19 @@
 						<v-toolbar-title v-html="selectedPeriod.name" class="mr-5"></v-toolbar-title>
 						<v-spacer></v-spacer>
 						<!-- Period menu edit and delete (with dialog) icons -->
-						<router-link :to="{ name: 'period-detail-modification', params: { id: selectedPeriod._id }}" class="router-link">
+						<router-link :to="{ name: 'period-detail-modification', params: { id: selectedPeriod._id } }" class="router-link">
 							<IconEdit/>
 						</router-link>
 						<IconDelete v-if="selectedPeriod.start && selectedPeriod.end"
 										itemType="period" itemCaptionType="dates and times"
 										:itemName="convertDatetime(selectedPeriod.start) + ' and ' + convertDatetime(selectedPeriod.end)"
-										service="period" :_id="selectedPeriod._id"
-										class="mb-2" />
+										service="period" :_id="selectedPeriod._id" />
 					</v-toolbar>
 					<!-- Period menu info (use service to render period parts) -->
 					<v-card-text>
-						<span v-if="selectedPeriod.start">Start: {{ convertDatetime(selectedPeriod.start) }}</span>
+						<span v-if="selectedPeriod.start">Start: {{ convertDatetime(selectedPeriod.start) }} 15:00</span>
 						<br>
-						<span v-if="selectedPeriod.end">End: {{ convertDatetime(selectedPeriod.end) }}</span>
+						<span v-if="selectedPeriod.end">End: {{ convertDatetime(selectedPeriod.end) }} 10:00</span>
 					</v-card-text>
 					<!-- Period menu cancel button (close) -->
 					<v-card-actions>
@@ -83,13 +82,22 @@
 		</v-sheet>
 		<!-- Add new period button -->
 		<div class="text-center">
-			<router-link :to="{ name: 'period-creation', params: { id: selectedPeriod._id }}" class="router-link">
+			<router-link :to="{ name: 'period-creation', params: { id: selectedPeriod._id } }" class="router-link">
 				<v-btn elevation="2" rounded large class="mb-4 mt-8 btn-add-new">
 					<v-icon color="#000000" class="mr-2">mdi-plus</v-icon>
 					ADD NEW PERIOD
 				</v-btn>
 			</router-link>
 		</div>
+		<!-- Snackbar for showing successes and errors -->
+		<!-- <v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar> -->
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -118,26 +126,41 @@ export default {
 			selectedPeriod: {},
 			selectedElement: null,
 			selectedOpen: false,
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
 		// parallel calls (accomodations and periods)
 		console.log("parallel calls");
-		let responses = await Promise.all([
-			await AxiosService.get("/privateaccomodations"),
-			await AxiosService.get("/periods")
-		]);
-		// save all accomodations data
-		this.privateAccomodations = responses[0].data;
+		try {
+			let responses = await Promise.all([
+				await AxiosService.get("/privateaccomodations"),
+				await AxiosService.get("/periods")
+			]);
+			// save retrieved data to view data
+			this.privateAccomodations = responses[0].data;
+			this.privateAccomodationId = this.privateAccomodations[0]._id;
+			this.allClosedPeriods = responses[1].data;
+			this.closedPeriodsForPrivateAccomodation = this.allClosedPeriods
+				.filter(period => period.privateAccomodation.id === this.privateAccomodationId)
+				.map(period => {
+					period.start = period.start.split(" ")[0] + " 15:00";
+					period.end = period.end.split(" ")[0] + " 10:00";
+					return period;
+				});
+		} catch (error) {
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
+			this.snackbar = true;
+			console.log(Object.keys(error), error.message);
+		}
 		console.log(this.privateAccomodations);
-		// set initial accomodation (id) for which the periods will show
-		this.privateAccomodationId = this.privateAccomodations[0]._id;
 		console.log(this.privateAccomodationId);
-		// save all periods data
-		this.allClosedPeriods = responses[1].data;
 		console.log(this.allClosedPeriods);
-		// set initial periods which will show for set private accomodation
-		this.closedPeriodsForPrivateAccomodation = responses[1].data.filter(period => period.privateAccomodation === this.privateAccomodationId);
 		console.log(this.closedPeriodsForPrivateAccomodation);
 	},
 	methods: {
@@ -147,7 +170,13 @@ export default {
 		},
 		// updates periods shown on calendar based on selected accomodation
 		updateClosedPeriodsForPrivateAcomodation() {
-			this.closedPeriodsForPrivateAccomodation = this.allClosedPeriods.filter(period => period.privateAccomodation === this.privateAccomodationId);
+			this.closedPeriodsForPrivateAccomodation = this.allClosedPeriods
+				.filter(period => period.privateAccomodation.id === this.privateAccomodationId)
+				.map(period => {
+					period.start = period.start.split(" ")[0] + " 15:00";
+					period.end = period.end.split(" ")[0] + " 10:00";
+					return period;
+				});
 		},
 		// opens period detail popup menu when a calendar (event) period is clicked
       showEvent ({ nativeEvent, event }) {
@@ -213,6 +242,14 @@ export default {
 	}
 	.btn-add-new {
 		background-color: #A5D4FF !important;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:750px) {
 		.select-div {
