@@ -26,12 +26,11 @@
 					<FormLabel text="Private accomodation" class="details-label mb-2" />
 					<v-select v-model="reservation.period.privateAccomodation" return-object
 								:items="privateAccomodations"
-								item-value="privateAccomodation"
+								item-value="id"
 								item-text="name"
 								label="Select private accomodation"
 								solo rounded
 								background-color="#A5D4FF">
-								<!-- { ObjectId: privateAccomodation.ObjectId, name: privateAccomodation.name } -->
 						<template v-slot:append>
 							<v-icon color="#000000">mdi-menu-down</v-icon>
 						</template>

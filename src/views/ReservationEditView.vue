@@ -2,9 +2,13 @@
 	<v-container absolute fluid class="main-content">
 		<!-- Page title -->
 		<h1 class="mt-5 mb-4 text-center">Edit a reservation</h1>
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loadingData" indeterminate color="#A5D4FF"></v-progress-circular>
+		</div>
 		<!-- Reservation state, private accomodation, price, currency and period -->
-		<h3 class="text-center mb-4">Main information</h3>
-		<div class="main-flex mb-10">
+		<h3 v-if="!loadingData" class="text-center mb-4">Main information</h3>
+		<div v-if="!loadingData" class="main-flex mb-10">
 			<div class="mr-3 text-center">
 				<!-- Current state of reservation select -->
 				<div>
@@ -24,7 +28,7 @@
 				<!-- Private accomodation select -->
 				<div>
 					<FormLabel text="Private accomodation" class="details-label mb-2" />
-					<v-select v-model="reservation.period.privateAccomodation" return-object
+					<v-select v-model="period.privateAccomodation" return-object
 								:items="privateAccomodations"
 								item-value="privateAccomodation"
 								item-text="name"
@@ -69,17 +73,18 @@
 				<v-date-picker v-model="dates" range></v-date-picker>
 			</div>
 		</div>
-		<h3 class="text-center mb-4">Guests</h3>
+		<h3 v-if="!loadingData" class="text-center mb-4">Guests</h3>
 		<!-- Main information grid -->
-		<div class="details-grid">
+		<div v-if="!loadingData" class="details-grid">
 			<!-- Guest who made the reservation select -->
 			<div class="details-grid-item mb-10">
 				<FormLabel text="Guest who made the reservation" class="details-label mb-2" />
 				<div>
-					<v-select v-model="reservation.madeByGuest" return-object
+					<v-select v-model="reservation.madeByGuest"
 								:items="guests"
+								item-value="_id"
 								:item-text="item => item.firstName +' '+ item.lastName"
-								@change="updateGuestList(reservation.madeByGuest._id)"
+								@change="updateGuestList(reservation.madeByGuest)"
 								label="Select a guest"
 								solo rounded
 								background-color="#A5D4FF" class="importance-select">
@@ -152,9 +157,18 @@
 			<ButtonDialogDelete itemType="reservation" service="reservation" :_id="reservation._id"
 									  routeName="reservations" />
 			<!-- <router-link :to="{ name: 'reservations'}" class="router-link"> -->
-				<ButtonSave @click.native="updateReservation()" />
+				<ButtonSave @click.native="updateReservation()" :loading="loading" />
 			<!-- </router-link> -->
 		</div>
+		<!-- Snackbar for showing errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
@@ -181,15 +195,7 @@ export default {
 		return {
 			reservation: {
 				_id: null,
-				period: {
-					name: null,
-					start: null,
-					end: null,
-					privateAccomodation: {
-						id: null,
-						name: null
-					}
-				},
+				period: null,
 				madeByGuest: null,
 				guests: [],
 				currentState: null,
@@ -199,6 +205,17 @@ export default {
 					valueInEur: null
 				}	
 			},
+			originalReservation: null,
+			period: {
+				name: null,
+				start: null,
+				end: null,
+				privateAccomodation: {
+					id: null,
+					name: null
+				}
+			},
+			originalPeriod: null,
 			reservationStates: [
 				{ value: "INQUIRY" },
 				{ value: "PENDING" },
@@ -214,7 +231,12 @@ export default {
 			dates: [],
 			privateAccomodations: [],
 			guests: [],
-			availableGuests: []
+			availableGuests: [],
+			loading: false,
+			loadingData: false,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
 	async mounted() {
@@ -226,20 +248,31 @@ export default {
 				await AxiosService.get("/privateaccomodations"),
 				await AxiosService.get("/guests")
 			]);
-			this.reservation = responses[0].data;
+			// set retrieved data to period
+			this.period = responses[0].data.period;
+			this.originalPeriod = JSON.parse(JSON.stringify(responses[0].data.period));
 			// set dates for date picker to be start and end dates from period
-			this.dates = [this.reservation.period.start, this.reservation.period.end];
+			this.dates = [responses[0].data.period.start, responses[0].data.period.end];
+			// set retrieved data to reservation
+			let initialReservation = responses[0].data;
+			initialReservation.period = responses[0].data.period._id;
+			initialReservation.madeByGuest = responses[0].data.madeByGuest._id;
+			initialReservation.guests = responses[0].data.guests.map(guest => guest._id);
+			initialReservation.price.valueInEur = null;
+			this.reservation = initialReservation;
+			console.log("reservation");
+			console.log(this.reservation);
+			// add original objects for check (copies)
+			this.originalReservation = JSON.parse(JSON.stringify(initialReservation));
 			// set retrieved accomodations data to view data and modify it for simplicity
-			this.privateAccomodations = responses[1].data;
-			this.privateAccomodations = this.privateAccomodations.map(accomodation => {
+			this.privateAccomodations = responses[1].data.map(accomodation => {
 				return {
 					id: accomodation._id,
 					name: accomodation.name
 				}
 			});
 			// set retrieved guests data to view data and modify it for simplicity (guests and available guests)
-			this.guests = responses[2].data;
-			this.guests = this.guests.map(guest => {
+			this.guests = responses[2].data.map(guest => {
 				return {
 					_id: guest._id,
 					firstName: guest.firstName,
@@ -250,29 +283,40 @@ export default {
 					city: guest.city
 				}
 			});
-			// add objects to reservation
 			// set available guests to be all guests but ones in reservation
 			this.availableGuests = this.guests
 				.filter(availableGuest => !this.reservation.guests
 				.find(guest => guest._id === availableGuest._id));
-			this.availableGuests = this.availableGuests.filter(guest => this.reservation.madeByGuest._id !== guest._id);
+			this.availableGuests = this.availableGuests.filter(guest => this.reservation.madeByGuest !== guest._id);
+			// set guests (objects) to reservation
+			initialReservation.guests = initialReservation.guests.map(guestId => {
+				return this.guests.find(guest => guest._id === guestId);
+			});
 		} catch (error) {
-			this.errorMsg = "Error has occured. Please try again.";
+			this.snackbarMsg = "Error has occured. Please try again.";
+			this.snackbarColor = "#FF6F6F";
 			this.snackbar = true;
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
 
-		console.log(this.reservation);
-		console.log(this.privateAccomodations);
-		console.log(this.guests);
-		console.log(this.availableGuests);
+		console.log("period");
+		console.log(this.period);
+		console.log("dates");
 		console.log(this.dates);
+		console.log("reservation");
+		console.log(this.reservation);
+		console.log("guests");
+		console.log(this.guests);
+		console.log("reservation guests");
+		console.log(this.reservation.guests);
+		console.log("available guests");
+		console.log(this.availableGuests);
 	},
 	methods: {
 		// updates guest list, guest who made the reservation and list of available guests
 		updateGuestList(guestId) {
-			this.reservation.madeByGuest = this.guests.find(guest => guest._id === guestId);
+			this.reservation.madeByGuest = this.guests.find(guest => guest._id === guestId)._id;
 			this.reservation.guests = this.reservation.guests.filter(guest => guest._id !== guestId);
 			this.availableGuests = this.guests.filter(guest => guest._id !== guestId);
 			this.availableGuests = this.availableGuests
@@ -289,19 +333,79 @@ export default {
 			this.reservation.guests.push(this.availableGuests.find(guest => guest._id === guestId));
 			this.availableGuests = this.availableGuests.filter(guest => guest._id !== guestId);
 		},
+		// checks if two objects received as parameters are equal
+		objectsAreEqual(object1, object2) {
+			const keys1 = Object.keys(object1);
+			const keys2 = Object.keys(object2);
+			if (keys1.length !== keys2.length) {
+				return false;
+			}
+			for (const key of keys1) {
+				const val1 = object1[key];
+				const val2 = object2[key];
+				const areObjects = this.isObject(val1) && this.isObject(val2);
+				if (areObjects && !this.objectsAreEqual(val1, val2) || !areObjects && val1 !== val2) {
+					return false;
+				}
+			}
+			return true;
+		},
+		isObject(object) {
+			return object != null && typeof object === 'object';
+		},
 		// modifies reservation data, checks its completeness and sends it to backend for saving
-		updateReservation() {
+		async updateReservation() {
 			// update start and end dates
 			this.dates = this.dates.sort();
 			console.log(this.dates);
-			this.reservation.period.start = this.dates[0];
-			this.reservation.period.end = this.dates[1];
+			this.period.start = this.dates[0];
+			this.period.end = this.dates[1];
 			// update value in eur (backend)
 			this.reservation.price.valueInEur = null;
 			// update period name
-			this.reservation.period.name = `Closed (${this.reservation.madeByGuest.firstName} ${this.reservation.madeByGuest.lastName})`
-			// print for check
-			console.log(this.reservation);
+			let mainGuest = this.guests.find(guest => guest._id === this.reservation.madeByGuest);
+			this.period.name = `Reservation (${mainGuest.firstName} ${mainGuest.lastName})`;
+
+			const reservationIsFull = Object.values(this.reservation).every(value => value !== null && value !== '');
+			const priceIsFull = Boolean(
+				this.reservation.price.value !== null && this.reservation.price.value !== undefined
+				&& typeof this.reservation.price.value === "number"
+				&& this.reservation.price.currency && typeof this.reservation.price.currency === "string"
+			);
+			const periodIsFull = Object.values(this.period).every(value => value !== null && value !== '');
+			const accomodationIsFull = Object.values(this.period.privateAccomodation).every(value => value !== null && value !== '');
+			if (reservationIsFull && priceIsFull && periodIsFull && accomodationIsFull) {
+				// update guests
+				this.reservation.guests = this.reservation.guests.map(guest => guest._id);
+				this.originalReservation.guests = this.originalReservation.guests.map(guestId => {
+					return this.guests.find(guest => guest._id === guestId);
+				});
+				// send data to backend for saving
+				this.loading = true;
+				try {
+					if (!this.objectsAreEqual(this.reservation, this.originalReservation)) {
+						await AxiosService.patch(`reservation/${this.reservation._id}`, this.reservation);
+					}
+					console.log(this.period);
+					console.log(this.originalPeriod);
+					if (!this.objectsAreEqual(this.period, this.originalPeriod)) {
+						await AxiosService.patch(`period/${this.period._id}`, this.period);
+					}
+					this.$router.push({ name: 'reservation-detail', params: { id: this.reservation._id } });
+				} catch (error) {
+					this.snackbarMsg = "Error has occured. Please try again.";
+					this.snackbarColor = "#FF6F6F";
+					this.snackbar = true;
+					console.log(Object.keys(error), error.message);
+				}
+				this.loading = false;
+			}
+			// update guests
+			this.reservation.guests = this.reservation.guests.map(guestId => {
+				return this.guests.find(guest => guest._id === guestId);
+			});
+			console.log("reservation guests in f");
+			console.log(this.reservation.guests);
 		}
 	},
 	components: {
@@ -359,6 +463,14 @@ export default {
 		flex-direction: row;
 		flex-wrap: nowrap;
 		justify-content: top;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:1100px) {
 		.main-flex {

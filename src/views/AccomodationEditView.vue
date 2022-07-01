@@ -2,8 +2,12 @@
 	<v-container absolute fluid class="main-content">
 		<!-- Page title (name of private accomodation) -->
 		<h1 class="mt-5 text-center">Edit a private accomodation</h1>
+		<!-- Loading circular progress bar -->
+		<div class="text-center">
+			<v-progress-circular v-if="loadingData" indeterminate color="#A5D4FF"></v-progress-circular>
+		</div>
 		<!-- Current state of private accomodation -->
-		<div class="text-center mb-9">
+		<div v-if="!loadingData" class="text-center mb-9">
 			CURRENTLY {{ accomodation.currentState }}
 			<v-icon v-if="accomodation.currentState === 'AVAILABLE'"
 					icon color="#FFCC00" class="pr-2">
@@ -19,7 +23,7 @@
 			</v-icon>
 		</div>
 		<!-- Main information grid -->
-		<div class="details-grid">
+		<div v-if="!loadingData" class="details-grid">
 			<h3 class="mt-4 mb-2">Basic information</h3>
 			<!-- Accomodation name -->
 			<div class="details-grid-item">
@@ -178,7 +182,8 @@ export default {
 		return {
 			accomodation: {},
 			address: {},
-			addressOriginal: {},
+			originalAccomodation: {},
+			originalAddress: {},
 			accomodationsOnAddress: 0,
 			addresses: 0,
 			toFloor: 0,
@@ -194,15 +199,18 @@ export default {
 		this.loadingData = true;
 		try {
 			// parallel calls (accomodation and address)
-			let responses = await Promise.all([
+			const responses = await Promise.all([
 				await AxiosService.get(`/privateaccomodation/${this.$route.params.id}`),
 				await AxiosService.get(`/privateaccomodation/${this.$route.params.id}/address`)
 			]);
 			// set retrieved accomodations data to view data
 			this.accomodation = responses[0].data;
 			this.address = responses[1].data;
-			this.addressOriginal = responses[1].data;
+			// add original accomodation and address to data (copies)
+			this.originalAccomodation = JSON.parse(JSON.stringify(responses[0].data));
+			this.originalAddress = JSON.parse(JSON.stringify(responses[1].data));
 			this.accomodation.location = this.address._id;
+			this.originalAccomodation.location = this.address._id;
 		} catch (error) {
 			this.snackbarMsg = "Error has occured. Please try again.";
 			this.snackbarColor = "#FF6F6F";
@@ -240,12 +248,26 @@ export default {
 			this.accomodation.floorsNumber = this.toFloor - this.accomodation.lowestFloor + 1;
 			// console.log(this.accomodation);
 		},
+		// checks if two objects received as parameters are equal
+		objectsAreEqual(object1, object2) {
+			const keys1 = Object.keys(object1);
+			const keys2 = Object.keys(object2);
+			if (keys1.length !== keys2.length) {
+				return false;
+			}
+			for (let key of keys1) {
+				if (object1[key] !== object2[key]) {
+					return false;
+				}
+			}
+			return true;
+		},
 		// checks completeness of accomodation data and sends it to backend for updating
 		async updateAccomodation() {
 			// check completeness of data
-			console.log(this.accomodation);
 			console.log(this.address);
-			console.log(this.addressOriginal);
+			console.log(this.originalAddress);
+			// check completeness requirements
 			const accomodationIsFull = Object.values(this.accomodation).every(value => value !== null && value !== '');
 			const locationIsFull = Object.values(this.accomodation.location).every(value => value !== null && value !== '');
 			const locationExists = this.addresses.find(address =>
@@ -257,26 +279,31 @@ export default {
 				// send data to backend for saving
 				this.loading = true;
 				try {
-					if (JSON.stringify(this.address) === JSON.stringify(this.addressOriginal)) {
+					// update address (if it was changed)
+					if (!this.objectsAreEqual(this.address, this.originalAddress)) {
+						console.log("address changed");
 						if (this.accomodationsOnAddress > 1) {
+							// create new address if there is other accomodations on address
 							delete this.address._id;
 							let responseAddress = await AxiosService.post("/addresses", this.address);
 							this.accomodation.location = responseAddress.data._id;
-							await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation);
-							console.log("responseAddress");
-							console.log(responseAddress);
+							this.originalAccomodation.location = responseAddress.data._id;
 						} else if (locationExists) {
+							// delete old address if accomodation was moved to existing address
 							this.accomodation.location = locationExists._id;
-							await Promise.all([
-								await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation),
-								await AxiosService.delete(`address/${this.address._id}`)
-							]);
+							this.originalAccomodation.location = locationExists._id;
+							await AxiosService.delete(`address/${this.address._id}`);
 						} else {
-							await Promise.all([
-								await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation),
-								await AxiosService.patch(`address/${this.address._id}`, this.address)
-							]);
+							await AxiosService.patch(`address/${this.address._id}`, this.address);
 						}
+					}
+					console.log("current");
+					console.log(this.accomodation);
+					console.log("original");
+					console.log(this.originalAccomodation);
+					// update accomodation (if it was changed) and change route
+					if (!this.objectsAreEqual(this.accomodation, this.originalAccomodation)) {
+						await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation);
 					}
 					this.$router.push({ name: 'accomodation-detail', params: { id: this.accomodation._id } });
 				} catch (error) {
@@ -337,6 +364,14 @@ export default {
 	}
 	.yard-check {
 		width: 130px;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:750px) {
 		.details-grid-item {

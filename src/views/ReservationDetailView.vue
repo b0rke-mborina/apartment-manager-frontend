@@ -55,6 +55,7 @@
 											readonly
 											:text="guest.firstName + ' ' + guest.lastName" />
 					</div>
+					<div v-if="reservation.guests.length === 0" class="text-center">This list is empty.</div>
 				</div>
 			</div>
 		</div>
