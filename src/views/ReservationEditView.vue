@@ -377,9 +377,6 @@ export default {
 			if (reservationIsFull && priceIsFull && periodIsFull && accomodationIsFull) {
 				// update guests
 				this.reservation.guests = this.reservation.guests.map(guest => guest._id);
-				this.originalReservation.guests = this.originalReservation.guests.map(guestId => {
-					return this.guests.find(guest => guest._id === guestId);
-				});
 				// send data to backend for saving
 				this.loading = true;
 				try {

@@ -90,8 +90,8 @@ export default {
 		// parallel calls
 		let responses = await Promise.all([
 			await AxiosService.get("/privateaccomodations?limit=3"),
-			await AxiosService.get("/reservations?limit=3"),
-			await AxiosService.get("/guests?limit=3"),
+			await AxiosService.get("/reservations?limit=3&relevant=true&upcoming=true"),
+			await AxiosService.get("/guests?limit=3&actuallyGuests=true"),
 			await AxiosService.get("/notes?important=true"),
 			await AxiosService.get("/todolists?completed=false")
 		]);

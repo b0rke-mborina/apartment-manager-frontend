@@ -68,7 +68,7 @@
 			</router-link>
 			<ButtonDialogDelete itemType="to-do list" service="todolist" :_id="toDoList._id" routeName="todolists" />
 			<!-- <router-link :to="{ name: 'todolists' }" class="router-link"> -->
-				<ButtonSave/> <!-- @click.native="printToDoList()" -->
+				<ButtonSave @click.native="updateToDoList()" />
 			<!-- </router-link> -->
 		</div>
 		<!-- Snackbar for showing successes and errors -->

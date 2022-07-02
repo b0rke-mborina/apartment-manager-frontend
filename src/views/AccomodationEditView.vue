@@ -279,6 +279,9 @@ export default {
 				// send data to backend for saving
 				this.loading = true;
 				try {
+					this.address["_id"] = this.originalAddress._id;
+					console.log(this.address);
+					console.log(this.originalAddress);
 					// update address (if it was changed)
 					if (!this.objectsAreEqual(this.address, this.originalAddress)) {
 						console.log("address changed");
@@ -287,11 +290,9 @@ export default {
 							delete this.address._id;
 							let responseAddress = await AxiosService.post("/addresses", this.address);
 							this.accomodation.location = responseAddress.data._id;
-							this.originalAccomodation.location = responseAddress.data._id;
 						} else if (locationExists) {
 							// delete old address if accomodation was moved to existing address
 							this.accomodation.location = locationExists._id;
-							this.originalAccomodation.location = locationExists._id;
 							await AxiosService.delete(`address/${this.address._id}`);
 						} else {
 							await AxiosService.patch(`address/${this.address._id}`, this.address);
