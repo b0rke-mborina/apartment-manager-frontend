@@ -55,18 +55,30 @@
 			<!-- Sign up button -->
 			<div class="text-center">
 				<!-- <router-link :to="{ name: 'dashboard' }" class="router-link"> -->
-					<v-btn elevation="2" rounded large class="login-btn mb-12" @click="checkPasswordConfirmation()">
+					<v-btn elevation="2" rounded large class="login-btn mb-12" @click="signUp()">
 						Sign up
 					</v-btn>
 				<!-- </router-link> -->
 			</div>
 		</v-card>
+		<!-- Snackbar for showing errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
+import $router from '@/router';
+import { Auth } from '@/services';
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';
@@ -81,15 +93,47 @@ export default {
 				firstName: null,
 				lastName: null
 			},
-			passwordConfirm: null
+			passwordConfirm: null,
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
 		}
 	},
 	methods: {
 		// checks if values in password and password confirmation inputs are the same
-		checkPasswordConfirmation() {
-			this.user.password === this.passwordConfirm
-				? console.log("Password confirmed!")
-				: console.log("Passwords must be the same!");
+		passwordConfirmed() {
+			return (this.user.password === this.passwordConfirm && this.user.password && this.passwordConfirm)
+				? true : false;
+		},
+		isInEmailFormat(emailString) {
+			if (emailString && typeof emailString === "string"
+				&& String(emailString).toLowerCase().match(
+					/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+				)) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		async signUp() {
+			if (this.isInEmailFormat(this.user.email) && this.passwordConfirmed() && this.user.firstName && this.user.lastName) {
+				try {
+					console.log(this.user);
+					let signedUp = await Auth.signup(this.user);
+					if (signedUp) {
+						await Auth.login(this.user.email, this.user.password);
+						$router.replace({ path: "/" });
+					}
+				} catch (error) {
+					this.snackbarMsg = "Error has occured. Please try again.";
+					this.snackbarColor = "#FF6F6F";
+					this.snackbar = true;
+				}
+			} else {
+				this.snackbarMsg = "All fields are required. Fill all fields and try again. Email must be valid and passwords must match.";
+				this.snackbarColor = "#FF6F6F";
+				this.snackbar = true;
+			}
 		}
 	},
 	components: {
@@ -114,6 +158,14 @@ export default {
 	}
 	.login-btn {
 		background-color: #A5D4FF !important;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:1000px) {
 		.details-grid {

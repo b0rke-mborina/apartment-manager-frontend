@@ -1,10 +1,47 @@
 import axios from 'axios';
+import $router from '@/router';
 
 // axios service for making requests to backend
 let AxiosService = axios.create({
 	baseURL: 'http://localhost:3000/',
 	timeout: 3000,
 });
+
+// save type and token to request headers (execute before every backend request)
+AxiosService.interceptors.request.use((request) => {
+	console.log(request.url);
+	if (request.url !== "/user/auth" && request.url !== "/user") {
+		// try {
+			request.headers['Authorization'] = 'Bearer ' + Auth.getToken();
+			console.log("token:");
+			console.log(request.headers.Authorization);
+		// } catch (e) {
+			// console.error(e);
+		// }
+		// return request;
+		if (!request.headers.Authorization) {
+			Auth.logout();
+			$router.replace({ path: "/login" });
+		}
+	}
+	return request;
+});
+
+// let through response or log out user (execute after every backend response)
+AxiosService.interceptors.response.use(
+	(response) => {
+		console.log('Interceptor', response);
+		return response;
+	},
+	(error) => {
+		if (error.response.status == 401) {
+			Auth.logout();
+			$router.go();
+		}
+		// console.error('Interceptor', error.response);
+	}
+);
+
 
 // function for datetime conversion, returns date(time) in Day(sufix: e.g. th) Month Year Hours:Minutes format
 function convertDatetime(datetime) {
@@ -61,6 +98,72 @@ const monthNumberToName = {
 	"10": "October",
 	"11": "Novempber",
 	"12": "December"
-}
+};
 
-export { AxiosService, convertDatetime, convertPeriod, convertDate };
+// authentication
+let Auth = {
+	// logs in user
+	async login(email, password) {
+		// sends user to backend for saving
+		let response = await AxiosService.post("/user/auth", {
+			email: email,
+			password: password, // hash await bcrypt.hash(userData.password, 8)
+		});
+		// save user to localstorage
+		let user = response.data;
+		localStorage.setItem("user", JSON.stringify(user));
+		return true;
+	},
+	// signs up user
+	async signup(user) {
+		// sends user to backend for saving
+		let response = await AxiosService.post("/user", user);
+		// let user = response.data;
+		return true;
+	},
+	// logs out user by removing token from localstorage
+	logout() {
+		localStorage.removeItem("user");
+	},
+	// returns current saved user
+	getUser() {
+		return JSON.parse(localStorage.getItem("user"));
+	},
+	// returns current saved user token
+	getToken() {
+		let user = Auth.getUser();
+		if (user && user.token) {
+			return user.token;
+		} else {
+			return false;
+		}
+	},
+	// check if user is authenticated
+	authenticated() {
+		let user = Auth.getUser();
+		if (user && user.token) {
+			return true;
+		}
+		return false;
+	},
+	// state get functions, make variables available
+	state: {
+		get authenticated() {
+			return Auth.authenticated();
+		},
+		get userEmail() {
+			return Auth.getUser().email;
+		},
+		get userId() {
+			return Auth.getUser()._id;
+		},
+		get userFirstName() {
+			return Auth.getUser().firstName;
+		},
+		get userLastName() {
+			return Auth.getUser().lastName;
+		}
+	},
+};
+
+export { AxiosService, convertDatetime, convertPeriod, convertDate, Auth };

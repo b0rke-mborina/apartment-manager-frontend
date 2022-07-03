@@ -27,18 +27,30 @@
 			<!-- Log in button -->
 			<div class="text-center">
 				<router-link :to="{ name: 'dashboard' }" class="router-link">
-					<v-btn elevation="2" rounded large class="login-btn mb-12">
+					<v-btn @click="logIn()" elevation="2" rounded large class="login-btn mb-12">
 						Log in
 					</v-btn>
 				</router-link>
 			</div>
 		</v-card>
+		<!-- Snackbar for showing errors -->
+		<v-snackbar :value="snackbar" :timeout="-1" rounded="xl" :color="snackbarColor" width="400">
+			<span class="snackbar">{{ snackbarMsg }}</span>
+			<template v-slot:action="{ attrs }" class="snackbar-content">
+				<v-btn text v-bind="attrs" @click="snackbarMsg = null, snackbar = false" color="#000000">
+					CLOSE
+				</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- Empty space at the bottom of page -->
 		<EmptyDiv/>
 	</v-container>
 </template>
 
 <script>
+import $router from '@/router';
+import { Auth } from '@/services';
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import EmptyDiv from '@/components/EmptyDiv.vue';
@@ -50,6 +62,27 @@ export default {
 			user: {
 				email: null,
 				password: null
+			},
+			snackbarMsg: null,
+			snackbarColor: null,
+			snackbar: false
+		}
+	},
+	methods: {
+		async logIn() {
+			if (this.user.email && this.user.password) {
+				try {
+					await Auth.login(this.user.email, this.user.password);
+					if (Auth.authenticated) $router.push({ name: "dashboard" });
+				} catch (error) {
+					this.snackbarMsg = "Error has occured. Please try again.";
+					this.snackbarColor = "#FF6F6F";
+					this.snackbar = true;
+				}
+			} else {
+				this.snackbarMsg = "All fields are required. Fill all fields and try again. Email must be valid.";
+				this.snackbarColor = "#FF6F6F";
+				this.snackbar = true;
 			}
 		}
 	},
@@ -75,6 +108,14 @@ export default {
 	}
 	.login-btn {
 		background-color: #A5D4FF !important;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:1000px) {
 		.details-grid {

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { Auth } from '@/services';
 
 // imports of main views
 import DashboardView from '../views/DashboardView.vue';
@@ -197,6 +198,18 @@ const router = new VueRouter({
 	scrollBehavior() {
 		return { x: 0, y: 0 };
 	},
-})
+});
 
-export default router
+// make all routes except login and signup unavailable if user is not logged in
+router.beforeEach((to, from, next) => {
+	const publicPages = ["/login", "/signup"];
+	const authRequired = !publicPages.includes(to.path);
+	const user = Auth.getUser();
+
+	if (authRequired && !user) {
+		return next("/login");
+	}
+	next();
+});
+
+export default router;

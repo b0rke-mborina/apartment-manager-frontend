@@ -3,7 +3,7 @@
 		<!-- App bar -->
 		<v-app-bar color="#A5D4FF" elevate-on-scroll fixed short rounded class="fill-height">
 			<!-- App bar right side (menu button and app name) -->
-			<v-app-bar-nav-icon @click.stop="drawer = !drawer" color="#000000"></v-app-bar-nav-icon>
+			<v-app-bar-nav-icon v-if="auth.authenticated" @click.stop="drawer = !drawer" color="#000000"></v-app-bar-nav-icon>
 			<v-toolbar-title class="toolbar-title">Apartment manager</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<!-- App bar left side (account icon, login button, signup button) -->
@@ -12,20 +12,23 @@
 				<v-icon class="mx-2">mdi-account-circle</v-icon>
 			</v-btn>
 			<!-- Login button -->
-			<router-link :to="{ name: 'login' }" class="router-link">
+			<router-link v-if="!auth.authenticated" :to="{ name: 'login' }" class="router-link">
 				<v-btn text rounded class="login-signup">
 					<span>Log in</span>
 				</v-btn>
 			</router-link>
 			<!-- Signup button -->
-			<router-link :to="{ name: 'signup' }" class="router-link">
+			<router-link v-if="!auth.authenticated" :to="{ name: 'signup' }" class="router-link">
 				<v-btn text rounded class="login-signup">
 					<span>Sign up</span>
 				</v-btn>
 			</router-link>
+			<div v-if="auth.authenticated">
+				Hi, {{ auth.userFirstName }} {{ auth.userLastName }}!
+			</div>
     	</v-app-bar>
 		<!-- Sidebar / drawer -->
-		<v-navigation-drawer app color="#A5D4FF" temporary v-model="drawer" rounded>
+		<v-navigation-drawer v-if="auth.authenticated" app color="#A5D4FF" temporary v-model="drawer" rounded>
 			<v-list>
 				<v-list-item class="px-2 my-5">
 					<!-- App logo and name -->
@@ -53,7 +56,7 @@
 			<!-- Logout button -->
 			<template v-slot:append>
 				<div class="pa-4 text-center">
-					<v-btn rounded color="#A5D4FF" elevation="0">
+					<v-btn @click="logout()" rounded color="#A5D4FF" elevation="0">
 						<v-icon color="#000000">mdi-logout</v-icon>
 						<span style="color: #000000">Logout</span>
 					</v-btn>
@@ -68,6 +71,8 @@
 </template>
 
 <script>
+import { Auth } from '@/services';
+// import store from '@/store';
 
 export default {
 	name: 'App',
@@ -86,8 +91,16 @@ export default {
 				{ route: '/todolists', title: 'To do...', icon: 'mdi-format-list-checks' },
 				{ route: '/notes', title: 'Notes', icon: 'mdi-note-edit' },
 				{ route: '/analytics', title: 'Analytics', icon: 'mdi-poll' },
-			]
+			],
+			auth: Auth.state // ,
+			// store: store
       }
+	},
+	methods: {
+		logout() {
+			Auth.logout();
+			this.$router.go();
+		}
 	}
 };
 </script>
