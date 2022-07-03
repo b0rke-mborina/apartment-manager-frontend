@@ -45,21 +45,21 @@
 								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
-			<!-- Country info -->
-			<div class="details-grid-item">
-				<FormLabel text="Country" class="details-label" />
-				<v-text-field v-model="guest.country" solo rounded
-								  clearable clear-icon="mdi-close-circle"
-								  label="Country the guest is from"
-								  background-color="#A5D4FF">
-				</v-text-field>
-			</div>
 			<!-- City info -->
 			<div class="details-grid-item">
 				<FormLabel text="City" class="details-label" />
 				<v-text-field v-model="guest.city" solo rounded
 								  clearable clear-icon="mdi-close-circle"
 								  label="City the guest is from"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- Country info -->
+			<div class="details-grid-item">
+				<FormLabel text="Country" class="details-label" />
+				<v-text-field v-model="guest.country" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Country the guest is from"
 								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { AxiosService } from '@/services';
+import { AxiosService, Auth } from '@/services';
 
 import FormLabel from '@/components/FormLabel.vue';
 
@@ -102,6 +102,7 @@ export default {
 	data() {
 		return {
 			guest: {},
+			auth: Auth.state,
 			loading: false,
 			loadingData: false,
 			snackbarMsg: null,
@@ -113,7 +114,7 @@ export default {
 		// get guest data from backend and save it to view data
 		this.loadingData = true;
 		try {
-			let response = await AxiosService.get(`/guest/${this.$route.params.id}`);
+			let response = await AxiosService.get(`/guest/${this.$route.params.id}?userId=${this.auth.userId}`);
 			this.guest = response.data;
 		} catch (error) {
 			this.snackbarMsg = "Error has occured. Please try again.";
@@ -169,6 +170,14 @@ export default {
 	.details-grid-item {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:750px) {
 		.details-grid-item {

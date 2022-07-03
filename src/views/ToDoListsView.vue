@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import AddNewButton from '@/components/ButtonAddNew.vue';
@@ -45,6 +45,7 @@ export default {
 	data() {
 		return {
 			toDoLists: [],
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -54,7 +55,7 @@ export default {
 		// get all to-do lists data and save it to view data
 		this.loading = true;
 		try {
-			let response = await AxiosService.get("/todolists");
+			let response = await AxiosService.get(`/todolists?userId=${this.auth.userId}`);
 			this.toDoLists = response.data;
 		} catch (error) {
 			this.errorMsg = "Error has occured. Please try again.";

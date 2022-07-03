@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import FormLabel from '@/components/FormLabel.vue';
 
@@ -82,6 +82,7 @@ export default {
 			},
 			privateAccomodations: [],
 			dates: [],
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -91,7 +92,7 @@ export default {
 		// get all accomodations data, modify it and set it to view data		
 		this.loading = true;
 		try {
-			let response = await AxiosService.get("/privateaccomodations");
+			let response = await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}`);
 			this.privateAccomodations = response.data;
 		} catch (error) {
 			this.errorMsg = "Error has occured. Please try again.";
@@ -126,6 +127,7 @@ export default {
 				// send data to backend for saving
 				this.loading = true;
 				try {
+					this.period["user"] = this.auth.userId;
 					await AxiosService.post("/periods", this.period);
 					this.$router.push({ name: 'calendar' });
 				} catch (error) {

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import GuestItem from '@/components/GuestItem.vue';
 
@@ -46,6 +46,7 @@ export default {
 	data() {
 		return {
 			guests: [],
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -55,7 +56,7 @@ export default {
 		// get all guest data from backend and set it to view data
 		this.loading = true;
 		try {
-			let response = await AxiosService.get("/guests");
+			let response = await AxiosService.get(`/guests?userId=${this.auth.userId}`);
 			this.guests = response.data;
 		} catch (error) {
 			this.errorMsg = "Error has occured. Please try again.";
@@ -76,4 +77,12 @@ export default {
 
 <style scoped>
 	@import '@/assets/css/views-style.css';
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
+	}
 </style>

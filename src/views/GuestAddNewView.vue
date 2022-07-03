@@ -41,21 +41,21 @@
 								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
-			<!-- Country info -->
-			<div class="details-grid-item">
-				<FormLabel text="Country" class="details-label" />
-				<v-text-field v-model="guest.country" solo rounded
-								  clearable clear-icon="mdi-close-circle"
-								  label="Country the guest is from"
-								  background-color="#A5D4FF">
-				</v-text-field>
-			</div>
 			<!-- City info -->
 			<div class="details-grid-item">
 				<FormLabel text="City" class="details-label" />
 				<v-text-field v-model="guest.city" solo rounded
 								  clearable clear-icon="mdi-close-circle"
 								  label="City the guest is from"
+								  background-color="#A5D4FF">
+				</v-text-field>
+			</div>
+			<!-- Country info -->
+			<div class="details-grid-item">
+				<FormLabel text="Country" class="details-label" />
+				<v-text-field v-model="guest.country" solo rounded
+								  clearable clear-icon="mdi-close-circle"
+								  label="Country the guest is from"
 								  background-color="#A5D4FF">
 				</v-text-field>
 			</div>
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import FormLabel from '@/components/FormLabel.vue';
 
@@ -105,6 +105,7 @@ export default {
 				country: null,
 				city: null
 			},
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -128,6 +129,7 @@ export default {
 				// send data to backend for saving
 				this.loading = true;
 				try {
+					this.guest["user"] = this.auth.userId;
 					await AxiosService.post("/guests", this.guest);
 					this.$router.push({ name: 'guests' });
 				} catch (error) {
@@ -173,6 +175,14 @@ export default {
 	}
 	.heading-text-field .v-icon {
 		color: #000000 !important;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:1200px) {
 		.heading-text-field {

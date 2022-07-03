@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { AxiosService, convertPeriod } from '@/services';
+import { AxiosService, convertPeriod, Auth } from '@/services';
 
 import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
@@ -101,6 +101,7 @@ export default {
 	data() {
 		return {
 			reservation: {},
+			auth: Auth.state,
 			loading: false,
 			loadingData: false,
 			snackbarMsg: null,
@@ -112,7 +113,7 @@ export default {
 		// get reservation data and set it to view data
 		this.loadingData = true;
 		try {
-			let response = await AxiosService.get(`/reservation/${this.$route.params.id}`);
+			let response = await AxiosService.get(`/reservation/${this.$route.params.id}?userId=${this.auth.userId}`);
 			this.reservation = response.data;
 		} catch (error) {
 			this.snackbarMsg = "Error has occured. Please try again.";
@@ -147,6 +148,14 @@ export default {
 	.details-grid-item {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:750px) {
 		.details-grid-item {

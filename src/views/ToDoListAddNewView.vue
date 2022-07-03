@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import draggable from 'vuedraggable';
 
@@ -102,6 +102,7 @@ export default {
 				items: []
 			},
       	drag: false,
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -155,6 +156,7 @@ export default {
 				console.log("full");
 				this.loading = true;
 				try {
+					this.toDoList["user"] = this.auth.userId;
 					await AxiosService.post("/todolists", this.toDoList);
 					this.$router.push({ name: 'todolists' });
 				} catch (error) {

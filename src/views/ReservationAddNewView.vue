@@ -168,7 +168,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import draggable from 'vuedraggable';
 
@@ -220,6 +220,7 @@ export default {
 			privateAccomodations: [],
 			guests: [],
 			availableGuests: [],
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -231,8 +232,8 @@ export default {
 		try {
 			// parallel calls (accomodations and guests)
 			let responses = await Promise.all([
-				await AxiosService.get("/privateaccomodations"),
-				await AxiosService.get("/guests")
+				await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}`),
+				await AxiosService.get(`/guests?userId=${this.auth.userId}`)
 			]);
 			// set retrieved accomodations data to view data and modify it for simplicity
 			this.privateAccomodations = responses[0].data;
@@ -331,6 +332,8 @@ export default {
 					// send data to backend for saving
 					this.loading = true;
 					try {
+						this.reservation["user"] = this.auth.userId;
+						this.reservation.period["user"] = this.auth.userId;
 						await AxiosService.post("/reservations", this.reservation);
 						this.$router.push({ name: 'reservations' });
 					} catch (error) {

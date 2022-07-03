@@ -175,7 +175,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import draggable from 'vuedraggable';
 
@@ -232,6 +232,7 @@ export default {
 			privateAccomodations: [],
 			guests: [],
 			availableGuests: [],
+			auth: Auth.state,
 			loading: false,
 			loadingData: false,
 			snackbarMsg: null,
@@ -244,9 +245,9 @@ export default {
 		try {
 			// parallel calls (accomodations and guests)
 			let responses = await Promise.all([
-				await AxiosService.get(`/reservation/${this.$route.params.id}`),
-				await AxiosService.get("/privateaccomodations"),
-				await AxiosService.get("/guests")
+				await AxiosService.get(`/reservation/${this.$route.params.id}?userId=${this.auth.userId}`),
+				await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}`),
+				await AxiosService.get(`/guests?userId=${this.auth.userId}`)
 			]);
 			// set retrieved data to period
 			this.period = responses[0].data.period;

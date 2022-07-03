@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { AxiosService, convertDatetime } from "@/services";
+import { AxiosService, convertDatetime, Auth } from "@/services";
 
 import IconEdit from '@/components/IconEdit.vue';
 import IconDelete from '@/components/IconDelete.vue';
@@ -126,6 +126,7 @@ export default {
 			selectedPeriod: {},
 			selectedElement: null,
 			selectedOpen: false,
+			auth: Auth.state,
 			loading: false,
 			loadingData: false,
 			snackbarMsg: null,
@@ -138,8 +139,8 @@ export default {
 		console.log("parallel calls");
 		try {
 			let responses = await Promise.all([
-				await AxiosService.get("/privateaccomodations"),
-				await AxiosService.get("/periods")
+				await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}`),
+				await AxiosService.get(`/periods?userId=${this.auth.userId}`)
 			]);
 			// save retrieved data to view data
 			this.privateAccomodations = responses[0].data;

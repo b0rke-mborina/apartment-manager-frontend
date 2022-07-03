@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import FormLabel from '@/components/FormLabel.vue';
 
@@ -80,6 +80,7 @@ export default {
 			period: {},
 			privateAccomodations: [],
 			dates: [],
+			auth: Auth.state,
 			loading: false,
 			loadingData: false,
 			snackbarMsg: null,
@@ -93,8 +94,8 @@ export default {
 		try {
 			// parallel calls
 			let responses = await Promise.all([
-				await AxiosService.get("/privateaccomodations"),
-				await AxiosService.get(`/period/${this.$route.params.id}`)
+				await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}`),
+				await AxiosService.get(`/period/${this.$route.params.id}?userId=${this.auth.userId}`)
 			]);
 			// set retrieved accomodations data to view data
 			this.privateAccomodations = responses[0].data;

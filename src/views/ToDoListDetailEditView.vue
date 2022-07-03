@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import draggable from 'vuedraggable';
 
@@ -109,6 +109,7 @@ export default {
 				items: []
 			},
       	drag: false,
+			auth: Auth.state,
 			loading: false,
 			loadingData: false,
 			snackbarMsg: null,
@@ -120,7 +121,7 @@ export default {
 		// get to-do list data and set it to view data
 		this.loadingData = true;
 		try {
-			let response = await AxiosService.get(`/todolist/${this.$route.params.id}`);
+			let response = await AxiosService.get(`/todolist/${this.$route.params.id}?userId=${this.auth.userId}`);
 			this.toDoList = response.data;
 			this.updatePositions();
 		} catch (error) {
@@ -243,6 +244,14 @@ export default {
 	}
 	.btn:before {
 		background: none;
+	}
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
 	}
 	@media (max-width:700px) {
 		.heading-text-field {
