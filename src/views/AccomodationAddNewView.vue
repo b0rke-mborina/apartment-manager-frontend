@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import FormLabel from '@/components/FormLabel.vue';
 
@@ -173,6 +173,7 @@ export default {
 				currentState: "AVAILABLE"
 			},
 			toFloor: 0,
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -200,6 +201,7 @@ export default {
 				// send data to backend for saving
 				this.loading = true;
 				try {
+					this.accomodation["user"] = this.auth.userId;
 					await AxiosService.post("/privateaccomodations", this.accomodation);
 					this.$router.push({ name: 'accomodations' });
 				} catch (error) {

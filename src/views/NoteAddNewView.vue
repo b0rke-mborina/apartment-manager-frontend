@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import FormLabel from '@/components/FormLabel.vue';
 
@@ -81,6 +81,7 @@ export default {
 					name: "NOT IMPORTANT"
 				}
 			],
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -97,6 +98,7 @@ export default {
 				console.log("full");
 				this.loading = true;
 				try {
+					this.note["user"] = this.auth.userId;
 					await AxiosService.post("/notes", this.note);
 					this.$router.push({ name: 'notes' });
 				} catch (error) {

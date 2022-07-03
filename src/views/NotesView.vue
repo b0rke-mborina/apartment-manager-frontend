@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import NoteItem from '@/components/NoteItem.vue';
 
@@ -46,6 +46,7 @@ export default {
 	data() {
 		return {
 			notes: [],
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -55,7 +56,7 @@ export default {
 		// get all notes data set it to view data
 		this.loading = true;
 		try {
-			let response = await AxiosService.get("/notes");
+			let response = await AxiosService.get(`/notes?userId=${this.auth.userId}`);
 			this.notes = response.data;
 		} catch (error) {
 			this.errorMsg = "Error has occured. Please try again.";

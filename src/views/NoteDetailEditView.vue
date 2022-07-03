@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import ButtonCancel from '@/components/ButtonCancel.vue';
 import ButtonDialogDelete from '@/components/ButtonDialogDelete.vue';
@@ -82,6 +82,7 @@ export default {
 					name: "NOT IMPORTANT"
 				}
 			],
+			auth: Auth.state,
 			loading: false,
 			loadingData: false,
 			snackbarMsg: null,
@@ -93,7 +94,7 @@ export default {
 		// get note data from backend and set it to view data
 		this.loadingData = true;
 		try {
-			let response = await AxiosService.get(`/note/${this.$route.params.id}`);
+			let response = await AxiosService.get(`/note/${this.$route.params.id}?userId=${this.auth.userId}`);
 			this.note = response.data;
 		} catch (error) {
 			this.snackbarMsg = "Error has occured. Please try again.";

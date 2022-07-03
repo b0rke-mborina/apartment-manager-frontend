@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import AccomodationItem from '@/components/AccomodationItem.vue';
 
@@ -46,6 +46,7 @@ export default {
 	data() {
 		return {
 			accomodations: [],
+			auth: Auth.state,
 			loading: false,
 			errorMsg: null,
 			snackbar: false
@@ -55,7 +56,7 @@ export default {
 		// get all accomodations data from backend and set it to view data
 		this.loading = true;
 		try {
-			let response = await AxiosService.get("/privateaccomodations");
+			let response = await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}`);
 			this.accomodations = response.data;
 		} catch (error) {
 			this.errorMsg = "Error has occured. Please try again.";
@@ -76,4 +77,12 @@ export default {
 
 <style scoped>
 	@import '@/assets/css/views-style.css';
+	.snackbar-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.snackbar {
+		color: #000000;
+	}
 </style>

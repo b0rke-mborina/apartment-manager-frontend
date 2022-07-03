@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import FormLabel from '@/components/FormLabel.vue';
 import FormTextField from '@/components/FormTextField.vue';
@@ -187,6 +187,7 @@ export default {
 			accomodationsOnAddress: 0,
 			addresses: 0,
 			toFloor: 0,
+			auth: Auth.state,
 			loading: false,
 			loadingData: false,
 			snackbarMsg: null,
@@ -200,7 +201,7 @@ export default {
 		try {
 			// parallel calls (accomodation and address)
 			const responses = await Promise.all([
-				await AxiosService.get(`/privateaccomodation/${this.$route.params.id}`),
+				await AxiosService.get(`/privateaccomodation/${this.$route.params.id}?userId=${this.auth.userId}`),
 				await AxiosService.get(`/privateaccomodation/${this.$route.params.id}/address`)
 			]);
 			// set retrieved accomodations data to view data
