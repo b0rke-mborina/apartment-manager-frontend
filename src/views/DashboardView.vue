@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { AxiosService } from "@/services";
+import { AxiosService, Auth } from "@/services";
 
 import DashboardItem from '@/components/DashboardItem.vue';
 import AccomodationItem from '@/components/AccomodationItem.vue';
@@ -83,17 +83,18 @@ export default {
 				aspect: "not completed",
 				number: 0,
 				link: "/todolists"
-			}
+			},
+			auth: Auth.state
 		}
 	},
 	async mounted() {
 		// parallel calls
 		let responses = await Promise.all([
-			await AxiosService.get("/privateaccomodations?limit=3"),
-			await AxiosService.get("/reservations?limit=3&relevant=true&upcoming=true"),
-			await AxiosService.get("/guests?limit=3&actuallyGuests=true"),
-			await AxiosService.get("/notes?important=true"),
-			await AxiosService.get("/todolists?completed=false")
+			await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}&limit=3`),
+			await AxiosService.get(`/reservations?userId=${this.auth.userId}&relevant=true&upcoming=true&limit=3`),
+			await AxiosService.get(`/guests?userId=${this.auth.userId}&limit=3&actuallyGuests=true`),
+			await AxiosService.get(`/notes?userId=${this.auth.userId}&important=true`),
+			await AxiosService.get(`/todolists?userId=${this.auth.userId}&completed=false`)
 		]);
 		// set retrieved accomodation data to view data
 		this.accomodations = responses[0].data;

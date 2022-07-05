@@ -63,6 +63,7 @@ export default {
 				email: null,
 				password: null
 			},
+			loading: false,
 			snackbarMsg: null,
 			snackbarColor: null,
 			snackbar: false
@@ -71,6 +72,7 @@ export default {
 	methods: {
 		async logIn() {
 			if (this.user.email && this.user.password) {
+				this.loading = true;
 				try {
 					await Auth.login(this.user.email, this.user.password);
 					if (Auth.authenticated) $router.push({ name: "dashboard" });
@@ -79,6 +81,7 @@ export default {
 					this.snackbarColor = "#FF6F6F";
 					this.snackbar = true;
 				}
+				this.loading = false;
 			} else {
 				this.snackbarMsg = "All fields are required. Fill all fields and try again. Email must be valid.";
 				this.snackbarColor = "#FF6F6F";

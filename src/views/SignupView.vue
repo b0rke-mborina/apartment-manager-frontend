@@ -94,6 +94,7 @@ export default {
 				lastName: null
 			},
 			passwordConfirm: null,
+			loading: false,
 			snackbarMsg: null,
 			snackbarColor: null,
 			snackbar: false
@@ -117,6 +118,7 @@ export default {
 		},
 		async signUp() {
 			if (this.isInEmailFormat(this.user.email) && this.passwordConfirmed() && this.user.firstName && this.user.lastName) {
+				this.loading = true;
 				try {
 					console.log(this.user);
 					let signedUp = await Auth.signup(this.user);
@@ -129,6 +131,7 @@ export default {
 					this.snackbarColor = "#FF6F6F";
 					this.snackbar = true;
 				}
+				this.loading = false;
 			} else {
 				this.snackbarMsg = "All fields are required. Fill all fields and try again. Email must be valid and passwords must match.";
 				this.snackbarColor = "#FF6F6F";

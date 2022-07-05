@@ -135,7 +135,7 @@ export default {
 			let month = current.getMonth()+1;
 			let day = current.getDate();
 			if (month < 10) month = "0" + month;
-			if (day < 10) month = "0" + day;
+			if (day < 10) day = "0" + day;
 			const date = `${year}-${month}-${day}`;
 			return date;
 		},
