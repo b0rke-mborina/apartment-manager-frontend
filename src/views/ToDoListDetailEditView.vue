@@ -131,7 +131,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.toDoList);
+		// console.log(this.toDoList);
 	},
 	methods: {
 		// updates positions of to-do list items based on their current position in list
@@ -177,8 +177,8 @@ export default {
 				if (numberOfNotCompleted === 0) this.toDoList.completed = true;
 				else this.toDoList.completed = false;
 				// send data to backend for saving
-				console.log(this.toDoList);
-				console.log("full");
+				// console.log(this.toDoList);
+				// console.log("full");
 				this.loading = true;
 				try {
 					await AxiosService.patch(`todolist/${this.toDoList._id}`, this.toDoList);

@@ -122,7 +122,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.reservation);
+		// console.log(this.reservation);
 	},
 	methods: {
 		// imported function for period conversion

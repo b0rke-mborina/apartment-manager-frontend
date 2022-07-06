@@ -120,7 +120,7 @@ export default {
 			if (this.isInEmailFormat(this.user.email) && this.passwordConfirmed() && this.user.firstName && this.user.lastName) {
 				this.loading = true;
 				try {
-					console.log(this.user);
+					// console.log(this.user);
 					let signedUp = await Auth.signup(this.user);
 					if (signedUp) {
 						await Auth.login(this.user.email, this.user.password);

@@ -63,7 +63,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loading = false;
-		console.log(this.reservations);
+		// console.log(this.reservations);
 	},
 	components: {
 		ReservationItem,

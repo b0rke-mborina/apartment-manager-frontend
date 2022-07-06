@@ -219,8 +219,8 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.accomodation);
-		console.log(this.address);
+		// console.log(this.accomodation);
+		// console.log(this.address);
 		try {
 			// parallel calls (accomodation and address)
 			let responsesAddresses = await Promise.all([
@@ -235,8 +235,8 @@ export default {
 			this.snackbar = true;
 			console.log(Object.keys(error), error.message);
 		}
-		console.log(this.accomodationsOnAddress);
-		console.log(this.addresses);
+		// console.log(this.accomodationsOnAddress);
+		// console.log(this.addresses);
 	},
 	methods: {
 		// updates number of floors for accomodation
@@ -266,8 +266,8 @@ export default {
 		// checks completeness of accomodation data and sends it to backend for updating
 		async updateAccomodation() {
 			// check completeness of data
-			console.log(this.address);
-			console.log(this.originalAddress);
+			// console.log(this.address);
+			// console.log(this.originalAddress);
 			// check completeness requirements
 			const accomodationIsFull = Object.values(this.accomodation).every(value => value !== null && value !== '');
 			const locationIsFull = Object.values(this.accomodation.location).every(value => value !== null && value !== '');
@@ -281,11 +281,11 @@ export default {
 				this.loading = true;
 				try {
 					this.address["_id"] = this.originalAddress._id;
-					console.log(this.address);
-					console.log(this.originalAddress);
+					// console.log(this.address);
+					// console.log(this.originalAddress);
 					// update address (if it was changed)
 					if (!this.objectsAreEqual(this.address, this.originalAddress)) {
-						console.log("address changed");
+						// console.log("address changed");
 						if (this.accomodationsOnAddress > 1) {
 							// create new address if there is other accomodations on address
 							delete this.address._id;
@@ -299,10 +299,10 @@ export default {
 							await AxiosService.patch(`address/${this.address._id}`, this.address);
 						}
 					}
-					console.log("current");
-					console.log(this.accomodation);
-					console.log("original");
-					console.log(this.originalAccomodation);
+					// console.log("current");
+					// console.log(this.accomodation);
+					// console.log("original");
+					// console.log(this.originalAccomodation);
 					// update accomodation (if it was changed) and change route
 					if (!this.objectsAreEqual(this.accomodation, this.originalAccomodation)) {
 						await AxiosService.patch(`privateaccomodation/${this.$route.params.id}`, this.accomodation);

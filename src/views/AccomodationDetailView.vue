@@ -132,7 +132,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.accomodation);
+		// console.log(this.accomodation);
 	},
 	components: {
 		FormLabel,

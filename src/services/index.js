@@ -9,15 +9,11 @@ let AxiosService = axios.create({
 
 // save type and token to request headers (execute before every backend request)
 AxiosService.interceptors.request.use((request) => {
-	console.log(request.url);
+	// console.log(request.url);
 	if (request.url !== "/user/auth" && request.url !== "/user") {
-		// try {
-			request.headers['Authorization'] = 'Bearer ' + Auth.getToken();
-			console.log("token:");
-			console.log(request.headers.Authorization);
-		// } catch (e) {
-			// console.error(e);
-		// }
+		request.headers['Authorization'] = 'Bearer ' + Auth.getToken();
+		// console.log("token:");
+		// console.log(request.headers.Authorization);
 		// return request;
 		if (!request.headers.Authorization) {
 			Auth.logout();
@@ -30,7 +26,7 @@ AxiosService.interceptors.request.use((request) => {
 // let through response or log out user (execute after every backend response)
 AxiosService.interceptors.response.use(
 	(response) => {
-		console.log('Interceptor', response);
+		// console.log('Interceptor', response);
 		return response;
 	},
 	(error) => {

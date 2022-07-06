@@ -64,7 +64,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loading = false;
-		console.log(this.notes);
+		// console.log(this.notes);
 	},
 	components: {
 		NoteItem,

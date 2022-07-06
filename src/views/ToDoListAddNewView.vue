@@ -152,8 +152,8 @@ export default {
 				if (numberOfNotCompleted === 0) this.toDoList.completed = true;
 				else this.toDoList.completed = false;
 				// send data to backend for saving
-				console.log(this.toDoList);
-				console.log("full");
+				// console.log(this.toDoList);
+				// console.log("full");
 				this.loading = true;
 				try {
 					this.toDoList["user"] = this.auth.userId;

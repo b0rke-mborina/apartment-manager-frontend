@@ -103,15 +103,15 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.note);
+		// console.log(this.note);
 	},
 	methods: {
 		// checks completeness of note data and sends it to backend for updating
 		async updateNote() {
-			console.log(this.note);
+			// console.log(this.note);
 			const noteIsFull = Object.values(this.note).every(value => value !== null && value !== '');
 			if (noteIsFull) {
-				console.log("full");
+				// console.log("full");
 				this.loading = true;
 				try {
 					await AxiosService.patch(`note/${this.note._id}`, this.note);

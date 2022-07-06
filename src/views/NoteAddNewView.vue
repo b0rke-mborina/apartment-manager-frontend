@@ -91,11 +91,11 @@ export default {
 		// checks completeness of note data and sends it to backend for saving
 		async saveNote() {
 			// check completeness of data
-			console.log(this.note);
+			// console.log(this.note);
 			const noteIsFull = Object.values(this.note).every(value => value !== null && value !== '');
 			if (noteIsFull) {
 				// send data to backend for saving
-				console.log("full");
+				// console.log("full");
 				this.loading = true;
 				try {
 					this.note["user"] = this.auth.userId;

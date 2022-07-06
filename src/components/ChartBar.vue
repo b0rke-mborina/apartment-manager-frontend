@@ -60,8 +60,8 @@ export default {
 	},
 	mounted() {
 		// set received labels and data to chart
-		console.log(this.labels);
-		console.log(this.data.datasets);
+		// console.log(this.labels);
+		// console.log(this.data.datasets);
 		this.data.labels = this.labels;
 		this.data.datasets = [ this.values ];
 	},

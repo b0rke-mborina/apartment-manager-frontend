@@ -136,7 +136,6 @@ export default {
 	},
 	async mounted() {
 		// parallel calls (accomodations and periods)
-		console.log("parallel calls");
 		try {
 			let responses = await Promise.all([
 				await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}`),
@@ -159,10 +158,10 @@ export default {
 			this.snackbar = true;
 			console.log(Object.keys(error), error.message);
 		}
-		console.log(this.privateAccomodations);
-		console.log(this.privateAccomodationId);
-		console.log(this.allClosedPeriods);
-		console.log(this.closedPeriodsForPrivateAccomodation);
+		// console.log(this.privateAccomodations);
+		// console.log(this.privateAccomodationId);
+		// console.log(this.allClosedPeriods);
+		// console.log(this.closedPeriodsForPrivateAccomodation);
 	},
 	methods: {
 		// sets calndar month to current month

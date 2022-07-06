@@ -192,12 +192,12 @@ export default {
 		},
 		// modifies data and sends it to backend for saving
 		async saveAccomodationAndLocation() {
-			console.log(this.accomodation);
+			// console.log(this.accomodation);
 			// check completeness of data
 			const accomodationIsFull = Object.values(this.accomodation).every(value => value !== null && value !== '');
 			const locationIsFull = Object.values(this.accomodation.location).every(value => value !== null && value !== '');
 			if (accomodationIsFull && locationIsFull) {
-				console.log("full");
+				// console.log("full");
 				// send data to backend for saving
 				this.loading = true;
 				try {

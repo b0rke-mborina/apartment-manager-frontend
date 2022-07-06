@@ -263,9 +263,9 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.privateAccomodations);
-		console.log(this.guests);
-		console.log(this.availableGuests);
+		// console.log(this.privateAccomodations);
+		// console.log(this.guests);
+		// console.log(this.availableGuests);
 	},
 	methods: {
 		// updates guest list, guest who made the reservation and list of available guests
@@ -296,7 +296,7 @@ export default {
 		async saveReservation() {
 			// update start and end dates
 			this.dates = this.dates.sort();
-			console.log(this.dates);
+			// console.log(this.dates);
 			this.reservation.period.start = this.dates[0];
 			this.reservation.period.end = this.dates[1];
 			// update value in eur (backend)
@@ -305,7 +305,7 @@ export default {
 			if (this.reservation.madeByGuest) {
 				this.reservation.period.name = `Reservation (${this.reservation.madeByGuest.firstName} ${this.reservation.madeByGuest.lastName})`;
 			}
-			console.log(this.reservation);
+			// console.log(this.reservation);
 			// check if reservation data is complete
 			const reservationIsFull = Object.values(this.reservation)
 				.every(x => x !== null && x !== undefined && x !== '');
@@ -322,13 +322,13 @@ export default {
 				const accomodationIsFull = Object.values(this.reservation.period.privateAccomodation)
 					.every(x => x !== null && x !== undefined && x !== '');
 				const priceIsFull = Boolean(this.reservation.price.value && this.reservation.price.currency);
-				console.log(priceIsFull);
+				// console.log(priceIsFull);
 				if (madeByGuestIsFull && periodIsFull && accomodationIsFull && priceIsFull) {
 					// update made by guest and guests (set _id-s only)
 					this.reservation.madeByGuest = this.reservation.madeByGuest._id;
 					this.reservation.guests = this.reservation.guests.map(guest => guest._id);
-					console.log("full");
-					console.log(this.reservation);
+					// console.log("full");
+					// console.log(this.reservation);
 					// send data to backend for saving
 					this.loading = true;
 					try {

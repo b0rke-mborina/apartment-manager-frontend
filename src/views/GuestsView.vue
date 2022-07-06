@@ -64,7 +64,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loading = false;
-		console.log(this.guests);
+		// console.log(this.guests);
 	},
 	components: {
 		GuestItem,

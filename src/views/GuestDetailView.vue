@@ -125,7 +125,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.guest);
+		// console.log(this.guest);
 	},
 	methods: {
 		// returns current date in YYYY-MM-DD format

@@ -19,9 +19,9 @@
 			<v-card v-if="data && data.length > 0"
 					  elevation="0" rounded="xl" color="#E3EAEF" class="py-3 px-6 mb-4">
 				<FormLabel text="Show data for:" class="mb-3" />
-				<v-checkbox v-for="accomodation in data" v-bind:key="accomodation.ObjectId"
+				<v-checkbox v-for="accomodation in data" v-bind:key="accomodation._id"
 								v-model="selectedAccomodations" :label="accomodation.name" :value="accomodation"
-								@change="updateData(accomodation.ObjectId)" class="mt-1">
+								@change="updateData(accomodation._id)" class="mt-1">
 				</v-checkbox>
 			</v-card>
 		</div>
@@ -87,6 +87,8 @@
 </template>
 
 <script>
+import { AxiosService, Auth } from "@/services";
+
 import FormLabel from '@/components/FormLabel.vue';
 
 import ChartLine from '@/components/ChartLine.vue';
@@ -124,109 +126,70 @@ export default {
 			accomodations: [],
 			selectedAccomodations: [],
 			months: {"Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5,
-						"Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11}
+						"Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11},
+			monthsNumbersToNames: { "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun",
+											"07": "Jul", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"},
+			auth: Auth.state
 		}
 	},
-	mounted() {
-		// get data from backend and save it to view data
-		let dataFromBackend = {
-			ObjectId: 1111,
-			accomodations: [
-				{
-					ObjectId: 111,
-					name: "Apartment Nature",
-					numberOfReservations: {
-						2020: {
-							"Jul": 2, "Aug": 3
-						},
-						2021: {
-							"Jun": 2, "Jul": 3, "Aug": 3
-						},
-						2022: {
-							"Jun": 1, "Jul": 3, "Aug": 3
-						}
-					},
-					numberOfGuests: {
-						2020: {
-							"Jun": 7, "Jul": 8, "Aug": 12
-						},
-						2021: {
-							"Jun": 10, "Jul": 12, "Aug": 15
-						},
-						2022: {
-							"Jun": 6, "Jul": 14, "Aug": 11
-						}
-					},
-					daysOccupied: {
-						2020: {
-							"Jun": 9, "Jul": 30, "Aug": 30
-						},
-						2021: {
-							"May": 20, "Jun": 20, "Jul": 30, "Aug": 30
-						},
-						2022: {
-							"Jun": 10, "Jul": 30, "Aug": 25
-						}
-					},
-					earningsInEur: {
-						2020: {
-							"Jun": 1500, "Jul": 2500, "Aug": 2000
-						},
-						2021: {
-							"Jun": 1000, "Jul": 1200, "Aug": 1250, "Sep": 120
-						},
-						2022: {
-							"May": 500, "Jun": 1000, "Jul": 1000, "Aug": 1400
-						}
-					}
-				},
-				{
-					ObjectId: 112,
-					name: "Apartment Marie",
-					numberOfReservations: {
-						2022: {
-							"Jun": 4
-						},
-					},
-					numberOfGuests: {
-						2022: {
-							"May": 2, "Jun": 5
-						},
-					},
-					daysOccupied: {
-						2022: {
-							"May": 15, "Jun": 25
-						}
-					},
-					earningsInEur: {
-						2020: {
-							"Jun": 150
-						},
-						2021: {
-							"Jun": 100
-						},
-						2022: {
-							"May": 50, "Jun": 125
-						}
-					}
-				},
-				{
-					ObjectId: 113,
-					name: "Apartment x",
-					numberOfReservations: {},
-					numberOfGuests: {},
-					daysOccupied: {},
-					earningsInEur: {}
-				}
-			],
-		};
-		this.data = dataFromBackend.accomodations;
-		console.log(this.data);
-		// save accomodations
-		this.accomodations = dataFromBackend.accomodations.map(accomodation => {
-			return (({ ObjectId, name }) => ({ ObjectId, name }))(accomodation);
+	async mounted() {
+		// parallel calls
+		let responses = await Promise.all([
+			await AxiosService.get(`/privateaccomodations?userId=${this.auth.userId}`),
+			await AxiosService.get(`/reservations?userId=${this.auth.userId}&relevant=true`)
+		]);
+		// save retrieved data to view data
+		this.accomodations = responses[0].data.map(accomodation => {
+			return (({ _id, name }) => ({ _id, name }))(accomodation);
 		});
-		console.log(this.accomodations);
+		// console.log("accomodations");
+		// console.log(this.accomodations);
+		this.data = responses[0].data.map(accomodation => {
+			accomodation = (({ _id, name }) => ({ _id, name }))(accomodation);
+			accomodation["numberOfReservations"] = {};
+			accomodation["numberOfGuests"] = {};
+			accomodation["daysOccupied"] = {};
+			accomodation["earningsInEur"] = {};
+			return accomodation;
+		});
+		// set data modified for charts to view data
+		for (let reservation of responses[1].data) {
+			if (reservation.currentState === "CONFIRMED") {
+				// get index of private accomodation, year and month
+				let privateAccomodation = this.data.find(privateAccomodation =>
+					privateAccomodation._id === reservation.period.privateAccomodation.id);
+				let indexOfAccomodation = this.data.indexOf(privateAccomodation);
+				let year = reservation.period.start.split("-")[0];
+				let month = this.monthsNumbersToNames[reservation.period.start.split("-")[1]];
+				// mahe sure propertied for values are defined
+				if (!this.data[indexOfAccomodation].numberOfReservations[year]
+					|| !this.data[indexOfAccomodation].numberOfReservations[year][month]) {
+					this.data[indexOfAccomodation].numberOfReservations[year] = {};
+					this.data[indexOfAccomodation].numberOfReservations[year][month] = 0;
+				}
+				if (!this.data[indexOfAccomodation].numberOfGuests[year]
+					|| !this.data[indexOfAccomodation].numberOfGuests[year][month]) {
+					this.data[indexOfAccomodation].numberOfGuests[year] = {};
+					this.data[indexOfAccomodation].numberOfGuests[year][month] = 0;
+				}
+				if (!this.data[indexOfAccomodation].daysOccupied[year]
+					|| !this.data[indexOfAccomodation].daysOccupied[year][month]) {
+					this.data[indexOfAccomodation].daysOccupied[year] = {};
+					this.data[indexOfAccomodation].daysOccupied[year][month] = 0;
+				}
+				if (!this.data[indexOfAccomodation].earningsInEur[year]
+					|| !this.data[indexOfAccomodation].earningsInEur[year][month]) {
+					this.data[indexOfAccomodation].earningsInEur[year] = {};
+					this.data[indexOfAccomodation].earningsInEur[year][month] = 0;
+				}
+				// update data for charts
+				this.data[indexOfAccomodation].numberOfReservations[year][month] += 1;
+				this.data[indexOfAccomodation].numberOfGuests[year][month] += reservation.guests.length + 1;
+				this.data[indexOfAccomodation].daysOccupied[year][month] += this.getNumberOfDays(reservation.period.start, reservation.period.end);
+				this.data[indexOfAccomodation].earningsInEur[year][month] += reservation.price.valueInEur;
+			}
+		};
+		// console.log(this.data);
 		// select first accomodation and update data
 		if (this.data.length > 0) {
 			this.selectedAccomodations.push(this.data[0]);
@@ -234,13 +197,19 @@ export default {
 		}
 	},
 	methods: {
+		getNumberOfDays(startDate, endDate) {
+			startDate = new Date(startDate);
+			endDate = new Date(endDate);
+			const diffTime = Math.abs(endDate - startDate);
+			return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+		},
 		// updates analytics data based on selected accomodations
 		updateData(accomodationId) {
 			// check selected accomodations and data
-			console.log(this.selectedAccomodations);
+			// console.log(this.selectedAccomodations);
 			// if last accomodation was unchecked, recheck it (prevents empty array of selected accomodations and empty data)
 			if (this.selectedAccomodations.length === 0) {
-				this.selectedAccomodations.push(this.data.find(accomodation => accomodation.ObjectId === accomodationId));
+				this.selectedAccomodations.push(this.data.find(accomodation => accomodation._id === accomodationId));
 			}
 			// clear all data from analytics
 			for (const dataAspect in this.analytics) {
@@ -252,7 +221,7 @@ export default {
 			this.selectedAccomodations.forEach(accomodation => {
 				// iterate through aspects (except Id and name) to update analytics
 				for (const dataAspect in accomodation) {
-					if (dataAspect !== "ObjectId" && dataAspect !== "name") {
+					if (dataAspect !== "_id" && dataAspect !== "name") {
 						let aspectData = accomodation[dataAspect];
 						// iterate through data to update analytics
 						for (const year in aspectData) {
@@ -276,7 +245,7 @@ export default {
 			});
 			// sort yearly data and labels
 			for (const aspect in this.analytics) {
-				console.log(this.analytics[aspect]);
+				// console.log(this.analytics[aspect]);
 				let indices = Array.from(this.analytics[aspect].yearly.data.keys())
 					.sort((first, second) =>
 						this.analytics[aspect].yearlyLabels[first].localeCompare(this.analytics[aspect].yearlyLabels[second])
@@ -285,7 +254,7 @@ export default {
 				this.analytics[aspect].yearly.data = indices.map(index => this.analytics[aspect].yearly.data[index]);
 			}
 			// print for check
-			console.log(this.analytics);
+			// console.log(this.analytics);
 		}
 	},
 	components: {

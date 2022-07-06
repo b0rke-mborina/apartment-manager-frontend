@@ -261,8 +261,8 @@ export default {
 			initialReservation.guests = responses[0].data.guests.map(guest => guest._id);
 			initialReservation.price.valueInEur = null;
 			this.reservation = initialReservation;
-			console.log("reservation");
-			console.log(this.reservation);
+			// console.log("reservation");
+			// console.log(this.reservation);
 			// add original objects for check (copies)
 			this.originalReservation = JSON.parse(JSON.stringify(initialReservation));
 			// set retrieved accomodations data to view data and modify it for simplicity
@@ -301,18 +301,18 @@ export default {
 		}
 		this.loadingData = false;
 
-		console.log("period");
-		console.log(this.period);
-		console.log("dates");
-		console.log(this.dates);
-		console.log("reservation");
-		console.log(this.reservation);
-		console.log("guests");
-		console.log(this.guests);
-		console.log("reservation guests");
-		console.log(this.reservation.guests);
-		console.log("available guests");
-		console.log(this.availableGuests);
+		// console.log("period");
+		// console.log(this.period);
+		// console.log("dates");
+		// console.log(this.dates);
+		// console.log("reservation");
+		// console.log(this.reservation);
+		// console.log("guests");
+		// console.log(this.guests);
+		// console.log("reservation guests");
+		// console.log(this.reservation.guests);
+		// console.log("available guests");
+		// console.log(this.availableGuests);
 	},
 	methods: {
 		// updates guest list, guest who made the reservation and list of available guests
@@ -358,7 +358,7 @@ export default {
 		async updateReservation() {
 			// update start and end dates
 			this.dates = this.dates.sort();
-			console.log(this.dates);
+			// console.log(this.dates);
 			this.period.start = this.dates[0];
 			this.period.end = this.dates[1];
 			// update value in eur (backend)
@@ -384,8 +384,8 @@ export default {
 					if (!this.objectsAreEqual(this.reservation, this.originalReservation)) {
 						await AxiosService.patch(`reservation/${this.reservation._id}`, this.reservation);
 					}
-					console.log(this.period);
-					console.log(this.originalPeriod);
+					// console.log(this.period);
+					// console.log(this.originalPeriod);
 					if (!this.objectsAreEqual(this.period, this.originalPeriod)) {
 						await AxiosService.patch(`period/${this.period._id}`, this.period);
 					}
@@ -402,8 +402,8 @@ export default {
 			this.reservation.guests = this.reservation.guests.map(guestId => {
 				return this.guests.find(guest => guest._id === guestId);
 			});
-			console.log("reservation guests in f");
-			console.log(this.reservation.guests);
+			// console.log("reservation guests in f");
+			// console.log(this.reservation.guests);
 		}
 	},
 	components: {

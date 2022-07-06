@@ -109,26 +109,26 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.privateAccomodations);
-		console.log(this.period);
+		// console.log(this.privateAccomodations);
+		// console.log(this.period);
 	},
 	methods: {
 		// modifies period data, checks its completeness and sends it to backend for updating
 		async updatePeriod() {
 			// modify period data
 			this.dates = this.dates.sort();
-			console.log(this.dates);
+			// console.log(this.dates);
 			this.period.start = this.dates[0];
 			this.period.end = this.dates[1];
 			this.period.privateAccomodation.name = this.privateAccomodations
 				.find(accomodation => accomodation._id === this.period.privateAccomodation.id).name;
-			console.log(this.period);
+			// console.log(this.period);
 			// check if period data is complete and send it to backend for saving
 			const periodIsFull = Object.values(this.period).every(x => x !== null && x !== undefined && x !== '');
 			const accomodationIsFull = Object.values(this.period.privateAccomodation)
 				.every(x => x !== null && x !== undefined && x !== '');
 			if (periodIsFull && accomodationIsFull) {
-				console.log("full");
+				// console.log("full");
 				// send data to backend for saving
 				this.loading = true;
 				try {

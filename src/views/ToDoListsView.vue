@@ -63,7 +63,7 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loading = false;
-		console.log(this.toDoLists);
+		// console.log(this.toDoLists);
 	},
 	components: {
 		ToDoListItem,

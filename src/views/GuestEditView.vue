@@ -123,13 +123,13 @@ export default {
 			console.log(Object.keys(error), error.message);
 		}
 		this.loadingData = false;
-		console.log(this.guest);
+		// console.log(this.guest);
 	},
 	methods: {
 		// updates guest data and sends it to backend for updating
 		async updateGuest() {
 			// check completeness of data
-			console.log(this.guest);
+			// console.log(this.guest);
 			const check = Boolean(this.guest.firstName && this.guest.lastName && this.guest.country && this.guest.city);
 			if (check) {
 				// send data to backend for saving
